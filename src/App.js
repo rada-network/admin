@@ -1,24 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, Suspense } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { mainRoutes } from "./routes";
+import Header from "./components/Header";
+import { Container, CssBaseline, Toolbar } from "@mui/material";
+import { Box } from "@mui/system";
 
 function App() {
+  const theme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          <Header />
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              height: "100vh",
+              overflow: "auto",
+            }}
+          >
+            <Toolbar />
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+              <Suspense fallback={<Fragment />}>
+                <Routes>
+                  {mainRoutes.map(({ path, exact, element }, i) => {
+                    return <Route key={i} exact={exact} path={path} element={element} />;
+                  })}
+                </Routes>
+              </Suspense>
+            </Container>
+          </Box>
+        </Box>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 
