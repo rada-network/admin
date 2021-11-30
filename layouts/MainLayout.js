@@ -7,8 +7,8 @@ export default function MainLayout({ children }) {
   return (
     <>
       <Head>
-        <title>RADA network - Admin</title>
-        <meta name="description" content="RADA network - Admin" />
+        <title>RADA - Admin</title>
+        <meta name="description" content="RADA - Admin" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box sx={{ display: "flex" }}>
