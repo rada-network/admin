@@ -1,0 +1,32 @@
+{
+  "name": "admin",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/icons-material": "^5.1.0",
+    "@mui/lab": "^5.0.0-alpha.53",
+    "@mui/material": "^5.0.6",
+    "@mui/styles": "^5.0.2",
+    "@walletconnect/web3-provider": "^1.6.6",
+    "next": "12.0.4",
+    "nprogress": "^0.2.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-loader-spinner": "^4.0.0",
+    "sass": "^1.44.0",
+    "web3": "^1.6.1",
+    "web3-react": "^5.0.5",
+    "web3modal": "^1.9.4"
+  },
+  "devDependencies": {
+    "eslint": "7",
+    "eslint-config-next": "12.0.4"
+  }
+}
