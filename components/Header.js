@@ -116,7 +116,7 @@ export default function Header() {
             marginLeft: "5px",
           }}
         >
-          <Link href="/" passHref>
+          <Link href="/launchverse" passHref>
             <ListItem button>
               <ListItemIcon>
                 <DashboardIcon />

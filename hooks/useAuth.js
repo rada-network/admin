@@ -7,9 +7,23 @@ const providerOptions = {};
 const authContext = createContext();
 
 export function ProvideAuth({ children }) {
+  const [state, setState] = useState(false);
   const auth = useProvideAuth();
 
-  return auth.login() ? <authContext.Provider value={auth}>{children}</authContext.Provider> : null;
+  useEffect(() => {
+    const login = async () => {
+      const state = await auth.login();
+      setState(state);
+    };
+
+    login();
+  }, []);
+
+  if (!state) {
+    return "Connecting...";
+  }
+
+  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 }
 
 export const useAuth = () => {
@@ -35,8 +49,10 @@ export const useProvideAuth = () => {
       const accounts = await web3.eth.getAccounts();
 
       setAddress(accounts[0]);
+      return true;
     } catch (error) {
       console.log("login", error);
+      return false;
     }
   };
 

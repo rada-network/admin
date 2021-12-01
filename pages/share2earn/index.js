@@ -1,3 +1,3 @@
 export default function Share2earn() {
-  return "s";
+  return "Share2earn";
 }
