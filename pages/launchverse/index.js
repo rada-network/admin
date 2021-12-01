@@ -1,6 +1,9 @@
 import { getProjects } from "@query/projects";
-import { DataGrid } from "@mui/x-data-grid";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { formatDate } from "utils/date";
+
+const Table = dynamic(() => import("@components/Table"));
 
 export default function Launchverse(props) {
   const router = useRouter();
@@ -21,19 +24,20 @@ export default function Launchverse(props) {
     {
       field: "open_date",
       headerName: "Open date",
-      width: 200,
+      width: 250,
+      valueGetter: (params) => formatDate(params.value),
     },
     {
       field: "end_date",
       headerName: "End date",
-      width: 200,
+      width: 250,
+      valueGetter: (params) => formatDate(params.value),
     },
     {
       field: "status",
       headerName: "status",
       width: 130,
     },
-
     {
       field: "slug",
       hide: true,
@@ -45,16 +49,10 @@ export default function Launchverse(props) {
     router.push(`/launchverse/${params.row.slug}`);
   };
 
-  return (
-    <div style={{ display: "flex", height: "100%" }}>
-      <div style={{ flexGrow: 1 }}>
-        <DataGrid rows={props.data} columns={columns} pageSize={20} onCellClick={onClick} />
-      </div>
-    </div>
-  );
+  return <Table rows={props.data} columns={columns} pageSize={20} onCellClick={onClick} />;
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   const data = await getProjects();
 
   if (!data) {
@@ -64,6 +62,6 @@ export async function getServerSideProps(context) {
   }
 
   return {
-    props: { data }, // will be passed to the page component as props
+    props: { data },
   };
 }

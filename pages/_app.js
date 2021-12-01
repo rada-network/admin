@@ -2,8 +2,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Router from "next/router";
 import MainLayout from "../layouts/MainLayout";
 import { ProvideAuth } from "../hooks/useAuth";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
 import NProgress from "nprogress";
 import "../styles/global.scss";
+import { useMemo } from "react";
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -18,11 +21,17 @@ Router.onRouteChangeError = () => {
 };
 
 function MyApp({ Component, pageProps }) {
-  const theme = createTheme({
-    palette: {
-      mode: "dark",
-    },
-  });
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? "dark" : "light",
+        },
+      }),
+    [prefersDarkMode]
+  );
 
   return (
     <ProvideAuth>
