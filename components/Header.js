@@ -21,7 +21,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import Link from "next/link";
 
-const ConnectWallet = dynamic(() => import("./ConnectWallet"));
+const Wallet = dynamic(() => import("./Wallet"));
 
 const drawerWidth = 240;
 
@@ -94,7 +94,7 @@ export default function Header() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             RADA admin
           </Typography>
-          <ConnectWallet />
+          <Wallet />
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

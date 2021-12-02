@@ -1,80 +1,31 @@
-import { createContext, useState, useEffect, useContext } from "react";
-import Web3 from "web3";
-import Web3Modal from "web3modal";
+import { createContext, useContext } from "react";
 
-const providerOptions = {};
+import { useEthers } from "@usedapp/core";
+import { useContract } from "./useContract";
 
 const authContext = createContext();
 
-export function ProvideAuth({ children }) {
-  const [state, setState] = useState(false);
-  const auth = useProvideAuth();
+const ProvideAuth = ({ children }) => {
+  const { activateBrowserWallet, account } = useEthers();
+  const contract = "0x3cd89c8347B364697Ddf9d45Cd32813BE7309Bf6";
+  const isAdmin = useContract("admins", contract, [account]);
 
-  useEffect(() => {
-    const login = async () => {
-      const state = await auth.login();
-      setState(state);
-    };
-
-    login();
-  }, []);
-
-  if (!state) {
+  if (!account) {
+    activateBrowserWallet();
     return "Connecting...";
   }
 
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
-}
+  if (!isAdmin) {
+    return "Connecting...";
+  }
 
-export const useAuth = () => {
+  console.log("ProvideAuth render", contract, isAdmin);
+
+  return <authContext.Provider value={account}>{children}</authContext.Provider>;
+};
+
+const useAuth = () => {
   return useContext(authContext);
 };
 
-export const useProvideAuth = () => {
-  const [address, setAddress] = useState(null);
-
-  const login = async () => {
-    try {
-      const web3Modal = new Web3Modal({
-        network: "testnet",
-        cachedProvider: true,
-        providerOptions,
-      });
-
-      const provider = await web3Modal.connect();
-
-      await subscribeProvider(provider);
-
-      const web3 = new Web3(provider);
-      const accounts = await web3.eth.getAccounts();
-
-      setAddress(accounts[0]);
-      return true;
-    } catch (error) {
-      console.log("login", error);
-      return false;
-    }
-  };
-
-  console.log(address);
-
-  return { address, login };
-};
-
-const subscribeProvider = async (provider) => {
-  if (!provider.on) {
-    return;
-  }
-
-  provider.on("disconnect", () => {
-    console.log("disconnect");
-  });
-
-  provider.on("accountsChanged", async (accounts) => {
-    console.log("accountsChanged", accounts);
-  });
-
-  provider.on("chainChanged", async (chainId) => {
-    console.log("chainChanged", chainId);
-  });
-};
+export { ProvideAuth, useAuth };

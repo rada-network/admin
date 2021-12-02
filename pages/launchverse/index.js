@@ -1,7 +1,7 @@
 import { getProjects } from "@query/projects";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { formatDate } from "utils/date";
+import { formatDate } from "utils/format";
 
 const Table = dynamic(() => import("@components/Table"));
 
@@ -48,6 +48,12 @@ export default function Launchverse(props) {
     event.preventDefault();
     router.push(`/launchverse/${params.row.slug}`);
   };
+
+  if (!props.data) {
+    return "";
+  }
+
+  console.log("Launchverse Render...", props.data);
 
   return <Table rows={props.data} columns={columns} pageSize={20} onCellClick={onClick} />;
 }

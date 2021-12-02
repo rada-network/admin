@@ -13,6 +13,7 @@ const getProjects = async () => {
             end_date
             type
             status
+            swap_contract
             content {
               title
             }
@@ -38,6 +39,11 @@ const getProjectsBySlug = async (slug) => {
             status
             content {
               title
+            }
+            swap_contract
+            token {
+              name
+              contract_address
             }
           }
         }

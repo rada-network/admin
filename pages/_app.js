@@ -7,6 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import NProgress from "nprogress";
 import "../styles/global.scss";
 import { useMemo } from "react";
+import { ChainId, DAppProvider, useEthers } from "@usedapp/core";
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -34,13 +35,23 @@ function MyApp({ Component, pageProps }) {
   );
 
   return (
-    <ProvideAuth>
-      <ThemeProvider theme={theme}>
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
-      </ThemeProvider>
-    </ProvideAuth>
+    <DAppProvider
+      config={{
+        supportedChains: [ChainId.BSCTestnet, ChainId.BSC], // ,ChainId.Rinkeby
+        notifications: {
+          expirationPeriod: 1000,
+          checkInterval: 1000,
+        },
+      }}
+    >
+      <ProvideAuth>
+        <ThemeProvider theme={theme}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </ThemeProvider>
+      </ProvideAuth>
+    </DAppProvider>
   );
 }
 
