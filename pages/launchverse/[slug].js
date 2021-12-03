@@ -5,7 +5,10 @@ import { Box } from "@mui/system";
 import { getProjectsBySlug } from "@query/projects";
 import { ProvideProject } from "@hooks/useProject";
 import { useState } from "react";
+import Detail from "@components/Project/Detail";
 import Whitelist from "@components/Project/Whitelist";
+import Winner from "@components/Project/Winner";
+import Prefunded from "@components/Project/Prefunded";
 
 export default function LaunchverseDetail(props) {
   if (!props.data) {
@@ -27,16 +30,25 @@ export default function LaunchverseDetail(props) {
         <TabContext value={tab}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab label="Whitelist" value="1" />
-              <Tab label="Winner" value="2" />
-              <Tab label="Prefund" value="3" />
+              <Tab label="Detail" value="1" />
+              <Tab label="Whitelist" value="2" />
+              <Tab label="Prefunded" value="3" />
+              <Tab label="Winner" value="4" />
             </TabList>
           </Box>
           <TabPanel value="1">
+            <Detail />
+          </TabPanel>
+          <TabPanel value="2">
             <Whitelist />
           </TabPanel>
-          <TabPanel value="2">Item Two</TabPanel>
-          <TabPanel value="3">Item Three</TabPanel>
+
+          <TabPanel value="3">
+            <Prefunded />
+          </TabPanel>
+          <TabPanel value="4">
+            <Winner />
+          </TabPanel>
         </TabContext>
       </Box>
     </ProvideProject>

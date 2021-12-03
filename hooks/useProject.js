@@ -1,9 +1,16 @@
-const { createContext, useContext } = require("react");
+import { createContext, useContext } from "react";
+import { useContract } from "./useContract";
 
 const projectContext = createContext();
 
 const ProvideProject = ({ children, contract }) => {
-  return <projectContext.Provider value={contract}>{children}</projectContext.Provider>;
+  const tokenAddress = useContract("tokenAddress");
+
+  return (
+    <projectContext.Provider value={{ tokenAddress: tokenAddress, contract: contract }}>
+      {children}
+    </projectContext.Provider>
+  );
 };
 
 const useProject = () => {

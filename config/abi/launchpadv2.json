@@ -47,9 +47,16 @@
   },
   {
     "inputs": [],
-    "name": "WITHDRAW_ADDRESS",
+    "name": "ADDRESS_WITHDRAW",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }],
+    "name": "addToWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -131,9 +138,9 @@
   },
   {
     "inputs": [],
-    "name": "commitWithdrawAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "countWhitelist",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -159,13 +166,6 @@
     "name": "endDate",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "_endDate", "type": "uint256" }],
-    "name": "extendTime",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -239,6 +239,13 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "address[]", "name": "_addresses", "type": "address[]" }],
+    "name": "importWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "address[]", "name": "_address", "type": "address[]" },
       { "internalType": "uint256[]", "name": "_approvedBusd", "type": "uint256[]" }
@@ -246,6 +253,13 @@
     "name": "importWinners",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }],
+    "name": "inWhitelist",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -257,21 +271,7 @@
   },
   {
     "inputs": [],
-    "name": "individualMaximumAmountRIR",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "individualMinimumAmountBusd",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "individualMinimumAmountRIR",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -323,13 +323,6 @@
   },
   {
     "inputs": [],
-    "name": "isWithdrawAddressSet",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "isWithdrawBusd",
     "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
@@ -371,7 +364,17 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "_tokenAddress", "type": "address" }],
+    "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }],
+    "name": "removeFromWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_tokenAddress", "type": "address" },
+      { "internalType": "address", "name": "_to", "type": "address" }
+    ],
     "name": "removeOtherERC20Tokens",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -411,13 +414,6 @@
   {
     "inputs": [{ "internalType": "address", "name": "_tokenAddress", "type": "address" }],
     "name": "setTokenAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "address", "name": "_withdrawAddress", "type": "address" }],
-    "name": "setWithdrawAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -514,22 +510,17 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint256", "name": "_individualMinimumAmountBusd", "type": "uint256" },
-      { "internalType": "uint256", "name": "_individualMaximumAmountBusd", "type": "uint256" },
-      { "internalType": "uint256", "name": "_individualMinimumAmountRIR", "type": "uint256" },
-      { "internalType": "uint256", "name": "_individualMaximumAmountRIR", "type": "uint256" }
-    ],
-    "name": "updateLimitation",
+    "inputs": [{ "internalType": "uint256", "name": "percentage", "type": "uint256" }],
+    "name": "updateRIRAllocation",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "percentage", "type": "uint256" }],
-    "name": "updateRIRAllocation",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "whitelist",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
