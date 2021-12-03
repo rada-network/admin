@@ -5,7 +5,7 @@
     "paths": {
       "@query/*": ["./query/*"],
       "@components/*": ["./components/*"],
-
+      "@hooks/*": ["./hooks/*"],
     }
   },
   "exclude": ["node_modules", "**/node_modules/*",".next","https_cert","public"]

@@ -7,7 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import NProgress from "nprogress";
 import "../styles/global.scss";
 import { useMemo } from "react";
-import { ChainId, DAppProvider, useEthers } from "@usedapp/core";
+import { ChainId, DAppProvider } from "@usedapp/core";
 
 Router.onRouteChangeStart = () => {
   NProgress.start();

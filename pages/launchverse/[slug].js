@@ -1,40 +1,45 @@
-import Address from "@components/Address";
-import Table from "@components/Table";
-import { Typography } from "@mui/material";
+import Title from "@components/Title";
+import { TabPanel, TabContext, TabList } from "@mui/lab";
+import { Tab } from "@mui/material";
 import { Box } from "@mui/system";
 import { getProjectsBySlug } from "@query/projects";
-import { useSubscribers } from "hooks/useContract";
+import { ProvideProject } from "@hooks/useProject";
+import { useState } from "react";
+import Whitelist from "@components/Project/Whitelist";
 
 export default function LaunchverseDetail(props) {
   if (!props.data) {
     return null;
   }
 
-  const columns = [
-    {
-      field: "address",
-      headerName: "Address",
-      width: 250,
-    },
-  ];
-  const subscribers = useSubscribers(props.data.swap_contract);
+  const [tab, setTab] = useState("1");
+
+  const handleChange = (event, newValue) => {
+    setTab(newValue);
+  };
+
+  console.log("LaunchverseDetail render");
 
   return (
-    <Box>
-      <Typography variant="h5" component="div">
-        Project ID: {props.data.id}
-      </Typography>
-      <Typography variant="h5" component="div">
-        Project Name: {props.data.content?.title}
-      </Typography>
-      <Typography variant="h5" component="div">
-        Status: {props.data.status}
-      </Typography>
-      <Typography variant="h5" component="div">
-        Contact: {props.data.swap_contract}
-      </Typography>
-      <Table rows={subscribers} columns={columns} pageSize={20} />;
-    </Box>
+    <ProvideProject contract={props.data.swap_contract}>
+      <Box sx={{ width: "100%", typography: "body1" }}>
+        <Title>Project: {props.data.content?.title}</Title>
+        <TabContext value={tab}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <TabList onChange={handleChange} aria-label="lab API tabs example">
+              <Tab label="Whitelist" value="1" />
+              <Tab label="Winner" value="2" />
+              <Tab label="Prefund" value="3" />
+            </TabList>
+          </Box>
+          <TabPanel value="1">
+            <Whitelist />
+          </TabPanel>
+          <TabPanel value="2">Item Two</TabPanel>
+          <TabPanel value="3">Item Three</TabPanel>
+        </TabContext>
+      </Box>
+    </ProvideProject>
   );
 }
 

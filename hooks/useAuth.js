@@ -7,8 +7,8 @@ const authContext = createContext();
 
 const ProvideAuth = ({ children }) => {
   const { activateBrowserWallet, account } = useEthers();
-  const contract = "0x3cd89c8347B364697Ddf9d45Cd32813BE7309Bf6";
-  const isAdmin = useContract("admins", contract, [account]);
+
+  const isAdmin = useContract("admins", [account]);
 
   if (!account) {
     activateBrowserWallet();
@@ -19,7 +19,7 @@ const ProvideAuth = ({ children }) => {
     return "Connecting...";
   }
 
-  console.log("ProvideAuth render", contract, isAdmin);
+  console.log("ProvideAuth render", isAdmin);
 
   return <authContext.Provider value={account}>{children}</authContext.Provider>;
 };
