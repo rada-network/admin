@@ -1,5 +1,3 @@
-import getContract from "utils/contact";
-
 const projectReducer = (state, action) => {
   console.log("projectReducer", state, action.type);
 
