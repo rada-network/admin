@@ -2,29 +2,66 @@ import Table from "@components/Table";
 import { useProject } from "@hooks/useProject";
 import { useImportWinners, useResetWinners } from "@hooks/useWinners";
 import { parseEther } from "@ethersproject/units";
-import { Button, Grid } from "@mui/material";
-import { useState, useEffect } from "react";
-
+import { Backdrop, Button, CircularProgress, Grid } from "@mui/material";
+import { useState, useEffect, useReducer } from "react";
 import { GridToolbarContainer } from "@mui/x-data-grid";
 import { useSubscribers } from "@hooks/useSubscribers";
+import projectReducer from "reducer/Project";
+import { toast } from "react-toastify";
 
 const Winner = () => {
+  const initialState = {
+    loading: false,
+  };
+
+  const [state, dispatch] = useReducer(projectReducer, initialState);
+
   const projectData = useProject();
   const getSubscribers = useSubscribers(projectData.contract);
 
   const [stateImportWinner, importWinners] = useImportWinners(projectData.contract);
-  const resetWinners = useResetWinners(projectData.contract);
+  const [stateReset, resetWinners] = useResetWinners(projectData.contract);
   const [subscribers, setSubscribers] = useState([]);
   const [selectedIDs, setSelectedIDs] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const subscribers = await getSubscribers();
-      setSubscribers(subscribers);
-    };
+  const fetchData = async () => {
+    dispatch({ type: "loading" });
+    const subscribers = await getSubscribers();
+    setSubscribers(subscribers);
+    dispatch({ type: "loaded" });
+  };
 
-    fetchData();
-  }, []);
+  const handleStatus = (state) => {
+    switch (state.status) {
+      case "None":
+      case "Success":
+        fetchData();
+        break;
+
+      case "Mining":
+        dispatch({ type: "loading" });
+        break;
+
+      case "Exception":
+        toast(state.errorMessage);
+        dispatch({ type: "loaded" });
+        break;
+
+      default:
+        dispatch({ type: "loaded" });
+        break;
+    }
+  };
+
+  useEffect(() => {
+    console.log(stateImportWinner);
+    handleStatus(stateImportWinner);
+  }, [stateImportWinner]);
+
+  useEffect(() => {
+    console.log(stateReset);
+    handleStatus(stateReset);
+  }, [stateReset]);
 
   const handleCommitWinner = () => {
     console.log("handleCommitWinner", selectedIDs);
@@ -36,10 +73,13 @@ const Winner = () => {
       .map((row) => parseEther(row.amountBUSD));
 
     console.log("handleImportWinner", selectedIDs, busd);
+
+    dispatch({ type: "loading" });
     importWinners(selectedIDs, busd);
   };
 
   const handleResetWinner = () => {
+    dispatch({ type: "loading" });
     resetWinners();
   };
 
@@ -82,6 +122,13 @@ const Winner = () => {
           onSelectionModelChange={handleSelectionModelChange}
         />
       )}
+
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={state.loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Grid>
   );
 };

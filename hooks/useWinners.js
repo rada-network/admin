@@ -1,5 +1,6 @@
 import { useContact } from "./useContract";
 import { useContractFunction } from "@usedapp/core";
+import { useState } from "react";
 
 const useImportWinners = (contractAddress) => {
   const contract = useContact(contractAddress);
@@ -8,13 +9,9 @@ const useImportWinners = (contractAddress) => {
     transactionName: "importWinners",
   });
 
-  const action = (address, busd) => {
-    send(address, busd);
-  };
+  //console.log(state);
 
-  console.log(state);
-
-  return [state, action];
+  return [state, send];
 };
 
 const useResetWinners = (contractAddress) => {
@@ -26,7 +23,7 @@ const useResetWinners = (contractAddress) => {
 
   console.log(state);
 
-  return send;
+  return [state, send];
 };
 
 export { useImportWinners, useResetWinners };

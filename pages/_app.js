@@ -4,6 +4,7 @@ import { ProvideAuth } from "../hooks/useAuth";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useMemo } from "react";
 import { ChainId, DAppProvider } from "@usedapp/core";
+import "react-toastify/dist/ReactToastify.css";
 
 function MyApp({ Component, pageProps }) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");

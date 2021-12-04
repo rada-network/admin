@@ -2,7 +2,8 @@ import Head from "next/head";
 import Header from "../components/Header";
 import { Container, CssBaseline, Toolbar } from "@mui/material";
 import { Box } from "@mui/system";
-import { ToastContainer } from "react-toastify";
+
+import Notifications from "@components/Notifications";
 
 export default function MainLayout({ children }) {
   return (
@@ -29,7 +30,7 @@ export default function MainLayout({ children }) {
             {children}
           </Container>
         </Box>
-        <ToastContainer />
+        <Notifications />
       </Box>
     </>
   );
