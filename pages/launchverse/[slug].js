@@ -9,6 +9,7 @@ import Detail from "@components/Project/Detail";
 import Whitelist from "@components/Project/Whitelist";
 import Winner from "@components/Project/Winner";
 import Prefunded from "@components/Project/Prefunded";
+import ProjectTitle from "@components/Project/ProjectTitle";
 
 export default function LaunchverseDetail(props) {
   if (!props.data) {
@@ -24,9 +25,9 @@ export default function LaunchverseDetail(props) {
   console.log("LaunchverseDetail render");
 
   return (
-    <ProvideProject contract={props.data.swap_contract}>
+    <ProvideProject projectData={props.data}>
       <Box sx={{ width: "100%", typography: "body1" }}>
-        <Title>Project: {props.data.content?.title}</Title>
+        <ProjectTitle />
         <TabContext value={tab}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -36,12 +37,12 @@ export default function LaunchverseDetail(props) {
               <Tab label="Winner" value="4" />
             </TabList>
           </Box>
-          <TabPanel value="1">
+          {/* <TabPanel value="1">
             <Detail />
           </TabPanel>
           <TabPanel value="2">
             <Whitelist />
-          </TabPanel>
+          </TabPanel> */}
 
           <TabPanel value="3">
             <Prefunded />

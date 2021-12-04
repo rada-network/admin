@@ -1,25 +1,42 @@
-import { useContract } from "@hooks/useContract";
-import { useProject } from "@hooks/useProject";
+import { useSubscribers } from "@hooks/useSubscribers";
 import { LoadingButton } from "@mui/lab";
-import { Button, Grid } from "@mui/material";
-import { useContractCall } from "@usedapp/core";
+import { Grid } from "@mui/material";
+
+import { useProject } from "@hooks/useProject";
 import { useReducer } from "react";
 import projectReducer from "reducer/Project";
+import { jsonToCSV } from "react-papaparse";
+import dayjs from "dayjs";
 
 const Prefunded = () => {
-  const [state, dispatch] = useReducer(projectReducer, { loading: false });
+  const initialState = {
+    loading: false,
+  };
 
-  const handleOnClick = () => {
+  const projectData = useProject();
+  const [state, dispatch] = useReducer(projectReducer, initialState);
+  const getSubscribers = useSubscribers(projectData.contract);
+
+  const handleOnClick = async () => {
     dispatch({ type: "loading" });
+    const subscribers = await getSubscribers();
+    const csv = jsonToCSV(subscribers);
 
-    const a = useContract("getSubscribers");
+    var csvData = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    var csvURL = null;
+    if (navigator.msSaveBlob) {
+      csvURL = navigator.msSaveBlob(csvData, `${projectData.title}_prefunded.csv`);
+    } else {
+      csvURL = window.URL.createObjectURL(csvData);
+    }
 
-    console.log(a);
+    var tempLink = document.createElement("a");
+    tempLink.href = csvURL;
+    tempLink.setAttribute("download", `${projectData.title}_prefunded_${dayjs()}.csv`);
+    tempLink.click();
 
     dispatch({ type: "loaded" });
   };
-
-  console.log("Prefunded", state);
 
   return (
     <Grid container spacing={2}>

@@ -1,14 +1,13 @@
 import { createContext, useContext } from "react";
 
 import { useEthers } from "@usedapp/core";
-import { useContract } from "./useContract";
+import { useCallContract } from "./useContract";
 
 const authContext = createContext();
 
 const ProvideAuth = ({ children }) => {
   const { activateBrowserWallet, account } = useEthers();
-
-  const isAdmin = useContract("admins", [account]);
+  const isAdmin = useCallContract([{ method: "admins", args: [account] }]);
 
   if (!account) {
     activateBrowserWallet();

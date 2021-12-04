@@ -1,14 +1,8 @@
-import {
-  GridToolbarContainer,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  GridToolbarExport,
-} from "@mui/x-data-grid";
+import { GridToolbarContainer, GridToolbarFilterButton, GridToolbarExport } from "@mui/x-data-grid";
 
 const Toolbar = () => {
   return (
     <GridToolbarContainer>
-      <GridToolbarColumnsButton />
       <GridToolbarFilterButton />
       <GridToolbarExport />
     </GridToolbarContainer>

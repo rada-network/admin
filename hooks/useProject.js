@@ -1,20 +1,21 @@
 import { createContext, useContext } from "react";
-import { useContract } from "./useContract";
 
 const projectContext = createContext();
 
-const ProvideProject = ({ children, contract }) => {
-  const tokenAddress = useContract("tokenAddress");
-
-  return (
-    <projectContext.Provider value={{ tokenAddress: tokenAddress, contract: contract }}>
-      {children}
-    </projectContext.Provider>
-  );
+const ProvideProject = ({ children, projectData }) => {
+  const projectModel = ProjectModel(projectData);
+  return <projectContext.Provider value={projectModel}>{children}</projectContext.Provider>;
 };
 
 const useProject = () => {
   return useContext(projectContext);
+};
+
+const ProjectModel = (projectData) => {
+  return {
+    title: projectData.content?.title ?? "",
+    contract: projectData.swap_contract ?? "",
+  };
 };
 
 export { ProvideProject, useProject };

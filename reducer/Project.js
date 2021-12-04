@@ -6,10 +6,10 @@ const projectReducer = (state, action) => {
       return { ...state, ...{ whistList: "qq" } };
 
     case "loading":
-      return { loading: true };
+      return { ...state, ...{ loading: true } };
 
     case "loaded":
-      return { loading: false };
+      return { ...state, ...{ loading: false } };
 
     default:
       break;
