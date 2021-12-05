@@ -1,8 +1,8 @@
-import { useContact } from "./useContract";
 import { formatEther } from "@ethersproject/units";
+import { useState } from "react";
 
-const useSubscribers = (contractAddress) => {
-  const contract = useContact(contractAddress);
+const useSubscribers = (contract) => {
+  const [state, setState] = useState([]);
 
   const getSubscribers = async () => {
     const responsve = await contract.getSubscribers();
@@ -11,10 +11,12 @@ const useSubscribers = (contractAddress) => {
       responsve.map(async (subscriber) => await contract.getOrderSubscriber(subscriber))
     );
 
-    return orderSubscribers?.map((subscriber) => SubscriberModel(subscriber));
+    const data = orderSubscribers?.map((subscriber) => SubscriberModel(subscriber));
+
+    setState(data);
   };
 
-  return getSubscribers;
+  return [state, getSubscribers];
 };
 
 const SubscriberModel = (data) => ({

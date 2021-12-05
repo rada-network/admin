@@ -1,6 +1,10 @@
 import { ethers, utils } from "ethers";
 import launchpadAbiV2 from "../config/abi/launchpadv2.json";
-import { useContractCalls, useEthers } from "@usedapp/core";
+import {
+  useContractCalls,
+  useEthers,
+  useContractFunction as useContractFunctionCore,
+} from "@usedapp/core";
 import { Contract } from "@ethersproject/contracts";
 
 const useCallContract = (methods) => {
@@ -25,11 +29,21 @@ const useCallContract = (methods) => {
   return val;
 };
 
-const useContact = (contractAddress) => {
+const useContract = (contractAddress) => {
   const { library } = useEthers();
   let abi = new utils.Interface(launchpadAbiV2);
 
   return new Contract(contractAddress, abi, library);
 };
 
-export { useCallContract, useContact };
+const useContractFunction = (contract, method) => {
+  const { state, send } = useContractFunctionCore(contract, method, {
+    transactionName: method,
+  });
+
+  console.log(state);
+
+  return [state, send];
+};
+
+export { useCallContract, useContract, useContractFunction };

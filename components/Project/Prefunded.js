@@ -7,6 +7,7 @@ import { useReducer } from "react";
 import projectReducer from "reducer/Project";
 import { jsonToCSV } from "react-papaparse";
 import dayjs from "dayjs";
+import { useContract } from "@hooks/useContract";
 
 const Prefunded = () => {
   const initialState = {
@@ -14,12 +15,13 @@ const Prefunded = () => {
   };
 
   const projectData = useProject();
+
   const [state, dispatch] = useReducer(projectReducer, initialState);
-  const getSubscribers = useSubscribers(projectData.contract);
+  const [subscribers, getSubscribers] = useSubscribers(projectData.contractInstance);
 
   const handleOnClick = async () => {
     dispatch({ type: "loading" });
-    const subscribers = await getSubscribers();
+    await getSubscribers();
     const csv = jsonToCSV(subscribers);
 
     var csvData = new Blob([csv], { type: "text/csv;charset=utf-8;" });

@@ -1,37 +1,49 @@
 import Table from "@components/Table";
 import { useProject } from "@hooks/useProject";
-import { useImportWinners, useResetWinners } from "@hooks/useWinners";
+import { useSubscribers } from "@hooks/useSubscribers";
 import { parseEther } from "@ethersproject/units";
 import { Backdrop, Button, CircularProgress, Grid } from "@mui/material";
 import { useState, useEffect, useReducer } from "react";
 import { GridToolbarContainer } from "@mui/x-data-grid";
-import { useSubscribers } from "@hooks/useSubscribers";
 import projectReducer from "reducer/Project";
 import { toast } from "react-toastify";
+import { useContract, useContractFunction } from "@hooks/useContract";
 
 const Winner = () => {
   const initialState = {
     loading: false,
   };
 
+  const projectData = useProject();
+
   const [state, dispatch] = useReducer(projectReducer, initialState);
 
-  const projectData = useProject();
-  const getSubscribers = useSubscribers(projectData.contract);
+  const [subscribers, getSubscribers] = useSubscribers(projectData.contractInstance);
 
-  const [stateImportWinner, importWinners] = useImportWinners(projectData.contract);
-  const [stateReset, resetWinners] = useResetWinners(projectData.contract);
-  const [subscribers, setSubscribers] = useState([]);
+  const [stateImport, importWinners] = useContractFunction(
+    projectData.contractInstance,
+    "importWinners"
+  );
+
+  const [stateReset, resetWinners] = useContractFunction(
+    projectData.contractInstance,
+    "setEmptyWins"
+  );
+
+  const [stateCommit, commitWinnner] = useContractFunction(
+    projectData.contractInstance,
+    "commitWinners"
+  );
+
   const [selectedIDs, setSelectedIDs] = useState([]);
 
   const fetchData = async () => {
     dispatch({ type: "loading" });
-    const subscribers = await getSubscribers();
-    setSubscribers(subscribers);
+    await getSubscribers();
     dispatch({ type: "loaded" });
   };
 
-  const handleStatus = (state) => {
+  const handleStatus = async (state) => {
     switch (state.status) {
       case "None":
       case "Success":
@@ -54,17 +66,27 @@ const Winner = () => {
   };
 
   useEffect(() => {
-    console.log(stateImportWinner);
-    handleStatus(stateImportWinner);
-  }, [stateImportWinner]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
     console.log(stateReset);
     handleStatus(stateReset);
   }, [stateReset]);
 
+  useEffect(() => {
+    console.log(stateImport);
+    handleStatus(stateImport);
+  }, [stateImport]);
+
+  useEffect(() => {
+    console.log(stateCommit);
+    handleStatus(stateCommit);
+  }, [stateCommit]);
+
   const handleCommitWinner = () => {
-    console.log("handleCommitWinner", selectedIDs);
+    dispatch({ type: "loading" });
+    commitWinnner();
   };
 
   const handleImportWinner = () => {
