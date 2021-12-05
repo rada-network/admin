@@ -9,7 +9,7 @@ const ProjectTitle = () => {
   return (
     <>
       <Title>Project: {projectData.title}</Title>
-      <p>{projectData.contract}</p>
+      <p>Swap Contract: {projectData.contract}</p>
     </>
   );
 };

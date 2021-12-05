@@ -10,6 +10,7 @@ import Whitelist from "@components/Project/Whitelist";
 import Winner from "@components/Project/Winner";
 import Prefunded from "@components/Project/Prefunded";
 import ProjectTitle from "@components/Project/ProjectTitle";
+import Token from "@components/Project/Token";
 
 export default function LaunchverseDetail(props) {
   if (!props.data) {
@@ -35,20 +36,25 @@ export default function LaunchverseDetail(props) {
               <Tab label="Whitelist" value="2" />
               <Tab label="Prefunded" value="3" />
               <Tab label="Winner" value="4" />
+              <Tab label="Token" value="5" />
             </TabList>
           </Box>
-          {/* <TabPanel value="1">
+          <TabPanel value="1">
             <Detail />
           </TabPanel>
           <TabPanel value="2">
             <Whitelist />
-          </TabPanel> */}
+          </TabPanel>
 
           <TabPanel value="3">
             <Prefunded />
           </TabPanel>
           <TabPanel value="4">
             <Winner />
+          </TabPanel>
+
+          <TabPanel value="5">
+            <Token />
           </TabPanel>
         </TabContext>
       </Box>

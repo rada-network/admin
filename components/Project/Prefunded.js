@@ -1,13 +1,11 @@
 import { useSubscribers } from "@hooks/useSubscribers";
 import { LoadingButton } from "@mui/lab";
 import { Grid } from "@mui/material";
-
 import { useProject } from "@hooks/useProject";
 import { useReducer } from "react";
 import projectReducer from "reducer/Project";
 import { jsonToCSV } from "react-papaparse";
 import dayjs from "dayjs";
-import { useContract } from "@hooks/useContract";
 
 const Prefunded = () => {
   const initialState = {
@@ -41,13 +39,9 @@ const Prefunded = () => {
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <LoadingButton variant="contained" onClick={handleOnClick} loading={state.loading}>
-          Export Prefunded
-        </LoadingButton>
-      </Grid>
-    </Grid>
+    <LoadingButton variant="contained" onClick={handleOnClick} loading={state.loading}>
+      Export Prefunded
+    </LoadingButton>
   );
 };
 

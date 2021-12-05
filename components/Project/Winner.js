@@ -2,12 +2,12 @@ import Table from "@components/Table";
 import { useProject } from "@hooks/useProject";
 import { useSubscribers } from "@hooks/useSubscribers";
 import { parseEther } from "@ethersproject/units";
-import { Backdrop, Button, CircularProgress, Grid } from "@mui/material";
+import { Backdrop, Button, CircularProgress } from "@mui/material";
 import { useState, useEffect, useReducer } from "react";
 import { GridToolbarContainer } from "@mui/x-data-grid";
 import projectReducer from "reducer/Project";
 import { toast } from "react-toastify";
-import { useContract, useContractFunction } from "@hooks/useContract";
+import { useContractFunction } from "@hooks/useContract";
 
 const Winner = () => {
   const initialState = {
@@ -94,8 +94,6 @@ const Winner = () => {
       .filter((subscriber) => selectedIDs.includes(subscriber.address))
       .map((row) => parseEther(row.amountBUSD));
 
-    console.log("handleImportWinner", selectedIDs, busd);
-
     dispatch({ type: "loading" });
     importWinners(selectedIDs, busd);
   };
@@ -117,20 +115,18 @@ const Winner = () => {
     { field: "claimedToken", headerName: "claimed Token" },
   ];
 
-  const Toolbar = () => {
-    return (
-      <GridToolbarContainer>
-        <Button onClick={handleImportWinner}>Import Winner</Button>
-        <Button onClick={handleCommitWinner}>Commit Winner</Button>
-        <Button onClick={handleResetWinner}>Reset Winner</Button>
-      </GridToolbarContainer>
-    );
-  };
+  const Toolbar = () => (
+    <GridToolbarContainer>
+      <Button onClick={handleImportWinner}>Import Winner</Button>
+      <Button onClick={handleCommitWinner}>Commit Winner</Button>
+      <Button onClick={handleResetWinner}>Reset Winner</Button>
+    </GridToolbarContainer>
+  );
 
   console.log("Project Winner render", projectData, subscribers);
 
   return (
-    <Grid container spacing={2}>
+    <>
       {subscribers.length > 0 && (
         <Table
           rows={subscribers}
@@ -151,7 +147,7 @@ const Winner = () => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-    </Grid>
+    </>
   );
 };
 
