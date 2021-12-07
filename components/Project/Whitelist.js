@@ -1,25 +1,20 @@
 import dynamic from "next/dynamic";
 import { useProject } from "@hooks/useProject";
-import { Backdrop, Button, CircularProgress, Grid } from "@mui/material";
-import { createRef, useEffect, useReducer, useState, useCallback } from "react";
-import { GridToolbarContainer, useGridApiRef } from "@mui/x-data-grid";
+import { Button, Grid } from "@mui/material";
+import { createRef, useState, useCallback, useEffect } from "react";
+import { GridToolbarContainer } from "@mui/x-data-grid";
 import { CSVReader } from "react-papaparse";
 import { useContractFunction } from "@hooks/useContract";
-import projectReducer from "reducer/Project";
-import { toast } from "react-toastify";
 import { Box } from "@mui/system";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
+import { useAuth } from "@hooks/useAuth";
+import { toast } from "react-toastify";
 
 const Table = dynamic(() => import("@components/Table"));
 
 const Whitelist = () => {
-  const initialState = {
-    loading: false,
-  };
-
+  const auth = useAuth();
   const projectData = useProject();
-
-  const [state, dispatch] = useReducer(projectReducer, initialState);
 
   const [whiteList, setWhitelist] = useState([]);
   const [selectedIDs, setSelectedIDs] = useState([]);
@@ -31,22 +26,17 @@ const Whitelist = () => {
 
   const handleStatus = async (state) => {
     switch (state.status) {
-      case "None":
       case "Success":
-        dispatch({ type: "loaded" });
+        auth.setLoading(false);
         break;
-
       case "Mining":
-        dispatch({ type: "loading" });
+        auth.setLoading(true);
         break;
-
       case "Exception":
         toast(state.errorMessage);
-        dispatch({ type: "loaded" });
+        auth.setLoading(false);
         break;
-
       default:
-        dispatch({ type: "loaded" });
         break;
     }
   };
@@ -57,11 +47,12 @@ const Whitelist = () => {
   }, [stateImport]);
 
   const handleImportWhitelist = () => {
-    console.log("handleImportWhitelist", selectedIDs);
+    console.log("handleImportWhitelist", selectedIDs, auth);
 
-    dispatch({ type: "loading" });
-
-    importWhiteList(selectedIDs);
+    if (selectedIDs.length > 0) {
+      auth.setLoading(true);
+      importWhiteList(selectedIDs);
+    }
   };
 
   const handleOnFileLoad = (csv) => {
@@ -187,12 +178,6 @@ const Whitelist = () => {
           onEditRowsModelChange={handleEditRowsModelChange}
         />
       </Grid>
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={state.loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </Grid>
   );
 };

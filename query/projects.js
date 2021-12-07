@@ -35,6 +35,8 @@ const getProjectsBySlug = async (slug) => {
         query {
           projectBySlug(lang: "en", slug: "${slug}") {
             id
+            open_date
+            end_date
             type
             status
             content {

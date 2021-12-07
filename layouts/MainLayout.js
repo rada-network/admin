@@ -1,11 +1,28 @@
 import Head from "next/head";
 import Header from "../components/Header";
-import { Container, CssBaseline, Toolbar } from "@mui/material";
+import { Backdrop, CircularProgress, Container, CssBaseline, Toolbar } from "@mui/material";
 import { Box } from "@mui/system";
-
+import Router from "next/router";
 import Notifications from "@components/Notifications";
+import { useAuth } from "@hooks/useAuth";
 
 export default function MainLayout({ children }) {
+  const auth = useAuth();
+
+  Router.onRouteChangeStart = () => {
+    auth.setLoading(true);
+  };
+
+  Router.onRouteChangeComplete = () => {
+    auth.setLoading(false);
+  };
+
+  Router.onRouteChangeError = () => {
+    auth.setLoading(false);
+  };
+
+  console.log("MainLayout render", auth);
+
   return (
     <>
       <Head>
@@ -31,6 +48,12 @@ export default function MainLayout({ children }) {
           </Container>
         </Box>
         <Notifications />
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={auth.loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </Box>
     </>
   );

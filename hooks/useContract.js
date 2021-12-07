@@ -8,26 +8,33 @@ import {
   useContractFunction as useContractFunctionCore,
 } from "@usedapp/core";
 import { Contract } from "@ethersproject/contracts";
+import { useAuth } from "./useAuth";
+import { toast } from "react-toastify";
 
 const useContractCalls = (methods) => {
   if (methods.length === 0) {
     return [];
   }
 
-  const base = {
-    abi: new ethers.utils.Interface(launchVerse),
-  };
+  try {
+    const base = {
+      abi: new ethers.utils.Interface(launchVerse),
+    };
 
-  const calls = methods.map((method) => ({
-    ...base,
-    ...{ address: method.contract, method: method.method, args: method.args ?? [] },
-  }));
+    const calls = methods.map((method) => ({
+      ...base,
+      ...{ address: method.contract, method: method.method, args: method.args ?? [] },
+    }));
 
-  const val = useContractCallsCore(calls) ?? [];
+    const val = useContractCallsCore(calls) ?? [];
 
-  console.log("useContractCalls", calls, val);
+    console.log("useContractCalls", calls, val);
 
-  return val?.filter((a) => a);
+    return val?.filter((a) => a);
+  } catch (error) {
+    console.log("useContractCalls error", error);
+    return null;
+  }
 };
 
 const useContract = (contractAddress) => {
@@ -49,12 +56,11 @@ const useContractBEP20 = (contractAddress) => {
 };
 
 const useContractFunction = (contract, method) => {
-  console.log("useContractFunction", contract, method);
   const { state, send } = useContractFunctionCore(contract, method, {
     transactionName: method,
   });
 
-  console.log(state);
+  console.log("useContractFunction", state);
 
   return [state, send];
 };

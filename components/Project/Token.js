@@ -3,11 +3,12 @@ import { useProject } from "@hooks/useProject";
 import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { parseEther } from "@ethersproject/units";
+import { toast } from "react-toastify";
 import { useAuth } from "@hooks/useAuth";
-import { formatEther } from "@ethersproject/units";
+
 const Token = () => {
+  const auth = useAuth();
   const projectData = useProject();
-  const account = useAuth();
 
   const [tokenAddress, changeTokenAddress] = useState(projectData.tokenAddress);
   const [tokenAmount, setTokenAmount] = useState(0);
@@ -27,14 +28,49 @@ const Token = () => {
   const tokenInstance = useContractBEP20(projectData.tokenAddress);
   const [stateApprove, approve] = useContractFunction(tokenInstance, "approve");
 
+  const handleStatus = async (state) => {
+    switch (state.status) {
+      case "Success":
+        auth.setLoading(false);
+        break;
+      case "Mining":
+        auth.setLoading(true);
+        break;
+      case "Exception":
+        toast(state.errorMessage);
+        auth.setLoading(false);
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    handleStatus(stateSetToken);
+  }, [stateSetToken]);
+
+  useEffect(() => {
+    handleStatus(stateCommitToken);
+  }, [stateCommitToken]);
+
+  useEffect(() => {
+    handleStatus(stateApprove);
+  }, [stateApprove]);
+
+  useEffect(() => {
+    handleStatus(stateDeposit);
+  }, [stateDeposit]);
+
   const handleSetTokenAddress = () => {
     if (tokenAddress) {
+      auth.setLoading(true);
       setTokenAddress(tokenAddress);
     }
   };
 
   const handleApprove = () => {
     if (tokenAmount > 0) {
+      auth.setLoading(true);
       console.log(projectData.contract, parseEther(tokenAmount));
       approve(projectData.contract, parseEther(tokenAmount));
     }
@@ -42,8 +78,14 @@ const Token = () => {
 
   const handleDeposit = () => {
     if (tokenAmount > 0) {
+      auth.setLoading(true);
       deposit(parseEther(tokenAmount));
     }
+  };
+
+  const handleCommitToken = () => {
+    auth.setLoading(true);
+    commitTokenAddress();
   };
 
   console.log("Project Detail Token render", projectData, tokenAddress);
@@ -67,16 +109,16 @@ const Token = () => {
           </Stack>
           <Stack direction="row" spacing={2}>
             <Button
-              disabled={tokenAddress ? true : false}
+              disabled={projectData.isOwner ? false : false}
               variant="contained"
               onClick={handleSetTokenAddress}
             >
               Import Token Adrress
             </Button>
             <Button
-              disabled={tokenAddress ? true : false}
+              disabled={projectData.isOwner ? false : true}
               variant="contained"
-              onClick={() => commitTokenAddress()}
+              onClick={handleCommitToken}
             >
               Commit Token Adrress
             </Button>
@@ -97,10 +139,18 @@ const Token = () => {
             />
           </Stack>
           <Stack direction="row" spacing={2}>
-            <Button disabled={projectData.isCommit} variant="contained" onClick={handleApprove}>
+            <Button
+              disabled={projectData.isCommit ? true : projectData.isOwner ? false : true}
+              variant="contained"
+              onClick={handleApprove}
+            >
               Approve Contract
             </Button>
-            <Button disabled={projectData.isCommit} variant="contained" onClick={handleDeposit}>
+            <Button
+              disabled={projectData.isCommit ? true : projectData.isOwner ? false : true}
+              variant="contained"
+              onClick={handleDeposit}
+            >
               Deposit Token
             </Button>
           </Stack>

@@ -1,4 +1,5 @@
 import Title from "@components/Title";
+import { useAuth } from "@hooks/useAuth";
 import { useProjects } from "@hooks/useProject";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -8,16 +9,14 @@ const Table = dynamic(() => import("@components/Table"));
 
 const ProjectList = () => {
   const projects = useProjects();
-
   const router = useRouter();
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
     {
-      field: "content",
+      field: "title",
       headerName: "Name",
       width: 200,
-      valueGetter: (params) => params.value.title,
     },
     {
       field: "type",
@@ -25,13 +24,12 @@ const ProjectList = () => {
       width: 130,
     },
     {
-      field: "open_date",
+      field: "openDate",
       headerName: "Open date",
       width: 250,
-      valueGetter: (params) => formatDate(params.value),
     },
     {
-      field: "end_date",
+      field: "endDate",
       headerName: "End date",
       width: 250,
       valueGetter: (params) => formatDate(params.value),

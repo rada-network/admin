@@ -3,17 +3,17 @@ import { formatAddress } from "utils/format";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Wallet() {
-  const account = useAuth();
+  const auth = useAuth();
 
-  if (!account) {
+  if (!auth.account) {
     return null;
   }
 
-  console.log("Wallet render...", account);
+  console.log("Wallet render...", auth.account);
 
   return (
     <>
-      <Button variant="contained">Address: {formatAddress(account)}</Button>
+      <Button variant="contained">Address: {formatAddress(auth.account)}</Button>
     </>
   );
 }

@@ -1,50 +1,77 @@
 import { createContext, useContext } from "react";
 import { useAuth } from "./useAuth";
 import { useContract, useContractCalls } from "./useContract";
-import { formatEther } from "@ethersproject/units";
+import { formatEther, formatUnits } from "@ethersproject/units";
+import { formatDate } from "@utils/format";
 
 const projectContext = createContext();
 const projectsContext = createContext();
 
 const ProvideProject = ({ children, projectData }) => {
   const projectModel = ProjectModel(projectData);
-  const account = useAuth();
+  const auth = useAuth();
 
-  const contractChain = useContractCalls([
-    { method: "admins", args: [account], contract: projectModel.contract },
+  let contractCalls = [
+    { method: "admins", args: [auth.account], contract: projectModel.contract },
     { method: "owner", args: [], contract: projectModel.contract },
     { method: "tokenAddress", args: [], contract: projectModel.contract },
     { method: "totalTokenDeposited", args: [], contract: projectModel.contract },
     { method: "isCommit", args: [], contract: projectModel.contract },
-  ]);
+    { method: "winCount", args: [], contract: projectModel.contract },
+    { method: "getSubscribers", args: [], contract: projectModel.contract },
+  ];
+
+  if (projectModel.isWhitelist) {
+    contractCalls.push({ method: "countWhitelist", args: [], contract: projectModel.contract });
+  }
+
+  const contractChain = useContractCalls(contractCalls);
 
   if (contractChain.length === 0) {
     return "Connecting....";
   }
 
-  if (contractChain[0] && contractChain[0][0]) {
-    projectModel.isAdmin = true;
-  }
+  contractChain.forEach((chain, i) => {
+    if (chain[0]) {
+      switch (i) {
+        case 0:
+          projectModel.isAdmin = true;
+          break;
 
-  if (contractChain[1] && contractChain[1][0] === account) {
-    projectModel.isOwner = true;
-  }
+        case 1:
+          projectModel.isOwner = true;
+          break;
 
-  if (
-    contractChain[2] &&
-    contractChain[2][0] &&
-    contractChain[2][0] !== "0x0000000000000000000000000000000000000000"
-  ) {
-    projectModel.tokenAddress = contractChain[2][0];
-  }
+        case 2:
+          if (chain[0] !== "0x0000000000000000000000000000000000000000") {
+            projectModel.tokenAddress = chain[0];
+          }
+          break;
 
-  if (contractChain[3] && contractChain[3][0]) {
-    projectModel.totalTokenDeposited = formatEther(contractChain[3][0]);
-  }
+        case 3:
+          projectModel.totalTokenDeposited = formatEther(chain[0]);
+          break;
 
-  if (contractChain[4] && contractChain[4][0]) {
-    projectModel.isCommit = true;
-  }
+        case 4:
+          projectModel.isCommit = true;
+          break;
+
+        case 5:
+          projectModel.winners = formatUnits(chain[0], 0);
+          break;
+
+        case 6:
+          projectModel.subscribers = chain[0].length;
+          break;
+
+        case 7:
+          projectModel.whitelist = formatUnits(chain[0], 0);
+          break;
+        default:
+          break;
+      }
+    }
+  });
 
   console.log("ProvideProject", projectModel, contractChain);
 
@@ -52,7 +79,9 @@ const ProvideProject = ({ children, projectData }) => {
 };
 
 const ProvideProjects = ({ children, projects }) => {
-  return <projectsContext.Provider value={projects}>{children}</projectsContext.Provider>;
+  const projectsData = projects.map((project) => ProjectModel(project));
+
+  return <projectsContext.Provider value={projectsData}>{children}</projectsContext.Provider>;
 };
 
 const useProject = () => {
@@ -68,12 +97,21 @@ const ProjectModel = (projectData) => {
   const contractInstance = useContract(projectData.swap_contract);
 
   return {
+    id: projectData.id ?? 0,
     title: projectData.content?.title ?? "",
+    slug: projectData.slug ?? "",
     contract: projectData.swap_contract ?? "",
     isWhitelist: projectData.is_whitelist ?? false,
     contractInstance: contractInstance,
     tokenAddress: "",
     totalTokenDeposited: 0,
+    openDate: formatDate(projectData.open_date),
+    endDate: formatDate(projectData.end_date),
+    type: projectData.type ?? "",
+    status: projectData.status ?? "",
+    whitelist: 0,
+    winners: 0,
+    subscribers: 0,
     isAdmin: false,
     isOwner: false,
     isCommit: false,

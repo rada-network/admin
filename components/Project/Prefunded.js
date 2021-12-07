@@ -2,24 +2,20 @@ import dynamic from "next/dynamic";
 import { useProject } from "@hooks/useProject";
 import { useSubscribers } from "@hooks/useSubscribers";
 import { parseEther } from "@ethersproject/units";
-import { Backdrop, Button, CircularProgress, Stack } from "@mui/material";
-import { useState, useEffect, useReducer } from "react";
+import { Button, Stack } from "@mui/material";
+import { useState, useEffect } from "react";
 import { GridToolbarContainer, GridToolbarFilterButton, GridToolbarExport } from "@mui/x-data-grid";
-import projectReducer from "reducer/Project";
+
 import { toast } from "react-toastify";
 import { useContractFunction } from "@hooks/useContract";
 import { Box } from "@mui/system";
+import { useAuth } from "@hooks/useAuth";
 
 const Table = dynamic(() => import("@components/Table"));
 
 const Prefunded = () => {
-  const initialState = {
-    loading: true,
-  };
-
+  const auth = useAuth();
   const projectData = useProject();
-
-  const [state, dispatch] = useReducer(projectReducer, initialState);
 
   const [subscribers, getSubscribers] = useSubscribers(projectData.contractInstance);
 
@@ -41,9 +37,10 @@ const Prefunded = () => {
   const [selectedIDs, setSelectedIDs] = useState([]);
 
   const fetchData = async () => {
-    console.log("fetchData");
+    auth.setLoading(true);
+    console.log("fetchData", auth);
     await getSubscribers();
-    dispatch({ type: "loaded" });
+    auth.setLoading(false);
   };
 
   const handleStatus = async (state) => {
@@ -52,11 +49,11 @@ const Prefunded = () => {
         fetchData();
         break;
       case "Mining":
-        dispatch({ type: "loading" });
+        auth.setLoading(true);
         break;
       case "Exception":
         toast(state.errorMessage);
-        dispatch({ type: "loaded" });
+        auth.setLoading(false);
         break;
       default:
         break;
@@ -83,7 +80,7 @@ const Prefunded = () => {
   }, [stateCommit]);
 
   const handleCommitWinner = () => {
-    dispatch({ type: "loading" });
+    auth.setLoading(true);
     commitWinnner();
   };
 
@@ -92,12 +89,12 @@ const Prefunded = () => {
       .filter((subscriber) => selectedIDs.includes(subscriber.address))
       .map((row) => parseEther(row.amountBUSD));
 
-    dispatch({ type: "loading" });
+    auth.setLoading(true);
     importWinners(selectedIDs, busd);
   };
 
   const handleResetWinner = () => {
-    dispatch({ type: "loading" });
+    auth.setLoading(true);
     resetWinners();
   };
 
@@ -150,7 +147,7 @@ const Prefunded = () => {
     </GridToolbarContainer>
   );
 
-  console.log("Project Prefunded render", projectData, subscribers, state);
+  console.log("Project Prefunded render", projectData, subscribers);
 
   return (
     <>
@@ -165,13 +162,6 @@ const Prefunded = () => {
         }}
         onSelectionModelChange={handleSelectionModelChange}
       />
-
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={state.loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </>
   );
 };

@@ -6,12 +6,14 @@ import Overview from "@components/Project/Overview";
 import ProjectTitle from "@components/Project/ProjectTitle";
 import { useProject } from "@hooks/useProject";
 import dynamic from "next/dynamic";
+import { useAuth } from "@hooks/useAuth";
 
 const Whitelist = dynamic(() => import("@components/Project/Whitelist"));
 const Prefunded = dynamic(() => import("@components/Project/Prefunded"));
 const Token = dynamic(() => import("@components/Project/Token"));
 
 const ProjectDetail = () => {
+  const auth = useAuth();
   const projectData = useProject();
 
   const [tab, setTab] = useState("1");
