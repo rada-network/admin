@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-
     "baseUrl": "./",
     "paths": {
-      "@query/*": ["./query/*"],
       "@components/*": ["./components/*"],
+      "@reducer/*": ["./reducer/*"],
+      "@query/*": ["./query/*"],
       "@hooks/*": ["./hooks/*"],
+      "@utils/*": ["./utils/*"],
     }
   },
   "exclude": ["node_modules", "**/node_modules/*",".next","https_cert","public"]
