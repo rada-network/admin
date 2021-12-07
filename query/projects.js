@@ -41,6 +41,7 @@ const getProjectsBySlug = async (slug) => {
               title
             }
             swap_contract
+            is_whitelist
             token {
               name
               contract_address

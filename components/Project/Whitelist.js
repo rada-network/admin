@@ -1,12 +1,16 @@
-import Table from "@components/Table";
+import dynamic from "next/dynamic";
 import { useProject } from "@hooks/useProject";
 import { Backdrop, Button, CircularProgress, Grid } from "@mui/material";
-import { createRef, useEffect, useReducer, useState } from "react";
-import { GridToolbarContainer } from "@mui/x-data-grid";
+import { createRef, useEffect, useReducer, useState, useCallback } from "react";
+import { GridToolbarContainer, useGridApiRef } from "@mui/x-data-grid";
 import { CSVReader } from "react-papaparse";
 import { useContractFunction } from "@hooks/useContract";
 import projectReducer from "reducer/Project";
 import { toast } from "react-toastify";
+import { Box } from "@mui/system";
+import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
+
+const Table = dynamic(() => import("@components/Table"));
 
 const Whitelist = () => {
   const initialState = {
@@ -53,7 +57,7 @@ const Whitelist = () => {
   }, [stateImport]);
 
   const handleImportWhitelist = () => {
-    console.log(selectedIDs);
+    console.log("handleImportWhitelist", selectedIDs);
 
     dispatch({ type: "loading" });
 
@@ -76,8 +80,13 @@ const Whitelist = () => {
     }
   };
 
-  const handleSelectionModelChange = (ids) => {
-    setSelectedIDs(ids);
+  const handleSelectionModelChange = (selectedIDs) => {
+    const selectedAddress = whiteList
+      .filter((row) => selectedIDs.includes(row.id))
+      .reduce((arr, el) => [...arr, ...[el.address]], []);
+
+    console.log("handleSelectionModelChange", selectedAddress);
+    setSelectedIDs(selectedAddress);
   };
 
   const handleOpenDialog = (e) => {
@@ -86,20 +95,79 @@ const Whitelist = () => {
     }
   };
 
+  const handleAddRow = () => {
+    setWhitelist((prevRows) => [
+      ...prevRows,
+      {
+        id: `id_${Math.random()}`,
+        address: "",
+        approvedBUSD: 0,
+      },
+    ]);
+  };
+
+  const [editRowsModel, setEditRowsModel] = useState({});
+
+  const handleEditRowsModelChange = useCallback((model) => {
+    if (Object.keys(model).length > 0) {
+      const editedIds = Object.keys(model);
+
+      const newRow = {
+        id: editedIds[0],
+        address: model[editedIds[0]]?.address?.value,
+        approvedBUSD: model[editedIds[0]]?.approvedBUSD?.value,
+      };
+
+      setWhitelist([...whiteList, newRow]);
+    }
+
+    setEditRowsModel(model);
+  }, []);
+
   const buttonRef = createRef();
 
-  const Toolbar = () => (
-    <GridToolbarContainer>
-      <Button onClick={handleImportWhitelist}>Import Whitelist</Button>
-      <CSVReader onFileLoad={handleOnFileLoad} ref={buttonRef} noDrag config={{}} style={{}}>
-        {() => <Button onClick={handleOpenDialog}>Upload CSV</Button>}
-      </CSVReader>
-    </GridToolbarContainer>
-  );
+  const Toolbar = () =>
+    projectData.isAdmin && (
+      <GridToolbarContainer>
+        <Box sx={{ display: "flex", flexGrow: 1 }}>
+          <CSVReader onFileLoad={handleOnFileLoad} ref={buttonRef} noDrag config={{}} style={{}}>
+            {() => (
+              <Button
+                disabled={projectData.isCommit}
+                variant="contained"
+                onClick={handleOpenDialog}
+                startIcon={<DriveFolderUploadIcon />}
+              >
+                Upload CSV
+              </Button>
+            )}
+          </CSVReader>
+          <Button
+            disabled={projectData.isCommit}
+            variant="contained"
+            sx={{ marginLeft: "1rem" }}
+            onClick={handleAddRow}
+          >
+            Add a Whitelist
+          </Button>
+        </Box>
+        <Button
+          disabled={projectData.isCommit}
+          variant="contained"
+          color="success"
+          onClick={handleImportWhitelist}
+        >
+          Submit Whitelist
+        </Button>
+      </GridToolbarContainer>
+    );
 
-  const columns = [{ field: "address", headerName: "Address", width: 400 }];
+  const columns = [
+    { field: "address", headerName: "Address", width: 400, editable: true },
+    { field: "approvedBUSD", headerName: "approved BUSD", width: 400, editable: true },
+  ];
 
-  console.log("Project Whitelist render", projectData);
+  console.log("Project Whitelist render", projectData, whiteList);
 
   return (
     <Grid container spacing={2}>
@@ -107,13 +175,16 @@ const Whitelist = () => {
         <Table
           rows={whiteList}
           columns={columns}
-          checkboxSelection
+          checkboxSelection={projectData.isAdmin ?? false}
           disableSelectionOnClick
           pageSize={30}
           components={{
             Toolbar: Toolbar,
           }}
+          editMode="row"
           onSelectionModelChange={handleSelectionModelChange}
+          editRowsModel={editRowsModel}
+          onEditRowsModelChange={handleEditRowsModelChange}
         />
       </Grid>
       <Backdrop

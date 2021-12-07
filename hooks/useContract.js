@@ -1,42 +1,55 @@
 import { ethers, utils } from "ethers";
-import launchpadAbiV2 from "../config/abi/launchpadv2.json";
+import launchVerse from "../config/abi/LaunchVerse.json";
+import BEP20 from "../config/abi/BEP20.json";
+
 import {
-  useContractCalls,
+  useContractCalls as useContractCallsCore,
   useEthers,
   useContractFunction as useContractFunctionCore,
 } from "@usedapp/core";
 import { Contract } from "@ethersproject/contracts";
 
-const useCallContract = (methods) => {
+const useContractCalls = (methods) => {
   if (methods.length === 0) {
     return [];
   }
 
   const base = {
-    abi: new ethers.utils.Interface(launchpadAbiV2),
-    address: process.env.NEXT_PUBLIC_CONTRACT,
+    abi: new ethers.utils.Interface(launchVerse),
   };
 
   const calls = methods.map((method) => ({
     ...base,
-    ...{ method: method.method, args: method.args ?? [] },
+    ...{ address: method.contract, method: method.method, args: method.args ?? [] },
   }));
 
-  const [val] = useContractCalls(calls) ?? [];
+  const val = useContractCallsCore(calls) ?? [];
 
-  console.log("useCallContract", calls, val);
+  console.log("useContractCalls", calls, val);
 
-  return val;
+  return val?.filter((a) => a);
 };
 
 const useContract = (contractAddress) => {
   const { library } = useEthers();
-  let abi = new utils.Interface(launchpadAbiV2);
+  let abi = new utils.Interface(launchVerse);
+
+  return new Contract(contractAddress, abi, library);
+};
+
+const useContractBEP20 = (contractAddress) => {
+  if (!contractAddress) {
+    return null;
+  }
+
+  const { library } = useEthers();
+  let abi = new utils.Interface(BEP20);
 
   return new Contract(contractAddress, abi, library);
 };
 
 const useContractFunction = (contract, method) => {
+  console.log("useContractFunction", contract, method);
   const { state, send } = useContractFunctionCore(contract, method, {
     transactionName: method,
   });
@@ -46,4 +59,4 @@ const useContractFunction = (contract, method) => {
   return [state, send];
 };
 
-export { useCallContract, useContract, useContractFunction };
+export { useContractCalls, useContract, useContractFunction, useContractBEP20 };

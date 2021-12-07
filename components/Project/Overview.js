@@ -1,12 +1,12 @@
 import { useProject } from "@hooks/useProject";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 
-const Detail = () => {
+const Overview = () => {
   const projectData = useProject();
 
-  console.log("Project Detail render", projectData);
+  console.log("Project Overview render", projectData);
 
-  return <>Detail</>;
+  return <>Overview</>;
 };
 
-export default Detail;
+export default Overview;
