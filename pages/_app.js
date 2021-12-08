@@ -19,6 +19,11 @@ function MyApp({ Component, pageProps }) {
     [prefersDarkMode]
   );
 
+  const supportedChains =
+    process.env.NEXT_PUBLIC_MAINNET === "true" ? [ChainId.BSC] : [ChainId.BSCTestnet];
+
+  console.log("MyApp render", supportedChains);
+
   return (
     <DAppProvider
       config={{
