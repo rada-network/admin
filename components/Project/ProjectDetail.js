@@ -13,7 +13,6 @@ const Prefunded = dynamic(() => import("@components/Project/Prefunded"));
 const Token = dynamic(() => import("@components/Project/Token"));
 
 const ProjectDetail = () => {
-  const auth = useAuth();
   const projectData = useProject();
 
   const [tab, setTab] = useState("1");
@@ -25,7 +24,7 @@ const ProjectDetail = () => {
   console.log("Launchverse ProjectDetail Render...", projectData);
 
   return (
-    <Box sx={{ width: "100%", typography: "body1" }}>
+    <Box sx={{ width: "100%", typography: "body" }}>
       <ProjectTitle />
       <TabContext value={tab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

@@ -55,7 +55,7 @@ const ProvidePools = ({ children }) => {
           break;
 
         case 2:
-          provideValue.pools = chain[0]?.map((pool) => PoolModel(pool));
+          provideValue.pools = chain[0]?.map((pool, i) => PoolModel(pool, i));
 
           break;
 

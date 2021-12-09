@@ -1,9 +1,9 @@
 import { formatEther } from "@ethersproject/units";
 import { formatAddress, fromUnixTime } from "@utils/format";
 
-const PoolModel = (data) => {
+const PoolModel = (data, i) => {
   return {
-    id: data.token ?? 0,
+    id: i,
     address: formatAddress(data.token) ?? 0,
     price: formatEther(data.price) ?? 0,
     allocationBusd: formatEther(data.allocationBusd) ?? 0,

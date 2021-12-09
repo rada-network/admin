@@ -150,19 +150,17 @@ const Prefunded = () => {
   console.log("Project Prefunded render", projectData, subscribers);
 
   return (
-    <>
-      <Table
-        rows={subscribers}
-        columns={columns}
-        checkboxSelection
-        disableSelectionOnClick
-        pageSize={30}
-        components={{
-          Toolbar: Toolbar,
-        }}
-        onSelectionModelChange={handleSelectionModelChange}
-      />
-    </>
+    <Table
+      rows={subscribers}
+      columns={columns}
+      checkboxSelection
+      disableSelectionOnClick
+      pageSize={30}
+      components={{
+        Toolbar: Toolbar,
+      }}
+      onSelectionModelChange={handleSelectionModelChange}
+    />
   );
 };
 
