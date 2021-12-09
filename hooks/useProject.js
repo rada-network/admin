@@ -1,11 +1,11 @@
 import { createContext, useContext } from "react";
 import { useAuth } from "./useAuth";
-import { useContract, useContractCalls } from "./useContract";
+import { useContractCalls } from "./useContract";
 import { formatEther, formatUnits } from "@ethersproject/units";
-import { formatDate } from "@utils/format";
+
+import ProjectModel from "@model/Project";
 
 const projectContext = createContext();
-const projectsContext = createContext();
 
 const ProvideProject = ({ children, projectData }) => {
   const projectModel = ProjectModel(projectData);
@@ -39,7 +39,10 @@ const ProvideProject = ({ children, projectData }) => {
           break;
 
         case 1:
-          projectModel.isOwner = true;
+          if (chain[0] === auth.account) {
+            projectModel.isOwner = true;
+          }
+
           break;
 
         case 2:
@@ -73,49 +76,17 @@ const ProvideProject = ({ children, projectData }) => {
     }
   });
 
+  if (!projectModel.isAdmin && !projectModel.isOwner) {
+    return "Ops...";
+  }
+
   console.log("ProvideProject", projectModel, contractChain);
 
   return <projectContext.Provider value={projectModel}>{children}</projectContext.Provider>;
-};
-
-const ProvideProjects = ({ children, projects }) => {
-  const projectsData = projects.map((project) => ProjectModel(project));
-
-  return <projectsContext.Provider value={projectsData}>{children}</projectsContext.Provider>;
 };
 
 const useProject = () => {
   return useContext(projectContext);
 };
 
-const useProjects = () => {
-  return useContext(projectsContext);
-};
-
-const ProjectModel = (projectData) => {
-  console.log("ProjectModel", projectData);
-  const contractInstance = useContract(projectData.swap_contract);
-
-  return {
-    id: projectData.id ?? 0,
-    title: projectData.content?.title ?? "",
-    slug: projectData.slug ?? "",
-    contract: projectData.swap_contract ?? "",
-    isWhitelist: projectData.is_whitelist ?? false,
-    contractInstance: contractInstance,
-    tokenAddress: "",
-    totalTokenDeposited: 0,
-    openDate: formatDate(projectData.open_date),
-    endDate: formatDate(projectData.end_date),
-    type: projectData.type ?? "",
-    status: projectData.status ?? "",
-    whitelist: 0,
-    winners: 0,
-    subscribers: 0,
-    isAdmin: false,
-    isOwner: false,
-    isCommit: false,
-  };
-};
-
-export { ProvideProject, ProvideProjects, useProject, useProjects };
+export { ProvideProject, useProject };

@@ -1,6 +1,6 @@
 import Title from "@components/Title";
-import { useAuth } from "@hooks/useAuth";
-import { useProjects } from "@hooks/useProject";
+
+import { useProjects } from "@hooks/useProjects";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { formatDate } from "utils/format";
@@ -32,7 +32,6 @@ const ProjectList = () => {
       field: "endDate",
       headerName: "End date",
       width: 250,
-      valueGetter: (params) => formatDate(params.value),
     },
     {
       field: "status",

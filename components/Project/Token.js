@@ -1,4 +1,4 @@
-import { useContractBEP20, useContractFunction } from "@hooks/useContract";
+import { useContract, useContractFunction } from "@hooks/useContract";
 import { useProject } from "@hooks/useProject";
 import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
@@ -25,7 +25,7 @@ const Token = () => {
 
   const [stateDeposit, deposit] = useContractFunction(projectData.contractInstance, "deposit");
 
-  const tokenInstance = useContractBEP20(projectData.tokenAddress);
+  const tokenInstance = useContract(projectData.tokenAddress, "BEP20");
   const [stateApprove, approve] = useContractFunction(tokenInstance, "approve");
 
   const handleStatus = async (state) => {

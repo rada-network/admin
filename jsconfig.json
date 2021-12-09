@@ -7,6 +7,7 @@
       "@query/*": ["./query/*"],
       "@hooks/*": ["./hooks/*"],
       "@utils/*": ["./utils/*"],
+      "@model/*": ["./model/*"],
     }
   },
   "exclude": ["node_modules", "**/node_modules/*",".next","https_cert","public"]

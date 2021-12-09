@@ -48,10 +48,7 @@ export default function MainLayout({ children }) {
           </Container>
         </Box>
         <Notifications />
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={auth.loading}
-        >
+        <Backdrop sx={{ color: "#fff", zIndex: () => 9999 }} open={auth.loading}>
           <CircularProgress color="inherit" />
         </Backdrop>
       </Box>

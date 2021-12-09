@@ -1,6 +1,7 @@
 import { ethers, utils } from "ethers";
 import launchVerse from "../config/abi/LaunchVerse.json";
 import BEP20 from "../config/abi/BEP20.json";
+import pool from "../config/abi/Pool.json";
 
 import {
   useContractCalls as useContractCallsCore,
@@ -8,8 +9,6 @@ import {
   useContractFunction as useContractFunctionCore,
 } from "@usedapp/core";
 import { Contract } from "@ethersproject/contracts";
-import { useAuth } from "./useAuth";
-import { toast } from "react-toastify";
 
 const useContractCalls = (methods) => {
   if (methods.length === 0) {
@@ -17,13 +16,11 @@ const useContractCalls = (methods) => {
   }
 
   try {
-    const base = {
-      abi: new ethers.utils.Interface(launchVerse),
-    };
-
     const calls = methods.map((method) => ({
-      ...base,
-      ...{ address: method.contract, method: method.method, args: method.args ?? [] },
+      address: method.contract,
+      method: method.method,
+      args: method.args ?? [],
+      abi: useABI(method.abi ?? "launchVerse"),
     }));
 
     const val = useContractCallsCore(calls) ?? [];
@@ -37,22 +34,16 @@ const useContractCalls = (methods) => {
   }
 };
 
-const useContract = (contractAddress) => {
-  const { library } = useEthers();
-  let abi = new utils.Interface(launchVerse);
-
-  return new Contract(contractAddress, abi, library);
-};
-
-const useContractBEP20 = (contractAddress) => {
+const useContract = (contractAddress, abi = "launchVerse") => {
   if (!contractAddress) {
     return null;
   }
 
   const { library } = useEthers();
-  let abi = new utils.Interface(BEP20);
 
-  return new Contract(contractAddress, abi, library);
+  const abiInterface = useABI(abi);
+
+  return new Contract(contractAddress, abiInterface, library);
 };
 
 const useContractFunction = (contract, method) => {
@@ -60,9 +51,28 @@ const useContractFunction = (contract, method) => {
     transactionName: method,
   });
 
-  console.log("useContractFunction", state);
+  console.log("useContractFunction", method, state);
 
   return [state, send];
 };
 
-export { useContractCalls, useContract, useContractFunction, useContractBEP20 };
+const useABI = (abi = "launchVerse") => {
+  let abiInterface = new utils.Interface(launchVerse);
+
+  switch (abi) {
+    case "BEP20":
+      abiInterface = new utils.Interface(BEP20);
+      break;
+
+    case "pool":
+      abiInterface = new utils.Interface(pool);
+      break;
+
+    default:
+      break;
+  }
+
+  return abiInterface;
+};
+
+export { useContractCalls, useContract, useContractFunction };

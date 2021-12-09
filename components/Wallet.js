@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Typography } from "@mui/material";
 import { formatAddress } from "utils/format";
 import { useAuth } from "../hooks/useAuth";
 
@@ -11,9 +11,5 @@ export default function Wallet() {
 
   console.log("Wallet render...", auth.account);
 
-  return (
-    <>
-      <Button variant="contained">Address: {formatAddress(auth.account)}</Button>
-    </>
-  );
+  return <Typography>{formatAddress(auth.account)}</Typography>;
 }

@@ -1,5 +1,5 @@
 import ProjectList from "@components/Project/ProjectList";
-import { ProvideProjects } from "@hooks/useProject";
+import { ProvideProjects } from "@hooks/useProjects";
 import { getProjects } from "@query/projects";
 
 export default function Launchverse(props) {

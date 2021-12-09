@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useEthers } from "@usedapp/core";
-import { toast } from "react-toastify";
 
 const authContext = createContext();
 
@@ -10,7 +9,7 @@ const ProvideAuth = ({ children }) => {
   const { activateBrowserWallet, account } = useEthers();
 
   if (!account) {
-    activateBrowserWallet(undefined, true);
+    activateBrowserWallet();
     return "Connecting...";
   }
 

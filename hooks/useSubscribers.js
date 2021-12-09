@@ -13,7 +13,7 @@ const useSubscribers = (contract) => {
 
     // Get Winners
     const responseWinners = await contract.getWinners();
-    console.log("rgetWinners", responseWinners);
+    console.log("getWinners", responseWinners);
 
     const data = orderSubscribers?.map((subscriber) => {
       const subscriberModel = SubscriberModel(subscriber);

@@ -124,6 +124,14 @@ export default function Header() {
               <ListItemText primary="Launchverse" />
             </ListItem>
           </Link>
+          <Link href="/pools" passHref>
+            <ListItem button>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Pools" />
+            </ListItem>
+          </Link>
           <Link href="/share2earn" passHref>
             <ListItem button>
               <ListItemIcon>
