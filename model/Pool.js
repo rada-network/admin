@@ -4,7 +4,9 @@ import { formatAddress, fromUnixTime } from "@utils/format";
 const PoolModel = (data, i) => {
   return {
     id: i,
-    address: formatAddress(data.token) ?? 0,
+    title: data.title ?? "",
+    address: formatAddress(data.tokenAddress) ?? "",
+    fullAddress: data.tokenAddress ?? "",
     price: formatEther(data.price) ?? 0,
     allocationBusd: formatEther(data.allocationBusd) ?? 0,
     depositedToken: formatEther(data.depositedToken) ?? 0,

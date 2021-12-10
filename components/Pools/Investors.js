@@ -5,22 +5,74 @@ import { Box } from "@mui/system";
 import { GridToolbarContainer, GridToolbarFilterButton, GridToolbarExport } from "@mui/x-data-grid";
 import InvestorModel from "model/Investor";
 import { usePool } from "providers/Pool";
-import { createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
 import { CSVReader } from "react-papaparse";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
-import { useContractFunction } from "@hooks/useContract";
+import { useActions, useActionState } from "@hooks/useActions";
+import { parseEther } from "@ethersproject/units";
 
 const PoolInvestors = () => {
   const auth = useAuth();
   const { contractInstance, pool } = usePool();
 
   const [investors, setInvestors] = useState([]);
-
-  const [stateImport, importInvestor] = useContractFunction(contractInstance, "importInvestor");
-  const [stateLock, lockPool] = useContractFunction(contractInstance, "lockPool");
-  const [stateUnLock, unlockPool] = useContractFunction(contractInstance, "unlockPool");
-
   const [selectedIDs, setSelectedIDs] = useState([]);
+
+  const actions = useActions([
+    {
+      contractInstance: contractInstance,
+      func: "importInvestors",
+    },
+    {
+      contractInstance: contractInstance,
+      func: "approveInvestors",
+    },
+    {
+      contractInstance: contractInstance,
+      func: "unapproveInvestor",
+    },
+  ]);
+
+  const [success, handleState] = useActionState(actions);
+
+  const handlePool = (action) => {
+    console.log("handlePool", action);
+
+    auth.setLoading(true);
+
+    switch (action) {
+      case "importInvestors":
+        const data = investors.filter((investor) => selectedIDs.includes(investor.address));
+
+        const addresses = data.map((row) => row.address);
+        const amountBusds = data.map((row) => parseEther(row.amountBusd));
+        const allocationBusd = data.map((row) => parseEther(row.allocationBusd));
+
+        actions[action].func(pool.id, addresses, amountBusds, allocationBusd);
+        break;
+      case "approveInvestors":
+        actions[action].func(pool.id);
+        break;
+
+      case "unapproveInvestor":
+        if (selectedIDs.length > 0) {
+          selectedIDs.forEach((address) => {
+            console.log("unapproveInvestor", address);
+
+            actions[action].func(pool.id, address);
+          });
+        } else {
+          auth.setLoading(false);
+        }
+
+        break;
+
+      default:
+        break;
+    }
+
+    handleState(action);
+  };
 
   const fetchData = async () => {
     auth.setLoading(true);
@@ -40,56 +92,27 @@ const PoolInvestors = () => {
     auth.setLoading(false);
   };
 
-  const handleStatus = async (state) => {
-    switch (state.status) {
-      case "Success":
-        fetchData();
-        break;
-      case "Mining":
-        auth.setLoading(true);
-        break;
-      case "Exception":
-        toast(state.errorMessage);
-        auth.setLoading(false);
-        break;
-      default:
-        break;
-    }
-  };
-
   useEffect(() => {
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    console.log(stateImport);
-    handleStatus(stateImport);
-  }, [stateImport]);
-
-  useEffect(() => {
-    console.log(stateLock);
-    handleStatus(stateLock);
-  }, [stateLock]);
-
-  useEffect(() => {
-    console.log(stateUnLock);
-    handleStatus(stateUnLock);
-  }, [stateUnLock]);
+  }, [success]);
 
   const handleOnFileLoad = (csv) => {
     if (csv.length > 0) {
-      const investors = csv.map((row, i) => {
-        if (i > 0) {
-          return {
-            id: row.data[0],
-            address: row.data[0],
-            amountBUSD: row.data[1],
-            allocationBusd: row.data[2],
-          };
-        }
-      });
+      const investors = csv
+        .map((row, i) => {
+          if (i > 0) {
+            return {
+              id: row.data[0],
+              address: row.data[0],
+              amountBusd: row.data[1],
+              allocationBusd: row.data[2],
+            };
+          }
+        })
+        .filter((row, i) => i > 0 && row.address);
+
       console.log("handleOnFileLoad", investors);
-      //setInvestors(investors);
+      setInvestors(investors);
     }
   };
 
@@ -99,38 +122,17 @@ const PoolInvestors = () => {
     }
   };
 
-  const handleLockPool = () => {
-    console.log("handleLockPool", pool.id);
-    auth.setLoading(true);
-
-    lockPool(pool.id);
-  };
-
-  const handleUnLockPool = () => {
-    console.log("handleUnLockPool", pool.id);
-    auth.setLoading(true);
-
-    unlockPool(pool.id);
-  };
-
-  const handleImportInvestor = () => {
-    console.log("handleImportInvestor", selectedIDs);
-  };
-
   const handleSelectionModelChange = (selectedIDs) => {
-    const selectedAddress = investors
-      .filter((row) => selectedIDs.includes(row.id))
-      .reduce((arr, el) => [...arr, ...[el.address]], []);
-
-    console.log("handleSelectionModelChange", selectedAddress);
-    setSelectedIDs(selectedAddress);
+    console.log("handleSelectionModelChange", selectedIDs);
+    setSelectedIDs(selectedIDs);
   };
 
   const buttonRef = createRef();
 
   const columns = [
+    { field: "id", hide: true },
     { field: "address", headerName: "Address" },
-    { field: "amountBUSD", headerName: "amountBUSD", width: 150 },
+    { field: "amountBusd", headerName: "amountBusd", width: 150 },
     { field: "allocationBusd", headerName: "allocationBusd", width: 150 },
     { field: "claimedToken", headerName: "claimedToken", width: 150 },
     { field: "paid", headerName: "paid" },
@@ -155,19 +157,26 @@ const PoolInvestors = () => {
         <GridToolbarExport />
       </Box>
       <Stack direction="row" spacing={2}>
-        <Button variant="contained" color="success">
-          Remove
-        </Button>
-        <Button variant="contained" color="success" onClick={handleImportInvestor}>
+        <Button variant="contained" color="success" onClick={() => handlePool("importInvestors")}>
           Submit
         </Button>
 
-        <Button variant="contained" color="success">
-          Aprrove
+        <Button
+          disabled={!pool.locked}
+          variant="contained"
+          color="success"
+          onClick={() => handlePool("approveInvestors")}
+        >
+          Aprrove All
         </Button>
 
-        <Button variant="contained" color="success">
-          Unaprroved
+        <Button
+          disabled={!pool.locked}
+          variant="contained"
+          color="success"
+          onClick={() => handlePool("unapproveInvestor")}
+        >
+          Unaprrove
         </Button>
       </Stack>
     </GridToolbarContainer>
@@ -175,17 +184,6 @@ const PoolInvestors = () => {
 
   return (
     <>
-      <Stack direction="row" spacing={2} sx={{ marginBottom: "1rem" }}>
-        {pool.locked ? (
-          <Button variant="contained" color="success" onClick={handleUnLockPool}>
-            UnLock
-          </Button>
-        ) : (
-          <Button variant="contained" color="success" onClick={handleLockPool}>
-            Lock
-          </Button>
-        )}
-      </Stack>
       <Table
         rows={investors}
         columns={columns}

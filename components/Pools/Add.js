@@ -19,6 +19,7 @@ const PoolAddButton = (props) => {
   const [open, setOpen] = useState(false);
 
   const [formState, setFromState] = useState({
+    title: "",
     tokenAddress: "",
     allocationBusd: "",
     price: "",
@@ -67,12 +68,14 @@ const PoolAddButton = (props) => {
 
     if (props.type === "claimonly") {
       saveAction(
+        formState.title,
         formState.tokenAddress,
         parseEther(formState.allocationBusd),
         parseEther(formState.price)
       );
     } else {
       saveAction(
+        formState.title,
         parseEther(formState.allocationBusd),
         parseEther(formState.price),
         parseUnits(`${convertUnix(formState.startDate)}`),
@@ -114,6 +117,19 @@ const PoolAddButton = (props) => {
         <Box sx={style}>
           <h2 id="add-modal-title">Add a Pool</h2>
           <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                required
+                id="title"
+                name="title"
+                label="Title"
+                fullWidth
+                autoComplete="given-name"
+                variant="standard"
+                value={formState.title}
+                onChange={handleOnchange}
+              />
+            </Grid>
             {props.type === "claimonly" && (
               <Grid item xs={12}>
                 <TextField
@@ -157,31 +173,31 @@ const PoolAddButton = (props) => {
             </Grid>
 
             {props.type === "payable" && (
-              <Grid item xs={12}>
-                <DateTimePicker
-                  label="Start Date"
-                  value={formState.startDate}
-                  onChange={(value) =>
-                    handleOnchange({ target: { name: "startDate", value: value } })
-                  }
-                  minDate={new Date()}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </Grid>
-            )}
+              <>
+                <Grid item xs={12}>
+                  <DateTimePicker
+                    label="Start Date"
+                    value={formState.startDate}
+                    onChange={(value) =>
+                      handleOnchange({ target: { name: "startDate", value: value } })
+                    }
+                    minDate={new Date()}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Grid>
 
-            {props.type === "payable" && (
-              <Grid item xs={12}>
-                <DateTimePicker
-                  label="End Date"
-                  value={formState.endDate}
-                  onChange={(value) =>
-                    handleOnchange({ target: { name: "endDate", value: value } })
-                  }
-                  minDate={new Date()}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </Grid>
+                <Grid item xs={12}>
+                  <DateTimePicker
+                    label="End Date"
+                    value={formState.endDate}
+                    onChange={(value) =>
+                      handleOnchange({ target: { name: "endDate", value: value } })
+                    }
+                    minDate={new Date()}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Grid>
+              </>
             )}
 
             <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>

@@ -9,9 +9,7 @@ const formatDate = (date) => {
       dt = parseISO(date);
     }
 
-    const dtDateOnly = new Date(dt.valueOf() + dt.getTimezoneOffset() * 60 * 1000);
-
-    return `${format(dtDateOnly, formatString)} GTM`;
+    return `${format(dt, formatString)} GTM`;
   } catch (error) {
     return "Invalid format";
   }
@@ -19,9 +17,7 @@ const formatDate = (date) => {
 
 const convertUnix = (date) => {
   try {
-    const dtDateOnly = new Date(date.valueOf() + date.getTimezoneOffset() * 60 * 1000);
-
-    return getUnixTime(dtDateOnly);
+    return getUnixTime(date);
   } catch (error) {
     return "";
   }
@@ -29,7 +25,7 @@ const convertUnix = (date) => {
 
 const fromUnixTime = (unixTime) => {
   if (unixTime > 0) {
-    return formatDate(fromUnixTimeCore(unixTime));
+    return fromUnixTimeCore(unixTime);
   }
 
   return "";

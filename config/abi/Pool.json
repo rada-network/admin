@@ -51,6 +51,15 @@
   {
     "anonymous": false,
     "inputs": [
+      { "indexed": false, "internalType": "uint64", "name": "poolIndex", "type": "uint64" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "PoolCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
       { "indexed": false, "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "Unpaused",
@@ -58,6 +67,7 @@
   },
   {
     "inputs": [
+      { "internalType": "string", "name": "_title", "type": "string" },
       { "internalType": "address", "name": "_tokenAddress", "type": "address" },
       { "internalType": "uint256", "name": "_allocationBusd", "type": "uint256" },
       { "internalType": "uint256", "name": "_price", "type": "uint256" }
@@ -69,6 +79,7 @@
   },
   {
     "inputs": [
+      { "internalType": "string", "name": "_title", "type": "string" },
       { "internalType": "uint256", "name": "_allocationBusd", "type": "uint256" },
       { "internalType": "uint256", "name": "_price", "type": "uint256" },
       { "internalType": "uint256", "name": "_startDate", "type": "uint256" },
@@ -155,12 +166,12 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getPools",
+    "inputs": [{ "internalType": "uint64", "name": "_poolIdx", "type": "uint64" }],
+    "name": "getPool",
     "outputs": [
       {
         "components": [
-          { "internalType": "contract ERC20", "name": "token", "type": "address" },
+          { "internalType": "address", "name": "tokenAddress", "type": "address" },
           { "internalType": "uint256", "name": "allocationBusd", "type": "uint256" },
           { "internalType": "uint256", "name": "price", "type": "uint256" },
           { "internalType": "uint256", "name": "depositedToken", "type": "uint256" },
@@ -168,7 +179,33 @@
           { "internalType": "uint256", "name": "endDate", "type": "uint256" },
           { "internalType": "uint256", "name": "paidAmount", "type": "uint256" },
           { "internalType": "bool", "name": "claimOnly", "type": "bool" },
-          { "internalType": "bool", "name": "locked", "type": "bool" }
+          { "internalType": "bool", "name": "locked", "type": "bool" },
+          { "internalType": "string", "name": "title", "type": "string" }
+        ],
+        "internalType": "struct WhitelistPools.POOL",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPools",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "tokenAddress", "type": "address" },
+          { "internalType": "uint256", "name": "allocationBusd", "type": "uint256" },
+          { "internalType": "uint256", "name": "price", "type": "uint256" },
+          { "internalType": "uint256", "name": "depositedToken", "type": "uint256" },
+          { "internalType": "uint256", "name": "startDate", "type": "uint256" },
+          { "internalType": "uint256", "name": "endDate", "type": "uint256" },
+          { "internalType": "uint256", "name": "paidAmount", "type": "uint256" },
+          { "internalType": "bool", "name": "claimOnly", "type": "bool" },
+          { "internalType": "bool", "name": "locked", "type": "bool" },
+          { "internalType": "string", "name": "title", "type": "string" }
         ],
         "internalType": "struct WhitelistPools.POOL[]",
         "name": "",
@@ -179,13 +216,20 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getWithdrawAddress",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "uint64", "name": "_poolIdx", "type": "uint64" },
       { "internalType": "address[]", "name": "_addresses", "type": "address[]" },
       { "internalType": "uint256[]", "name": "_amountBusds", "type": "uint256[]" },
       { "internalType": "uint256[]", "name": "_allocationBusds", "type": "uint256[]" }
     ],
-    "name": "importInvestor",
+    "name": "importInvestors",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -235,7 +279,7 @@
   {
     "inputs": [],
     "name": "poolCount",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -243,7 +287,7 @@
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "name": "pools",
     "outputs": [
-      { "internalType": "contract ERC20", "name": "token", "type": "address" },
+      { "internalType": "address", "name": "tokenAddress", "type": "address" },
       { "internalType": "uint256", "name": "allocationBusd", "type": "uint256" },
       { "internalType": "uint256", "name": "price", "type": "uint256" },
       { "internalType": "uint256", "name": "depositedToken", "type": "uint256" },
@@ -251,7 +295,8 @@
       { "internalType": "uint256", "name": "endDate", "type": "uint256" },
       { "internalType": "uint256", "name": "paidAmount", "type": "uint256" },
       { "internalType": "bool", "name": "claimOnly", "type": "bool" },
-      { "internalType": "bool", "name": "locked", "type": "bool" }
+      { "internalType": "bool", "name": "locked", "type": "bool" },
+      { "internalType": "string", "name": "title", "type": "string" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -282,6 +327,19 @@
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "requestChangeData",
+    "outputs": [
+      { "internalType": "address", "name": "WITHDRAW_ADDRESS", "type": "address" },
+      { "internalType": "uint256", "name": "poolAllocationBusd", "type": "uint256" },
+      { "internalType": "uint256", "name": "poolEndDate", "type": "uint256" },
+      { "internalType": "address", "name": "tokenAddress", "type": "address" },
+      { "internalType": "uint64", "name": "poolIndex", "type": "uint64" }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
