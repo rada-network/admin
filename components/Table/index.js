@@ -12,6 +12,7 @@ const Table = (props) => {
     },
     ...props,
   };
+
   return (
     <Box sx={{ width: "100%" }}>
       <DataGrid autoHeight {...data} />
