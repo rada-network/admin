@@ -13,7 +13,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Button,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -22,6 +21,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 import { Link } from "react-router-dom";
+import Wallet from "./Wallet";
 
 const drawerWidth = 240;
 
@@ -92,9 +92,9 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            RADA admin
+            RADA Admin
           </Typography>
-          <Button variant="contained">Connect Wallet</Button>
+          <Wallet />
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -116,11 +116,23 @@ export default function Header() {
             marginLeft: "5px",
           }}
         >
-          <ListItem button component={Link} to="/">
+          <ListItem button component={Link} to="/poolClaim">
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="Launchverse" />
+            <ListItemText primary="Only Claim Pools" />
+          </ListItem>
+          <ListItem button component={Link} to="/poolRIR">
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="RIR Pools" />
+          </ListItem>
+          <ListItem button component={Link} to="/poolWhitelist">
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Whitelist Pools" />
           </ListItem>
           <ListItem button component={Link} to="/share2earn">
             <ListItemIcon>

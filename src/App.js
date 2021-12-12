@@ -1,10 +1,11 @@
-import React, { Fragment, Suspense } from "react";
+import React, { Suspense } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { mainRoutes } from "./routes";
-import Header from "./components/Header";
-import { Container, CssBaseline, Toolbar } from "@mui/material";
-import { Box } from "@mui/system";
+import { ChainId, DAppProvider } from "@usedapp/core";
+import { ProvideGlobal } from "providers/Global";
+import MainLayout from "layouts/MainLayout";
+import Backdrop from "components/Backdrop";
 
 function App() {
   const theme = createTheme({
@@ -13,34 +14,35 @@ function App() {
     },
   });
 
+  const supportedChains =
+    process.env.REACT_APP_MAINNET === "true" ? [ChainId.BSC] : [ChainId.BSCTestnet];
+
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Box sx={{ display: "flex" }}>
-          <CssBaseline />
-          <Header />
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              height: "100vh",
-              overflow: "auto",
-            }}
-          >
-            <Toolbar />
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-              <Suspense fallback={<Fragment />}>
+    <DAppProvider
+      config={{
+        supportedChains: supportedChains,
+        notifications: {
+          expirationPeriod: 1000,
+          checkInterval: 1000,
+        },
+      }}
+    >
+      <ProvideGlobal>
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>
+            <MainLayout>
+              <Suspense fallback={<Backdrop />}>
                 <Routes>
                   {mainRoutes.map(({ path, exact, element }, i) => {
                     return <Route key={i} exact={exact} path={path} element={element} />;
                   })}
                 </Routes>
               </Suspense>
-            </Container>
-          </Box>
-        </Box>
-      </ThemeProvider>
-    </BrowserRouter>
+            </MainLayout>
+          </ThemeProvider>
+        </BrowserRouter>
+      </ProvideGlobal>
+    </DAppProvider>
   );
 }
 
