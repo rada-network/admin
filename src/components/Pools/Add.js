@@ -1,14 +1,15 @@
 import { Button, Grid, Modal, TextField } from "@mui/material";
 import { usePools } from "providers/Pools";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateTimePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { convertUnix } from "utils/format";
 import { Box } from "@mui/system";
-import { useActions } from "hooks/useActions";
+import { useActions, useActionState } from "hooks/useActions";
 import { parseEther, parseUnits } from "@ethersproject/units";
 import { useGlobal } from "providers/Global";
+import poolFormData from "config/PoolFormData";
 
 const PoolAddButton = (props) => {
   const context = usePools();
@@ -23,13 +24,19 @@ const PoolAddButton = (props) => {
     },
   ]);
 
+  const [success, handleState] = useActionState(actions);
+
   const [formState, setFromState] = useState({
     title: "",
     tokenAddress: "",
     allocationBusd: "",
+    minAllocationBusd: "",
+    maxAllocationBusd: "",
+    allocationRir: "",
     price: "",
     startDate: "",
     endDate: "",
+    fee: "",
   });
 
   const handleOpen = () => {
@@ -59,6 +66,18 @@ const PoolAddButton = (props) => {
         break;
 
       case "poolRIR":
+        actions["addPool"].func(
+          formState.title,
+          parseEther(formState.allocationBusd),
+          parseEther(formState.minAllocationBusd),
+          parseEther(formState.maxAllocationBusd),
+          parseEther(formState.allocationRir),
+          parseEther(formState.price),
+          parseUnits(`${convertUnix(formState.startDate)}`),
+          parseUnits(`${convertUnix(formState.endDate)}`),
+          parseEther(formState.fee)
+        );
+
         break;
 
       case "poolWhitelist":
@@ -74,7 +93,13 @@ const PoolAddButton = (props) => {
       default:
         break;
     }
+
+    handleState("addPool");
   };
+
+  useEffect(() => {
+    setOpen(false);
+  }, [success]);
 
   const style = {
     position: "absolute",
@@ -88,7 +113,7 @@ const PoolAddButton = (props) => {
     p: 4,
   };
 
-  console.log("Pools", context);
+  const formData = poolFormData[context.contractType];
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -105,88 +130,34 @@ const PoolAddButton = (props) => {
         <Box sx={style}>
           <h2 id="add-modal-title">Add a Pool</h2>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                id="title"
-                name="title"
-                label="Title"
-                fullWidth
-                autoComplete="given-name"
-                variant="standard"
-                value={formState.title}
-                onChange={handleOnchange}
-              />
-            </Grid>
-            {context.contractType === "poolClaim" && (
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  id="tokenAddress"
-                  name="tokenAddress"
-                  label="Token Address"
-                  fullWidth
-                  autoComplete="given-name"
-                  variant="standard"
-                  value={formState.tokenAddress}
-                  onChange={handleOnchange}
-                />
+            {formData.map((field, i) => (
+              <Grid item xs={12} key={i}>
+                {field.type === "date" ? (
+                  <>
+                    <DateTimePicker
+                      label={field.label}
+                      value={formState[field.name]}
+                      onChange={(value) =>
+                        handleOnchange({ target: { name: field.name, value: value } })
+                      }
+                      minDate={new Date()}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </>
+                ) : (
+                  <TextField
+                    required
+                    name={field.name}
+                    label={field.label}
+                    fullWidth
+                    autoComplete="given-name"
+                    variant="standard"
+                    value={formState[field.name]}
+                    onChange={handleOnchange}
+                  />
+                )}
               </Grid>
-            )}
-            <Grid item xs={12}>
-              <TextField
-                required
-                id="allocationBusd"
-                name="allocationBusd"
-                label="Allocation Busd"
-                fullWidth
-                autoComplete="given-name"
-                variant="standard"
-                value={formState.allocationBusd}
-                onChange={handleOnchange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                id="price"
-                name="price"
-                label="Price"
-                fullWidth
-                autoComplete="given-name"
-                variant="standard"
-                value={formState.price}
-                onChange={handleOnchange}
-              />
-            </Grid>
-
-            {context.contractType !== "poolClaim" && (
-              <>
-                <Grid item xs={12}>
-                  <DateTimePicker
-                    label="Start Date"
-                    value={formState.startDate}
-                    onChange={(value) =>
-                      handleOnchange({ target: { name: "startDate", value: value } })
-                    }
-                    minDate={new Date()}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <DateTimePicker
-                    label="End Date"
-                    value={formState.endDate}
-                    onChange={(value) =>
-                      handleOnchange({ target: { name: "endDate", value: value } })
-                    }
-                    minDate={new Date()}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </Grid>
-              </>
-            )}
+            ))}
 
             <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
               <Button onClick={handleSave} variant="contained" sx={{ mt: 3, ml: 1 }}>

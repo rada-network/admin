@@ -10,7 +10,8 @@ const useABI = (contractType) => {
   const { library } = useEthers();
   let contractABI = new utils.Interface(BEP20);
   let contractAddress = "";
-  let contractName = "Pools";
+  let contractName = "BEP20";
+  let contractInstance = null;
 
   switch (contractType) {
     case "poolClaim":
@@ -36,7 +37,9 @@ const useABI = (contractType) => {
       break;
   }
 
-  const contractInstance = new Contract(contractAddress, contractABI, library);
+  if (contractAddress) {
+    contractInstance = new Contract(contractAddress, contractABI, library);
+  }
 
   return { contractABI, contractAddress, contractType, contractName, contractInstance };
 };

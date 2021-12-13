@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material";
 import Table from "components/Table";
 import Title from "components/Title";
+import poolTableColumn from "config/PoolTableColumn";
 import { usePools } from "providers/Pools";
 import { useNavigate } from "react-router-dom";
 import PoolAddButton from "./Add";
@@ -9,26 +10,7 @@ export default function PoolList() {
   const data = usePools();
   let navigate = useNavigate();
 
-  const columns = [
-    { field: "id", hide: true },
-    { field: "title", headerName: "title", width: 200 },
-    { field: "address", headerName: "token Address", width: 200 },
-    {
-      field: "allocationBusd",
-      headerName: "allocationBusd",
-      width: 150,
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      width: 100,
-    },
-    {
-      field: "locked",
-      headerName: "locked",
-      width: 100,
-    },
-  ];
+  const columns = poolTableColumn[data.contractType];
 
   const onClick = (params) => {
     navigate(`/${data.contractType}/${params.row.id}`);

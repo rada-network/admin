@@ -1,5 +1,5 @@
 import { useActions, useActionState } from "hooks/useActions";
-
+import { ethers } from "ethers";
 import { DateTimePicker } from "@mui/lab";
 import { Button, Grid, Stack, TextField } from "@mui/material";
 import { usePool } from "providers/Pool";
@@ -10,16 +10,16 @@ import { parseEther, parseUnits } from "@ethersproject/units";
 import { convertUnix } from "utils/format";
 import { useContract } from "hooks/useContract";
 import { useGlobal } from "providers/Global";
+import poolFormData from "config/PoolFormData";
 
 const PoolOverview = () => {
   const auth = useGlobal();
-  const { contractInstance, pool } = usePool();
+  const { contractInstance, contractType, pool, isApprover } = usePool();
 
   const [formState, setFormState] = useState(pool);
 
-  const tokenInstance = useContract(pool.fullAddress, "BEP20");
+  const tokenInstance = useContract(pool.tokenAddress, "BEP20");
 
-  console.log("tokenInstance", tokenInstance);
   const actions = useActions([
     {
       contractInstance: contractInstance,
@@ -73,7 +73,7 @@ const PoolOverview = () => {
         break;
 
       case "approve":
-        actions[action].func(contractInstance.address, parseEther(formState.depositedToken));
+        actions[action].func(contractInstance.address, ethers.constants.MaxUint256);
         break;
       default:
         break;
@@ -86,23 +86,41 @@ const PoolOverview = () => {
     setFormState((state) => ({ ...state, ...{ [target.name]: target.value } }));
   };
 
-  console.log("PoolDetail Overview render", formState);
+  const formData = poolFormData[contractType];
+
+  console.log("PoolDetail Overview render", formState, pool);
 
   return (
-    <>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Grid container spacing={3}>
-        <Grid item xs={8}>
-          <TextField
-            required
-            id="title"
-            name="title"
-            label="title"
-            fullWidth
-            variant="standard"
-            value={formState.title}
-            onChange={handleOnchange}
-          />
-        </Grid>
+        {formData.map((field, i) => (
+          <Grid item xs={6} key={i}>
+            {field.type === "date" ? (
+              <>
+                <DateTimePicker
+                  label={field.label}
+                  value={formState[field.name]}
+                  onChange={(value) =>
+                    handleOnchange({ target: { name: field.name, value: value } })
+                  }
+                  minDate={new Date()}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </>
+            ) : (
+              <TextField
+                required
+                name={field.name}
+                label={field.label}
+                fullWidth
+                autoComplete="given-name"
+                variant="standard"
+                value={formState[field.name]}
+                onChange={handleOnchange}
+              />
+            )}
+          </Grid>
+        ))}
         <Grid item xs={4}>
           <TextField
             readOnly={true}
@@ -115,84 +133,6 @@ const PoolOverview = () => {
             value={formState.locked}
           />
         </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            required
-            name="fullAddress"
-            label="tokenAddress"
-            fullWidth
-            variant="standard"
-            value={formState.fullAddress}
-            onChange={handleOnchange}
-          />
-        </Grid>
-
-        <Grid item xs={4}>
-          <TextField
-            required
-            id="allocationBusd"
-            name="allocationBusd"
-            label="allocationBusd"
-            fullWidth
-            variant="standard"
-            value={formState.allocationBusd}
-            onChange={handleOnchange}
-          />
-        </Grid>
-
-        <Grid item xs={4}>
-          <TextField
-            required
-            id="price"
-            name="price"
-            label="price"
-            fullWidth
-            variant="standard"
-            value={formState.price}
-            onChange={handleOnchange}
-          />
-        </Grid>
-
-        <Grid item xs={4}>
-          <TextField
-            required
-            id="depositedToken"
-            name="depositedToken"
-            label="depositedToken"
-            fullWidth
-            variant="standard"
-            value={formState.depositedToken}
-            onChange={handleOnchange}
-          />
-        </Grid>
-
-        {!pool.claimOnly && (
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Grid item xs={6}>
-              <DateTimePicker
-                label="Start Date"
-                value={formState.startDate}
-                onChange={(value) =>
-                  handleOnchange({ target: { name: "startDate", value: value } })
-                }
-                minDate={new Date()}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </Grid>
-
-            <Grid item xs={6}>
-              <DateTimePicker
-                label="End Date"
-                value={formState.endDate}
-                onChange={(value) => handleOnchange({ target: { name: "endDate", value: value } })}
-                minDate={new Date()}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </Grid>
-          </LocalizationProvider>
-        )}
-
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} sx={{ marginTop: "2rem", justifyContent: "flex-end" }}>
             {pool.locked ? (
@@ -214,16 +154,26 @@ const PoolOverview = () => {
               Update
             </Button>
 
-            <Button variant="contained" color="success" onClick={() => handlePool("approve")}>
-              Approve
+            <Button
+              disabled={!isApprover}
+              variant="contained"
+              color="success"
+              onClick={() => handlePool("approve")}
+            >
+              Approve Contract
             </Button>
-            <Button variant="contained" color="success" onClick={() => handlePool("deposit")}>
+            <Button
+              disabled={!isApprover}
+              variant="contained"
+              color="success"
+              onClick={() => handlePool("deposit")}
+            >
               Deposit
             </Button>
           </Stack>
         </Grid>
       </Grid>
-    </>
+    </LocalizationProvider>
   );
 };
 

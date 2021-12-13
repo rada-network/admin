@@ -1,1 +1,1 @@
-# RADA network admin
+# RADA admin

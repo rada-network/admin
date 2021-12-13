@@ -10,10 +10,12 @@ import { useActions, useActionState } from "hooks/useActions";
 import { parseEther } from "@ethersproject/units";
 import UploadCSV from "components/UploadCSV";
 import { useGlobal } from "providers/Global";
+import { formatAddress } from "utils/format";
+import investorTableColumn from "config/InvestorTableColumn";
 
 const PoolInvestors = () => {
   const auth = useGlobal();
-  const { contractInstance, pool } = usePool();
+  const { contractInstance, pool, isApprover, contractType } = usePool();
 
   const [investors, setInvestors] = useState([]);
   const [selectedIDs, setSelectedIDs] = useState([]);
@@ -40,13 +42,17 @@ const PoolInvestors = () => {
 
     switch (action) {
       case "importInvestors":
-        const data = investors.filter((investor) => selectedIDs.includes(investor.address));
+        if (selectedIDs.length > 0) {
+          const data = investors.filter((investor) => selectedIDs.includes(investor.id));
 
-        const addresses = data.map((row) => row.address);
-        const amountBusds = data.map((row) => parseEther(row.amountBusd));
-        const allocationBusd = data.map((row) => parseEther(row.allocationBusd));
+          const addresses = data.map((row) => row.id);
+          const amountBusds = data.map((row) => parseEther(row.amountBusd));
+          const allocationBusd = data.map((row) => parseEther(row.allocationBusd));
 
-        actions[action].func(pool.id, addresses, amountBusds, allocationBusd);
+          console.log("importInvestors", pool.id, addresses, amountBusds, allocationBusd);
+          actions[action].func(pool.id, addresses, amountBusds, allocationBusd);
+        }
+
         break;
       case "approveInvestors":
         actions[action].func(pool.id);
@@ -69,45 +75,41 @@ const PoolInvestors = () => {
     handleState(action);
   };
 
-  const fetchData = async () => {
-    auth.setLoading(true);
-    console.log("fetchData", contractInstance);
-    const response = await contractInstance.poolAddresses(pool.id);
-
-    const investors = await Promise.all(
-      response.map(async (investor) => {
-        const responseInvestor = await contractInstance.getInvestor(pool.id, investor);
-
-        return InvestorModel(responseInvestor, investor);
-      })
-    );
-
-    setInvestors(investors);
-
-    auth.setLoading(false);
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      auth.setLoading(true);
+
+      const response = await contractInstance.poolAddresses(pool.id);
+
+      console.log("response", response, pool.id, contractInstance);
+
+      const newInvestors = await Promise.all(
+        response.map(async (investor) => {
+          const responseInvestor = await contractInstance.getInvestor(pool.id, investor);
+
+          return InvestorModel(responseInvestor, investor);
+        })
+      );
+
+      setInvestors(newInvestors);
+
+      auth.setLoading(false);
+    };
     fetchData();
   }, [success]);
 
   const handleOnFileLoad = (csv) => {
     if (csv.length > 0) {
-      const investors = csv
-        .map((row, i) => {
-          if (i > 0) {
-            return {
-              id: row.data[0],
-              address: row.data[0],
-              amountBusd: row.data[1],
-              allocationBusd: row.data[2],
-            };
-          }
-        })
-        .filter((row, i) => i > 0 && row.address);
+      const newInvestors = csv
+        .map((row, i) => ({
+          id: row.data[0],
+          address: formatAddress(row.data[0]),
+          amountBusd: row.data[1],
+          allocationBusd: row.data[2],
+        }))
+        .filter((row, i) => i > 0 && row.id);
 
-      console.log("handleOnFileLoad", investors);
-      setInvestors(investors);
+      setInvestors((prev) => [...prev, ...newInvestors]);
     }
   };
 
@@ -116,15 +118,7 @@ const PoolInvestors = () => {
     setSelectedIDs(selectedIDs);
   };
 
-  const columns = [
-    { field: "id", hide: true },
-    { field: "address", headerName: "Address" },
-    { field: "amountBusd", headerName: "amountBusd", width: 150 },
-    { field: "allocationBusd", headerName: "allocationBusd", width: 150 },
-    { field: "claimedToken", headerName: "claimedToken", width: 150 },
-    { field: "paid", headerName: "paid" },
-    { field: "approved", headerName: "approved" },
-  ];
+  const columns = investorTableColumn[contractType];
 
   const Toolbar = () => (
     <GridToolbarContainer>
@@ -134,12 +128,17 @@ const PoolInvestors = () => {
         <GridToolbarExport />
       </Box>
       <Stack direction="row" spacing={2}>
-        <Button variant="contained" color="success" onClick={() => handlePool("importInvestors")}>
+        <Button
+          disabled={selectedIDs.length === 0}
+          variant="contained"
+          color="success"
+          onClick={() => handlePool("importInvestors")}
+        >
           Submit
         </Button>
 
         <Button
-          disabled={!pool.locked}
+          disabled={!isApprover || !pool.locked}
           variant="contained"
           color="success"
           onClick={() => handlePool("approveInvestors")}
@@ -148,7 +147,7 @@ const PoolInvestors = () => {
         </Button>
 
         <Button
-          disabled={!pool.locked}
+          disabled={!isApprover || !pool.locked}
           variant="contained"
           color="success"
           onClick={() => handlePool("unapproveInvestor")}
@@ -158,6 +157,8 @@ const PoolInvestors = () => {
       </Stack>
     </GridToolbarContainer>
   );
+
+  console.log("PoolInvestors render", investors, pool);
 
   return (
     <>

@@ -20,7 +20,7 @@ const ProvidePool = ({ children }) => {
   const provideValue = {
     id: id,
     isAdmin: false,
-    isApprovers: false,
+    isApprover: false,
     pool: {},
     contractName: contractName,
     contractType: contractType,
@@ -48,8 +48,8 @@ const ProvidePool = ({ children }) => {
       },
     ]).filter((a) => a) ?? [];
 
-  if (contractChain.length === 0) {
-    return "Connecting....";
+  if (contractChain.length < 3) {
+    return "Loading....";
   }
 
   contractChain.forEach((chain, i) => {
@@ -60,12 +60,12 @@ const ProvidePool = ({ children }) => {
           break;
 
         case 1:
-          provideValue.isApprovers = true;
+          provideValue.isApprover = true;
 
           break;
 
         case 2:
-          provideValue.pool = PoolModel(chain[0]);
+          provideValue.pool = PoolModel(chain[0], id);
           break;
         default:
           break;
@@ -73,9 +73,11 @@ const ProvidePool = ({ children }) => {
     }
   });
 
-  if (!provideValue.pool || (!provideValue.isApprovers && !provideValue.isAdmin)) {
+  if (!provideValue.pool || (!provideValue.isApprover && !provideValue.isAdmin)) {
     return "Ops...";
   }
+
+  console.log("ProvidePool render", provideValue);
 
   return <poolContext.Provider value={provideValue}>{children}</poolContext.Provider>;
 };

@@ -1,5 +1,6 @@
 import Header from "components/Header";
 import Backdrop from "components/Backdrop";
+import Notifications from "components/Notifications";
 import { Container, CssBaseline, Toolbar } from "@mui/material";
 import { Box } from "@mui/system";
 import { useGlobal } from "providers/Global";
@@ -28,7 +29,7 @@ export default function MainLayout({ children }) {
             {children}
           </Container>
         </Box>
-
+        <Notifications />
         <Backdrop />
       </Box>
     </>

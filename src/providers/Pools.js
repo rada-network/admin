@@ -46,8 +46,8 @@ const ProvidePools = ({ children }) => {
       },
     ]).filter((a) => a) ?? [];
 
-  if (contractChain.length === 0) {
-    return "....";
+  if (contractChain.length < 3) {
+    return "Loading....";
   }
 
   contractChain.forEach((chain, i) => {
