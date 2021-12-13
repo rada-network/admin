@@ -23,6 +23,10 @@ const PoolInvestors = () => {
   const actions = useActions([
     {
       contractInstance: contractInstance,
+      func: "importWinners",
+    },
+    {
+      contractInstance: contractInstance,
       func: "importInvestors",
     },
     {
@@ -41,19 +45,55 @@ const PoolInvestors = () => {
     auth.setLoading(true);
 
     switch (action) {
-      case "importInvestors":
+      case "submit":
         if (selectedIDs.length > 0) {
           const data = investors.filter((investor) => selectedIDs.includes(investor.id));
 
           const addresses = data.map((row) => row.id);
           const amountBusds = data.map((row) => parseEther(row.amountBusd));
           const allocationBusd = data.map((row) => parseEther(row.allocationBusd));
+          const allocationRirs = data.map((row) => parseEther(row.allocationRirs));
+          const refunded = data.map((row) => false);
 
-          console.log("importInvestors", pool.id, addresses, amountBusds, allocationBusd);
-          actions[action].func(pool.id, addresses, amountBusds, allocationBusd);
+          switch (contractType) {
+            case "poolClaim":
+              actions["importInvestors"].func(
+                pool.id,
+                addresses,
+                amountBusds,
+                allocationBusd,
+                refunded
+              );
+
+              action = "importInvestors";
+              break;
+
+            case "poolWhitelist":
+              actions["importInvestors"].func(pool.id, addresses, amountBusds, allocationBusd);
+
+              action = "importInvestors";
+              break;
+
+            case "poolRIR":
+              console.log(
+                "importWinners",
+                pool.id,
+                addresses,
+                amountBusds,
+                allocationBusd,
+                allocationRirs
+              );
+              actions["importWinners"].func(pool.id, addresses, allocationBusd, allocationRirs);
+
+              action = "importWinners";
+              break;
+
+            default:
+              break;
+          }
         }
-
         break;
+
       case "approveInvestors":
         actions[action].func(pool.id);
         break;
@@ -106,6 +146,8 @@ const PoolInvestors = () => {
           address: formatAddress(row.data[0]),
           amountBusd: row.data[1],
           allocationBusd: row.data[2],
+          allocationRirs: row.data[3],
+          refunded: row.data[3],
         }))
         .filter((row, i) => i > 0 && row.id);
 
@@ -132,7 +174,7 @@ const PoolInvestors = () => {
           disabled={selectedIDs.length === 0}
           variant="contained"
           color="success"
-          onClick={() => handlePool("importInvestors")}
+          onClick={() => handlePool("submit")}
         >
           Submit
         </Button>
@@ -147,7 +189,7 @@ const PoolInvestors = () => {
         </Button>
 
         <Button
-          disabled={!isApprover || !pool.locked}
+          disabled={!isApprover || !pool.locked || selectedIDs.length === 0}
           variant="contained"
           color="success"
           onClick={() => handlePool("unapproveInvestor")}

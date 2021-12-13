@@ -24,7 +24,7 @@ const PoolDetail = () => {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="Overview" value="1" />
-            <Tab label="Investors" value="2" />
+            <Tab label={data.contractType === "poolRIR" ? "Winners" : "Investors"} value="2" />
           </TabList>
         </Box>
         <TabPanel value="1">

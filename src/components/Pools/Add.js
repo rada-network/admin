@@ -10,6 +10,7 @@ import { useActions, useActionState } from "hooks/useActions";
 import { parseEther, parseUnits } from "@ethersproject/units";
 import { useGlobal } from "providers/Global";
 import poolFormData from "config/PoolFormData";
+import PoolModel from "model/Pool";
 
 const PoolAddButton = (props) => {
   const context = usePools();
@@ -26,18 +27,7 @@ const PoolAddButton = (props) => {
 
   const [success, handleState] = useActionState(actions);
 
-  const [formState, setFromState] = useState({
-    title: "",
-    tokenAddress: "",
-    allocationBusd: "",
-    minAllocationBusd: "",
-    maxAllocationBusd: "",
-    allocationRir: "",
-    price: "",
-    startDate: "",
-    endDate: "",
-    fee: "",
-  });
+  const [formState, setFromState] = useState(PoolModel({}, ""));
 
   const handleOpen = () => {
     setOpen(true);
@@ -55,44 +45,17 @@ const PoolAddButton = (props) => {
     console.log(global);
     global.setLoading(true);
 
-    switch (context.contractType) {
-      case "poolClaim":
-        actions["addPool"].func(
-          formState.title,
-          formState.tokenAddress,
-          parseEther(formState.allocationBusd),
-          parseEther(formState.price)
-        );
-        break;
-
-      case "poolRIR":
-        actions["addPool"].func(
-          formState.title,
-          parseEther(formState.allocationBusd),
-          parseEther(formState.minAllocationBusd),
-          parseEther(formState.maxAllocationBusd),
-          parseEther(formState.allocationRir),
-          parseEther(formState.price),
-          parseUnits(`${convertUnix(formState.startDate)}`),
-          parseUnits(`${convertUnix(formState.endDate)}`),
-          parseEther(formState.fee)
-        );
-
-        break;
-
-      case "poolWhitelist":
-        actions["addPool"].func(
-          formState.title,
-          parseEther(formState.allocationBusd),
-          parseEther(formState.price),
-          parseUnits(`${convertUnix(formState.startDate)}`),
-          parseUnits(`${convertUnix(formState.endDate)}`)
-        );
-        break;
-
-      default:
-        break;
-    }
+    actions["addPool"].func(
+      formState.title,
+      parseEther(formState.allocationBusd),
+      parseEther(formState.minAllocationBusd),
+      parseEther(formState.maxAllocationBusd),
+      parseEther(formState.allocationRir),
+      parseEther(formState.price),
+      parseUnits(`${convertUnix(formState.startDate)}`),
+      parseUnits(`${convertUnix(formState.endDate)}`),
+      formState.fee
+    );
 
     handleState("addPool");
   };
@@ -113,7 +76,9 @@ const PoolAddButton = (props) => {
     p: 4,
   };
 
-  const formData = poolFormData[context.contractType];
+  const formData = poolFormData;
+
+  console.log("PoolAddButton Model", formState);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -130,10 +95,10 @@ const PoolAddButton = (props) => {
         <Box sx={style}>
           <h2 id="add-modal-title">Add a Pool</h2>
           <Grid container spacing={3}>
-            {formData.map((field, i) => (
-              <Grid item xs={12} key={i}>
-                {field.type === "date" ? (
-                  <>
+            {formData.map((field, i) =>
+              !field.edit ? (
+                field.type === "date" ? (
+                  <Grid item xs={12} key={i}>
                     <DateTimePicker
                       label={field.label}
                       value={formState[field.name]}
@@ -143,21 +108,23 @@ const PoolAddButton = (props) => {
                       minDate={new Date()}
                       renderInput={(params) => <TextField {...params} />}
                     />
-                  </>
+                  </Grid>
                 ) : (
-                  <TextField
-                    required
-                    name={field.name}
-                    label={field.label}
-                    fullWidth
-                    autoComplete="given-name"
-                    variant="standard"
-                    value={formState[field.name]}
-                    onChange={handleOnchange}
-                  />
-                )}
-              </Grid>
-            ))}
+                  <Grid item xs={6} key={i}>
+                    <TextField
+                      required
+                      name={field.name}
+                      label={field.label}
+                      fullWidth
+                      autoComplete="given-name"
+                      variant="standard"
+                      value={formState[field.name]}
+                      onChange={handleOnchange}
+                    />
+                  </Grid>
+                )
+              ) : null
+            )}
 
             <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
               <Button onClick={handleSave} variant="contained" sx={{ mt: 3, ml: 1 }}>

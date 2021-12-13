@@ -6,19 +6,26 @@ import { usePool } from "providers/Pool";
 import { useState } from "react";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { parseEther, parseUnits } from "@ethersproject/units";
+import { parseEther, formatEther, parseUnits } from "@ethersproject/units";
 import { convertUnix } from "utils/format";
 import { useContract } from "hooks/useContract";
 import { useGlobal } from "providers/Global";
 import poolFormData from "config/PoolFormData";
+import { useTokenAllowance } from "@usedapp/core";
 
 const PoolOverview = () => {
   const auth = useGlobal();
-  const { contractInstance, contractType, pool, isApprover } = usePool();
+  const { contractInstance, pool, isApprover } = usePool();
 
   const [formState, setFormState] = useState(pool);
 
-  const tokenInstance = useContract(pool.tokenAddress, "BEP20");
+  const tokenInstance = useContract(pool.tokenAddress);
+  const allowance = useTokenAllowance(pool.tokenAddress, auth.account, contractInstance.address);
+
+  let approvedContract = false;
+  if (allowance && formatEther(allowance) > 0) {
+    approvedContract = true;
+  }
 
   const actions = useActions([
     {
@@ -86,7 +93,7 @@ const PoolOverview = () => {
     setFormState((state) => ({ ...state, ...{ [target.name]: target.value } }));
   };
 
-  const formData = poolFormData[contractType];
+  const formData = poolFormData;
 
   console.log("PoolDetail Overview render", formState, pool);
 
@@ -117,22 +124,36 @@ const PoolOverview = () => {
                 variant="standard"
                 value={formState[field.name]}
                 onChange={handleOnchange}
+                readOnly={field.readOnly ?? false}
               />
             )}
           </Grid>
         ))}
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           <TextField
-            readOnly={true}
-            id="locked"
-            name="locked"
-            label="locked"
+            name="tokenAddress"
+            label="tokenAddress"
             fullWidth
             autoComplete="given-name"
             variant="standard"
-            value={formState.locked}
+            value={formState.tokenAddress}
+            onChange={handleOnchange}
           />
         </Grid>
+
+        {formState.tokenAddress && (
+          <Grid item xs={6}>
+            <TextField
+              name="depositAmount"
+              label="depositAmount"
+              fullWidth
+              autoComplete="given-name"
+              variant="standard"
+              value={formState.depositAmount}
+              onChange={handleOnchange}
+            />
+          </Grid>
+        )}
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} sx={{ marginTop: "2rem", justifyContent: "flex-end" }}>
             {pool.locked ? (
@@ -154,22 +175,25 @@ const PoolOverview = () => {
               Update
             </Button>
 
-            <Button
-              disabled={!isApprover}
-              variant="contained"
-              color="success"
-              onClick={() => handlePool("approve")}
-            >
-              Approve Contract
-            </Button>
-            <Button
-              disabled={!isApprover}
-              variant="contained"
-              color="success"
-              onClick={() => handlePool("deposit")}
-            >
-              Deposit
-            </Button>
+            {approvedContract ? (
+              <Button
+                disabled={!isApprover}
+                variant="contained"
+                color="success"
+                onClick={() => handlePool("deposit")}
+              >
+                Deposit
+              </Button>
+            ) : (
+              <Button
+                disabled={!isApprover || pool.locked}
+                variant="contained"
+                color="success"
+                onClick={() => handlePool("approve")}
+              >
+                Approve Contract
+              </Button>
+            )}
           </Stack>
         </Grid>
       </Grid>

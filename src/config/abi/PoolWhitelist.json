@@ -69,9 +69,13 @@
     "inputs": [
       { "internalType": "string", "name": "_title", "type": "string" },
       { "internalType": "uint256", "name": "_allocationBusd", "type": "uint256" },
+      { "internalType": "uint256", "name": "_minAllocationBusd", "type": "uint256" },
+      { "internalType": "uint256", "name": "_maxAllocationBusd", "type": "uint256" },
+      { "internalType": "uint256", "name": "_allocationRir", "type": "uint256" },
       { "internalType": "uint256", "name": "_price", "type": "uint256" },
       { "internalType": "uint256", "name": "_startDate", "type": "uint256" },
-      { "internalType": "uint256", "name": "_endDate", "type": "uint256" }
+      { "internalType": "uint256", "name": "_endDate", "type": "uint256" },
+      { "internalType": "uint8", "name": "_fee", "type": "uint8" }
     ],
     "name": "addPool",
     "outputs": [],
@@ -180,7 +184,6 @@
           { "internalType": "uint256", "name": "price", "type": "uint256" },
           { "internalType": "uint256", "name": "startDate", "type": "uint256" },
           { "internalType": "uint256", "name": "endDate", "type": "uint256" },
-          { "internalType": "bool", "name": "claimOnly", "type": "bool" },
           { "internalType": "bool", "name": "locked", "type": "bool" },
           { "internalType": "uint8", "name": "fee", "type": "uint8" },
           { "internalType": "string", "name": "title", "type": "string" }
@@ -207,7 +210,6 @@
           { "internalType": "uint256", "name": "price", "type": "uint256" },
           { "internalType": "uint256", "name": "startDate", "type": "uint256" },
           { "internalType": "uint256", "name": "endDate", "type": "uint256" },
-          { "internalType": "bool", "name": "claimOnly", "type": "bool" },
           { "internalType": "bool", "name": "locked", "type": "bool" },
           { "internalType": "uint8", "name": "fee", "type": "uint8" },
           { "internalType": "string", "name": "title", "type": "string" }
@@ -218,6 +220,16 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint64", "name": "_poolIdx", "type": "uint64" }],
+    "name": "getRefundable",
+    "outputs": [
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -310,7 +322,6 @@
       { "internalType": "uint256", "name": "price", "type": "uint256" },
       { "internalType": "uint256", "name": "startDate", "type": "uint256" },
       { "internalType": "uint256", "name": "endDate", "type": "uint256" },
-      { "internalType": "bool", "name": "claimOnly", "type": "bool" },
       { "internalType": "bool", "name": "locked", "type": "bool" },
       { "internalType": "uint8", "name": "fee", "type": "uint8" },
       { "internalType": "string", "name": "title", "type": "string" }
