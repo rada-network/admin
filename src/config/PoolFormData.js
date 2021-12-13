@@ -18,8 +18,8 @@ const poolFormData = {
       label: "price",
     },
     {
-      name: "depositedToken",
-      label: "depositedToken",
+      name: "depositAmount",
+      label: "depositAmount",
     },
   ],
   poolRIR: [

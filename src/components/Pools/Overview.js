@@ -67,8 +67,8 @@ const PoolOverview = () => {
         break;
 
       case "deposit":
-        console.log("deposit", pool.id, formState.depositedToken);
-        actions[action].func(pool.id, parseEther(formState.depositedToken));
+        console.log("deposit", pool.id, formState.depositAmount);
+        actions[action].func(pool.id, parseEther(formState.depositAmount));
 
         break;
 

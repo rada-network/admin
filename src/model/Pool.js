@@ -15,7 +15,7 @@ const PoolModel = (data, i) => {
     startDate: fromUnixTime(formatEther(data.startDate)),
     endDate: fromUnixTime(formatEther(data.endDate)),
     locked: data.locked,
-    depositedToken: data.depositedToken ? formatEther(data.depositedToken) : 0,
+    depositAmount: data.depositAmount ? formatEther(data.depositAmount) : 0,
     fee: data.depositedToken ? formatEther(data.fee) : 0,
   };
 };
