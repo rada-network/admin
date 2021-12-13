@@ -17,6 +17,10 @@ const poolFormData = {
       name: "price",
       label: "price",
     },
+    {
+      name: "depositedToken",
+      label: "depositedToken",
+    },
   ],
   poolRIR: [
     {
@@ -43,6 +47,7 @@ const poolFormData = {
       name: "price",
       label: "price",
     },
+
     {
       name: "startDate",
       label: "startDate",
@@ -71,6 +76,7 @@ const poolFormData = {
       name: "price",
       label: "price",
     },
+
     {
       name: "startDate",
       label: "startDate",

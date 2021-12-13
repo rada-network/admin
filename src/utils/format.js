@@ -17,10 +17,12 @@ const formatDate = (date) => {
 
 const convertUnix = (date) => {
   try {
-    return getUnixTime(date);
-  } catch (error) {
-    return "";
-  }
+    if (date) {
+      return getUnixTime(date);
+    }
+
+    return Date.now() / 1000;
+  } catch (error) {}
 };
 
 const fromUnixTime = (unixTime) => {
