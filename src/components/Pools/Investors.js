@@ -74,13 +74,13 @@ const PoolInvestors = () => {
 
             case "poolRIR":
               // Do Winner For poolRIR
-              const poolAllocationRir = parseInt(pool.allocationRir);
+              let poolAllocationRir = parseInt(pool.allocationRir);
               const winners = {};
 
-              // Get Winner
-              for (let i = poolAllocationRir; i > 0; i--) {
+              while (poolAllocationRir > 0) {
+                // eslint-disable-next-line no-loop-func
                 data.forEach((row) => {
-                  if (row.amountRir >= i) {
+                  if (parseInt(row.amountRir) > 0) {
                     winners[row.id] = {
                       allocationBusd: winners[row.id]?.allocationBusd
                         ? winners[row.id]?.allocationBusd + 100
@@ -89,6 +89,9 @@ const PoolInvestors = () => {
                         ? winners[row.id]?.allocationRir + 1
                         : 1,
                     };
+
+                    row.amountRir--;
+                    poolAllocationRir--;
                   }
                 });
               }
@@ -103,6 +106,8 @@ const PoolInvestors = () => {
                 winnerBusd.push(parseEther(`${winners[row].allocationBusd}`));
                 winnerRIR.push(parseEther(`${winners[row].allocationRir}`));
               });
+
+              console.log("importWinners", winners);
 
               actions["importWinners"].func(pool.id, winnerAddress, winnerBusd, winnerRIR);
 
