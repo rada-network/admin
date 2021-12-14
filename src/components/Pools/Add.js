@@ -110,7 +110,6 @@ const PoolAddButton = (props) => {
                 ) : (
                   <Grid item xs={field.size ? field.size : "6"} key={i}>
                     <TextField
-                      required
                       name={field.name}
                       label={field.label}
                       fullWidth

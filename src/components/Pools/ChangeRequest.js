@@ -115,7 +115,6 @@ const PoolChangeRequest = () => {
               </>
             ) : (
               <TextField
-                required
                 name={field.name}
                 label={field.label}
                 fullWidth

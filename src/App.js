@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useMemo } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { mainRoutes } from "./routes";
@@ -6,13 +6,20 @@ import { ChainId, DAppProvider } from "@usedapp/core";
 import { ProvideGlobal } from "providers/Global";
 import MainLayout from "layouts/MainLayout";
 import Backdrop from "components/Backdrop";
+import { useMediaQuery } from "@mui/material";
 
 function App() {
-  const theme = createTheme({
-    palette: {
-      mode: "dark",
-    },
-  });
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? "dark" : "light",
+        },
+      }),
+    [prefersDarkMode]
+  );
 
   const supportedChains =
     process.env.REACT_APP_MAINNET === "true" ? [ChainId.BSC] : [ChainId.BSCTestnet];
