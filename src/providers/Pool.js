@@ -7,6 +7,7 @@ import PoolModel from "model/Pool";
 import { useParams } from "react-router-dom";
 import useABI from "hooks/useABI";
 import { formatEther } from "@ethersproject/units";
+import PoolStatModel from "model/PoolStat";
 
 const poolContext = createContext();
 
@@ -51,6 +52,10 @@ const ProvidePool = ({ children }) => {
         ...callData,
         ...{ method: "getDepositAmount", args: [id, "100"] },
       },
+      {
+        ...callData,
+        ...{ method: "poolsStat", args: [id] },
+      },
     ]).filter((a) => a) ?? [];
 
   if (contractChain.length < 3) {
@@ -75,6 +80,10 @@ const ProvidePool = ({ children }) => {
 
         case 3:
           provideValue.pool.depositAmount = formatEther(chain[0]);
+          break;
+
+        case 4:
+          provideValue.poolStat = PoolStatModel(chain);
           break;
         default:
           break;

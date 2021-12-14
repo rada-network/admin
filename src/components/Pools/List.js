@@ -10,8 +10,6 @@ export default function PoolList() {
   const data = usePools();
   let navigate = useNavigate();
 
-  const columns = poolTableColumn[data.contractType];
-
   const onClick = (params) => {
     navigate(`/${data.contractType}/${params.row.id}`);
   };
@@ -29,7 +27,7 @@ export default function PoolList() {
         <Title>{data.contractName}</Title>
         <PoolAddButton type="payable" text="Add a Pool" />
       </Stack>
-      <Table rows={data.pools} columns={columns} onCellClick={onClick} />
+      <Table rows={data.pools} columns={poolTableColumn} onCellClick={onClick} />
     </>
   );
 }

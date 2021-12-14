@@ -121,8 +121,6 @@ const PoolInvestors = () => {
 
       const response = await contractInstance.poolAddresses(pool.id);
 
-      console.log("response", response, pool.id, contractInstance);
-
       const newInvestors = await Promise.all(
         response.map(async (investor) => {
           const responseInvestor = await contractInstance.getInvestor(pool.id, investor);
@@ -130,6 +128,8 @@ const PoolInvestors = () => {
           return InvestorModel(responseInvestor, investor);
         })
       );
+
+      console.log("response", newInvestors);
 
       setInvestors(newInvestors);
 
@@ -146,8 +146,6 @@ const PoolInvestors = () => {
           address: formatAddress(row.data[0]),
           amountBusd: row.data[1],
           allocationBusd: row.data[2],
-          allocationRirs: row.data[3],
-          refunded: row.data[3],
         }))
         .filter((row, i) => i > 0 && row.id);
 
@@ -165,7 +163,7 @@ const PoolInvestors = () => {
   const Toolbar = () => (
     <GridToolbarContainer>
       <Box sx={{ display: "flex", flexGrow: 1 }}>
-        <UploadCSV onUploadFile={handleOnFileLoad} />
+        {contractType !== "poolRIR" && <UploadCSV onUploadFile={handleOnFileLoad} />}
         <GridToolbarFilterButton />
         <GridToolbarExport />
       </Box>
@@ -187,7 +185,6 @@ const PoolInvestors = () => {
         >
           Aprrove All
         </Button>
-
         <Button
           disabled={!isApprover || !pool.locked || selectedIDs.length === 0}
           variant="contained"

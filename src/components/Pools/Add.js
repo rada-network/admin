@@ -27,7 +27,7 @@ const PoolAddButton = (props) => {
 
   const [success, handleState] = useActionState(actions);
 
-  const [formState, setFromState] = useState(PoolModel({}, ""));
+  const [formState, setFormState] = useState(PoolModel({}, ""));
 
   const handleOpen = () => {
     setOpen(true);
@@ -38,22 +38,21 @@ const PoolAddButton = (props) => {
   };
 
   const handleOnchange = ({ target }) => {
-    setFromState((state) => ({ ...state, ...{ [target.name]: target.value } }));
+    setFormState((state) => ({ ...state, ...{ [target.name]: target.value } }));
   };
 
   const handleSave = () => {
-    console.log(global);
     global.setLoading(true);
 
     actions["addPool"].func(
       formState.title,
-      parseEther(formState.allocationBusd),
-      parseEther(formState.minAllocationBusd),
-      parseEther(formState.maxAllocationBusd),
-      parseEther(formState.allocationRir),
-      parseEther(formState.price),
-      parseUnits(`${convertUnix(formState.startDate)}`),
-      parseUnits(`${convertUnix(formState.endDate)}`),
+      parseEther(formState.allocationBusd ?? "0"),
+      parseEther(formState.minAllocationBusd ?? "0"),
+      parseEther(formState.maxAllocationBusd ?? "0"),
+      parseEther(formState.allocationRir ?? "0"),
+      parseEther(formState.price ?? "0"),
+      `${convertUnix(formState.startDate)}`,
+      `${convertUnix(formState.endDate)}`,
       formState.fee
     );
 
@@ -105,12 +104,11 @@ const PoolAddButton = (props) => {
                       onChange={(value) =>
                         handleOnchange({ target: { name: field.name, value: value } })
                       }
-                      minDate={new Date()}
                       renderInput={(params) => <TextField {...params} />}
                     />
                   </Grid>
                 ) : (
-                  <Grid item xs={6} key={i}>
+                  <Grid item xs={field.size ? field.size : "6"} key={i}>
                     <TextField
                       required
                       name={field.name}
