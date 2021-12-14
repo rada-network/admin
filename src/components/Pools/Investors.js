@@ -52,7 +52,7 @@ const PoolInvestors = () => {
           const addresses = data.map((row) => row.id);
           const amountBusds = data.map((row) => parseEther(row.amountBusd));
           const allocationBusd = data.map((row) => parseEther(row.allocationBusd));
-          const allocationRirs = data.map((row) => parseEther(row.allocationRirs));
+          const allocationRir = data.map((row) => parseEther(row.allocationRir));
           const refunded = data.map((row) => false);
 
           switch (contractType) {
@@ -81,9 +81,9 @@ const PoolInvestors = () => {
                 addresses,
                 amountBusds,
                 allocationBusd,
-                allocationRirs
+                allocationRir
               );
-              actions["importWinners"].func(pool.id, addresses, allocationBusd, allocationRirs);
+              actions["importWinners"].func(pool.id, addresses, allocationBusd, allocationRir);
 
               action = "importWinners";
               break;
@@ -95,6 +95,8 @@ const PoolInvestors = () => {
         break;
 
       case "approveInvestors":
+        console.log("approveInvestors", pool.id);
+
         actions[action].func(pool.id);
         break;
 
