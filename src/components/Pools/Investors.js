@@ -42,7 +42,7 @@ const PoolInvestors = () => {
   const [success, handleState] = useActionState(actions);
 
   const handlePool = (action) => {
-    auth.setLoading(true);
+    //auth.setLoading(true);
 
     switch (action) {
       case "submit":
@@ -52,11 +52,10 @@ const PoolInvestors = () => {
           const addresses = data.map((row) => row.id);
           const amountBusds = data.map((row) => parseEther(row.amountBusd));
           const allocationBusd = data.map((row) => parseEther(row.allocationBusd));
-          const allocationRir = data.map((row) => parseEther(row.allocationRir));
-          const refunded = data.map((row) => false);
 
           switch (contractType) {
             case "poolClaim":
+              const refunded = data.map((row) => false);
               actions["importInvestors"].func(
                 pool.id,
                 addresses,
@@ -70,20 +69,42 @@ const PoolInvestors = () => {
 
             case "poolWhitelist":
               actions["importInvestors"].func(pool.id, addresses, amountBusds, allocationBusd);
-
               action = "importInvestors";
               break;
 
             case "poolRIR":
-              console.log(
-                "importWinners",
-                pool.id,
-                addresses,
-                amountBusds,
-                allocationBusd,
-                allocationRir
-              );
-              actions["importWinners"].func(pool.id, addresses, allocationBusd, allocationRir);
+              // Do Winner For poolRIR
+              const poolAllocationRir = parseInt(pool.allocationRir);
+              const winners = {};
+
+              // Get Winner
+              for (let i = poolAllocationRir; i > 0; i--) {
+                data.forEach((row) => {
+                  if (row.amountRir >= i) {
+                    winners[row.id] = {
+                      allocationBusd: winners[row.id]?.allocationBusd
+                        ? winners[row.id]?.allocationBusd + 100
+                        : 100,
+                      allocationRir: winners[row.id]?.allocationRir
+                        ? winners[row.id]?.allocationRir + 1
+                        : 1,
+                    };
+                  }
+                });
+              }
+
+              let winnerAddress = [];
+              let winnerBusd = [];
+              let winnerRIR = [];
+
+              // Get data
+              Object.keys(winners).forEach((row) => {
+                winnerAddress.push(row);
+                winnerBusd.push(parseEther(`${winners[row].allocationBusd}`));
+                winnerRIR.push(parseEther(`${winners[row].allocationRir}`));
+              });
+
+              actions["importWinners"].func(pool.id, winnerAddress, winnerBusd, winnerRIR);
 
               action = "importWinners";
               break;
@@ -122,16 +143,14 @@ const PoolInvestors = () => {
       auth.setLoading(true);
 
       const response = await contractInstance.poolAddresses(pool.id);
-
+      console.log("responseInvestor", response);
       const newInvestors = await Promise.all(
         response.map(async (investor) => {
           const responseInvestor = await contractInstance.getInvestor(pool.id, investor);
-
+          console.log("responseInvestor", responseInvestor);
           return InvestorModel(responseInvestor, investor);
         })
       );
-
-      console.log("response", newInvestors);
 
       setInvestors(newInvestors);
 

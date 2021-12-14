@@ -7,7 +7,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { convertUnix } from "utils/format";
 import { Box } from "@mui/system";
 import { useActions, useActionState } from "hooks/useActions";
-import { parseEther, parseUnits } from "@ethersproject/units";
+import { parseEther } from "@ethersproject/units";
 import { useGlobal } from "providers/Global";
 import poolFormData from "config/PoolFormData";
 import PoolModel from "model/Pool";
