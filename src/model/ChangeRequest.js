@@ -1,5 +1,5 @@
 import { formatEther } from "@ethersproject/units";
-import { formatAddress, fromUnixTime } from "utils/format";
+import { fromUnixTime } from "utils/format";
 
 const ChangeRequestModel = (data) => {
   let tokenAddress = "";

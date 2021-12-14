@@ -1,5 +1,3 @@
-import { formatDate } from "utils/format";
-
 const poolTableColumn = [
   { field: "id", hide: true },
   { field: "title", headerName: "title", width: 150 },
