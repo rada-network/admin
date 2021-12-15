@@ -169,7 +169,7 @@ const PoolInvestors = () => {
       const newInvestors = csv
         .map((row, i) => ({
           id: row.data[0],
-          address: formatAddress(row.data[0]),
+          address: row.data[0],
           amountBusd: row.data[1],
           allocationBusd: row.data[2],
         }))

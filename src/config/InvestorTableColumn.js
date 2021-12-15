@@ -1,7 +1,7 @@
 const investorTableColumn = {
   poolClaim: [
     { field: "id", hide: true },
-    { field: "address", headerName: "Address", width: 250 },
+    { field: "address", headerName: "address", width: 400 },
     { field: "amountBusd", headerName: "amountBusd", width: 150 },
     { field: "allocationBusd", headerName: "allocationBusd", width: 150 },
     { field: "approved", headerName: "approved" },
@@ -9,7 +9,7 @@ const investorTableColumn = {
   ],
   poolRIR: [
     { field: "id", hide: true },
-    { field: "address", headerName: "Address", width: 150 },
+    { field: "address", headerName: "address", width: 400 },
     { field: "amountBusd", headerName: "amountBusd", width: 150 },
     { field: "amountRir", headerName: "amountRir", width: 150 },
     { field: "allocationBusd", headerName: "allocationBusd", width: 150 },
@@ -19,7 +19,7 @@ const investorTableColumn = {
   ],
   poolWhitelist: [
     { field: "id", hide: true },
-    { field: "address", headerName: "Address", width: 250 },
+    { field: "address", headerName: "address", width: 400 },
     { field: "amountBusd", headerName: "amountBusd", width: 150 },
     { field: "allocationBusd", headerName: "allocationBusd", width: 150 },
     { field: "approved", headerName: "approved" },

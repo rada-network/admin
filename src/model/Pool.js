@@ -22,7 +22,7 @@ const PoolModel = (data, i) => {
     endDate: data.endDate ? fromUnixTime(data.endDate) : Date.now(),
     locked: data.locked ? data.locked : false,
     depositAmount: data.depositAmount ? formatEther(data.depositAmount) : "0",
-    fee: data.fee ? formatEther(data.fee) : "0",
+    fee: data.fee ? data.fee : "0",
   };
 };
 

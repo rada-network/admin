@@ -4,7 +4,7 @@ import { formatAddress } from "utils/format";
 const InvestorModel = (data, address) => {
   return {
     id: address,
-    address: address ? formatAddress(address) : "",
+    address: address ? address : "",
     amountBusd: data.amountBusd ? formatEther(data.amountBusd) : "0",
     amountRir: data.amountRir ? formatEther(data.amountRir) : "0",
     allocationBusd: data.allocationBusd ? formatEther(data.allocationBusd) : "0",
