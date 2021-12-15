@@ -12,6 +12,7 @@ const ChangeRequestModel = (data) => {
     tokenAddress: tokenAddress ?? "",
     allocationBusd: data.poolAllocationBusd ? formatEther(data.poolAllocationBusd) : "",
     endDate: data.poolEndDate ? fromUnixTime(formatEther(data.poolEndDate)) : "",
+    withdrawAddress: data.WITHDRAW_ADDRESS ?? "",
   };
 };
 

@@ -25,6 +25,10 @@ const PoolChangeRequest = () => {
     },
     {
       contractInstance: contractInstance,
+      func: "requestChangeWithdrawAddress",
+    },
+    {
+      contractInstance: contractInstance,
       func: "approveRequestChange",
     },
     {
@@ -42,16 +46,22 @@ const PoolChangeRequest = () => {
 
     switch (action) {
       case "requestChangePoolData":
-        console.log("approveRequestChange", pool.id, formState.tokenAddress);
+        console.log("approveRequestChange", pool.id, formState);
 
         actions[action].func(
           pool.id,
-          parseEther(formState.allocationBusd ?? "0"),
-          parseUnits(formState.endDate ? `${convertUnix(formState.endDate)}` : "0"),
+          formState.allocationBusd ? parseEther(formState.allocationBusd) : "0",
+          formState.endDate ? parseUnits(`${convertUnix(formState.endDate)}`) : "0",
           formState.tokenAddress
             ? formState.tokenAddress
             : "0x0000000000000000000000000000000000000000"
         );
+        break;
+
+      case "requestChangeWithdrawAddress":
+        console.log("approveRequestChange");
+        actions[action].func(formState.withdrawAddress);
+
         break;
 
       case "approveRequestChange":
@@ -82,7 +92,6 @@ const PoolChangeRequest = () => {
       const response = await contractInstance.requestChangeData();
 
       if (parseInt(formatUnits(response.poolIndex, 0)) === parseInt(pool.id)) {
-        console.log("ChangeRequestModel", ChangeRequestModel(response));
         setFormState(ChangeRequestModel(response));
       }
 
@@ -136,6 +145,13 @@ const PoolChangeRequest = () => {
               disabled={!pool.locked}
             >
               Submit
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => handlePool("requestChangeWithdrawAddress")}
+            >
+              Change Withdraw Address
             </Button>
             {isApprover && (
               <>

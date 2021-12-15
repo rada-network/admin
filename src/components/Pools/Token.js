@@ -104,7 +104,7 @@ const PoolToken = () => {
             {isApprover &&
               (approvedContract ? (
                 <Button
-                  disabled={!isApprover || pool.locked || !canAction}
+                  disabled={!isApprover || !canAction}
                   variant="contained"
                   color="success"
                   onClick={() => handlePool("deposit")}
@@ -113,7 +113,7 @@ const PoolToken = () => {
                 </Button>
               ) : (
                 <Button
-                  disabled={!isApprover || pool.locked || !canAction}
+                  disabled={!isApprover || !canAction}
                   variant="contained"
                   color="success"
                   onClick={() => handlePool("approve")}
