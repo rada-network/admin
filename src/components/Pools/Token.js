@@ -107,16 +107,6 @@ const PoolToken = () => {
             onChange={handleOnchange}
           />
         </Grid>
-        <Grid item xs="6">
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Claimable</InputLabel>
-            <Select labelId="demo-simple-select-label" id="demo-simple-select" label="Age">
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
 
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} sx={{ marginTop: "2rem", justifyContent: "flex-end" }}>
