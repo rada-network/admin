@@ -1,7 +1,6 @@
 import { formatEther } from "@ethersproject/units";
-import { formatAddress } from "utils/format";
 
-const InvestorModel = (data, address) => {
+const InvestorModel = (data = {}, address = "") => {
   return {
     id: address,
     address: address ? address : "",

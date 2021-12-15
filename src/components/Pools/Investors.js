@@ -10,8 +10,8 @@ import { useActions, useActionState } from "hooks/useActions";
 import { parseEther } from "@ethersproject/units";
 import UploadCSV from "components/UploadCSV";
 import { useGlobal } from "providers/Global";
-import { formatAddress } from "utils/format";
 import investorTableColumn from "config/InvestorTableColumn";
+import PoolInvestorsAdd from "./InvestorsAdd";
 
 const PoolInvestors = () => {
   const auth = useGlobal();
@@ -184,6 +184,13 @@ const PoolInvestors = () => {
     setSelectedIDs(selectedIDs);
   };
 
+  const handleOnAdd = (data) => {
+    data.id = data.address;
+    console.log("handleOnAdd", data);
+
+    setInvestors((prev) => [...prev, data]);
+  };
+
   const columns = investorTableColumn[contractType];
 
   const Toolbar = () => (
@@ -192,6 +199,7 @@ const PoolInvestors = () => {
         {contractType !== "poolRIR" && <UploadCSV onUploadFile={handleOnFileLoad} />}
         <GridToolbarFilterButton />
         <GridToolbarExport />
+        <PoolInvestorsAdd onSave={handleOnAdd} />
       </Box>
       <Stack direction="row" spacing={2}>
         <Button
@@ -226,19 +234,17 @@ const PoolInvestors = () => {
   console.log("PoolInvestors render", investors, pool);
 
   return (
-    <>
-      <Table
-        rows={investors}
-        columns={columns}
-        checkboxSelection
-        disableSelectionOnClick
-        pageSize={30}
-        components={{
-          Toolbar: Toolbar,
-        }}
-        onSelectionModelChange={handleSelectionModelChange}
-      />
-    </>
+    <Table
+      rows={investors}
+      columns={columns}
+      checkboxSelection
+      disableSelectionOnClick
+      pageSize={30}
+      components={{
+        Toolbar: Toolbar,
+      }}
+      onSelectionModelChange={handleSelectionModelChange}
+    />
   );
 };
 
