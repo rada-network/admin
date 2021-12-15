@@ -12,10 +12,6 @@ const poolFormChangeRequest = [
     name: "tokenAddress",
     label: "tokenAddress",
   },
-  {
-    name: "withdrawAddress",
-    label: "withdrawAddress",
-  },
 ];
 
 export default poolFormChangeRequest;

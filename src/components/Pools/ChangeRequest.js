@@ -51,17 +51,11 @@ const PoolChangeRequest = () => {
         actions[action].func(
           pool.id,
           formState.allocationBusd ? parseEther(formState.allocationBusd) : "0",
-          formState.endDate ? parseUnits(`${convertUnix(formState.endDate)}`) : "0",
+          formState.endDate ? `${convertUnix(formState.endDate)}` : "0",
           formState.tokenAddress
             ? formState.tokenAddress
             : "0x0000000000000000000000000000000000000000"
         );
-        break;
-
-      case "requestChangeWithdrawAddress":
-        console.log("approveRequestChange");
-        actions[action].func(formState.withdrawAddress);
-
         break;
 
       case "approveRequestChange":
@@ -90,7 +84,7 @@ const PoolChangeRequest = () => {
       auth.setLoading(true);
 
       const response = await contractInstance.requestChangeData();
-
+      console.log("response,", response);
       if (parseInt(formatUnits(response.poolIndex, 0)) === parseInt(pool.id)) {
         setFormState(ChangeRequestModel(response));
       }
@@ -102,7 +96,7 @@ const PoolChangeRequest = () => {
 
   const formData = poolFormChangeRequest;
 
-  console.log("PoolChangeRequest Overview render", formState, pool, success);
+  console.log("PoolChangeRequest Overview render", formState);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -146,13 +140,7 @@ const PoolChangeRequest = () => {
             >
               Submit
             </Button>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => handlePool("requestChangeWithdrawAddress")}
-            >
-              Change Withdraw Address
-            </Button>
+
             {isApprover && (
               <>
                 <Button

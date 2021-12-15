@@ -1,6 +1,15 @@
 import { useActions, useActionState } from "hooks/useActions";
 import { ethers } from "ethers";
-import { Button, Grid, Stack, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { usePool } from "providers/Pool";
 import { useState } from "react";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -97,6 +106,16 @@ const PoolToken = () => {
             variant="standard"
             onChange={handleOnchange}
           />
+        </Grid>
+        <Grid item xs="6">
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Claimable</InputLabel>
+            <Select labelId="demo-simple-select-label" id="demo-simple-select" label="Age">
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
 
         <Grid item xs={12}>
