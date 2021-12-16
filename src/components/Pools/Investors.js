@@ -74,24 +74,43 @@ const PoolInvestors = () => {
 
             case "poolRIR":
               // Do Winner For poolRIR
-              let poolAllocationRir = parseInt(pool.allocationRir);
+              const poolAllocationRir = parseInt(pool.allocationRir);
+              const poolAllocationBusd = parseInt(pool.allocationBusd / 100);
               const winners = {};
 
-              while (poolAllocationRir > 0) {
+              let allocation = poolAllocationRir;
+              let allocationType = "rir";
+
+              if (poolAllocationBusd < allocation) {
+                allocation = poolAllocationBusd;
+                allocationType = "busd";
+              }
+
+              let round = 0;
+
+              while (allocation > 0) {
                 // eslint-disable-next-line no-loop-func
-                data.forEach((row) => {
-                  if (parseInt(row.amountRir) > 0) {
+                data.forEach((row, i) => {
+                  const current =
+                    allocationType === "rir"
+                      ? parseInt(row.amountRir)
+                      : parseInt(row.amountBusd) / 100;
+
+                  if (current > round && allocation > 0) {
                     winners[row.id] = {
-                      allocationBusd: winners[row.id]?.allocationBusd
-                        ? winners[row.id]?.allocationBusd + 100
-                        : 100,
                       allocationRir: winners[row.id]?.allocationRir
                         ? winners[row.id]?.allocationRir + 1
                         : 1,
+                      allocationBusd: winners[row.id]?.allocationBusd
+                        ? winners[row.id]?.allocationBusd + 100
+                        : 100,
                     };
 
-                    row.amountRir--;
-                    poolAllocationRir--;
+                    allocation--;
+                  }
+
+                  if (i === data.length - 1) {
+                    round++;
                   }
                 });
               }
