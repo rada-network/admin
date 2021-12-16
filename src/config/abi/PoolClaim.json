@@ -117,6 +117,28 @@
     "type": "function"
   },
   {
+    "inputs": [
+      { "internalType": "uint64", "name": "_poolIdx", "type": "uint64" },
+      { "internalType": "uint256", "name": "_start", "type": "uint256" },
+      { "internalType": "uint256", "name": "_limit", "type": "uint256" }
+    ],
+    "name": "getAddresses",
+    "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint64", "name": "_poolIdx", "type": "uint64" },
+      { "internalType": "uint256", "name": "_start", "type": "uint256" },
+      { "internalType": "uint256", "name": "_limit", "type": "uint256" }
+    ],
+    "name": "getApprovedAddresses",
+    "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "uint64", "name": "_poolIdx", "type": "uint64" }],
     "name": "getClaimable",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -161,27 +183,8 @@
   },
   {
     "inputs": [{ "internalType": "uint64", "name": "_poolIdx", "type": "uint64" }],
-    "name": "getPool",
-    "outputs": [
-      {
-        "components": [
-          { "internalType": "address", "name": "tokenAddress", "type": "address" },
-          { "internalType": "uint256", "name": "allocationBusd", "type": "uint256" },
-          { "internalType": "uint256", "name": "allocationRir", "type": "uint256" },
-          { "internalType": "uint256", "name": "minAllocationBusd", "type": "uint256" },
-          { "internalType": "uint256", "name": "maxAllocationBusd", "type": "uint256" },
-          { "internalType": "uint256", "name": "price", "type": "uint256" },
-          { "internalType": "uint256", "name": "startDate", "type": "uint256" },
-          { "internalType": "uint256", "name": "endDate", "type": "uint256" },
-          { "internalType": "bool", "name": "locked", "type": "bool" },
-          { "internalType": "uint8", "name": "fee", "type": "uint8" },
-          { "internalType": "string", "name": "title", "type": "string" }
-        ],
-        "internalType": "struct PoolBase.POOL_INFO",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
+    "name": "getInvestorCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -241,6 +244,7 @@
       { "internalType": "address[]", "name": "_addresses", "type": "address[]" },
       { "internalType": "uint256[]", "name": "_amountBusds", "type": "uint256[]" },
       { "internalType": "uint256[]", "name": "_allocationBusds", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "_claimedToken", "type": "uint256[]" },
       { "internalType": "bool[]", "name": "_refundeds", "type": "bool[]" }
     ],
     "name": "importInvestors",
@@ -280,16 +284,9 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint64", "name": "_poolIdx", "type": "uint64" }],
-    "name": "poolAddresses",
-    "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "poolCount",
-    "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -320,7 +317,8 @@
       { "internalType": "uint256", "name": "amountBusd", "type": "uint256" },
       { "internalType": "uint256", "name": "amountRir", "type": "uint256" },
       { "internalType": "uint256", "name": "approvedBusd", "type": "uint256" },
-      { "internalType": "uint256", "name": "approvedRir", "type": "uint256" }
+      { "internalType": "uint256", "name": "approvedRir", "type": "uint256" },
+      { "internalType": "uint256", "name": "approvedCount", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"

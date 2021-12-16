@@ -27,6 +27,7 @@ const ProvidePool = ({ children }) => {
     contractName: contractName,
     contractType: contractType,
     contractInstance: contractInstance,
+    poolStat: {},
   };
 
   const callData = {
@@ -46,7 +47,7 @@ const ProvidePool = ({ children }) => {
       },
       {
         ...callData,
-        ...{ method: "getPool", args: [id] },
+        ...{ method: "pools", args: [id] },
       },
       {
         ...callData,
@@ -75,7 +76,7 @@ const ProvidePool = ({ children }) => {
           break;
 
         case 2:
-          provideValue.pool = PoolModel(chain[0], id);
+          provideValue.pool = PoolModel(chain, id);
           break;
 
         case 3:
