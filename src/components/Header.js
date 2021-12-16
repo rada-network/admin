@@ -74,6 +74,7 @@ export default function Header() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  console.log(process.env.PUBLIC_URL)
   return (
     <>
       <AppBar position="absolute" open={open}>
