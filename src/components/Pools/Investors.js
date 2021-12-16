@@ -42,7 +42,7 @@ const PoolInvestors = () => {
   const [success, handleState] = useActionState(actions);
 
   const handlePool = (action) => {
-    //auth.setLoading(true);
+    auth.setLoading(true);
 
     switch (action) {
       case "submit":
@@ -74,43 +74,56 @@ const PoolInvestors = () => {
 
             case "poolRIR":
               // Do Winner For poolRIR
-              const poolAllocationRir = parseInt(pool.allocationRir);
-              const poolAllocationBusd = parseInt(pool.allocationBusd / 100);
-              const winners = {};
+              let poolAllocationRir = parseInt(pool.allocationRir);
 
-              let allocation = poolAllocationRir;
-              let allocationType = "rir";
+              // Get RIR winner
+              let roundRIR = 0;
+              let allocatedRIR = 0;
+              const rirWinners = {};
 
-              if (poolAllocationBusd < allocation) {
-                allocation = poolAllocationBusd;
-                allocationType = "busd";
-              }
-
-              let round = 0;
-
-              while (allocation > 0) {
+              while (poolAllocationRir > 0) {
                 // eslint-disable-next-line no-loop-func
-                data.forEach((row, i) => {
-                  const current =
-                    allocationType === "rir"
-                      ? parseInt(row.amountRir)
-                      : parseInt(row.amountBusd) / 100;
+                data.forEach((row) => {
+                  const rir = parseInt(row.amountRir);
 
-                  if (current > round && allocation > 0) {
-                    winners[row.id] = {
-                      allocationRir: winners[row.id]?.allocationRir
-                        ? winners[row.id]?.allocationRir + 1
+                  if (rir > roundRIR && poolAllocationRir > 0) {
+                    rirWinners[row.id] = {
+                      allocationRir: rirWinners[row.id]?.allocationRir
+                        ? rirWinners[row.id]?.allocationRir + 1
                         : 1,
-                      allocationBusd: winners[row.id]?.allocationBusd
-                        ? winners[row.id]?.allocationBusd + 100
+                      allocationBusd: rirWinners[row.id]?.allocationBusd
+                        ? rirWinners[row.id]?.allocationBusd + 100
                         : 100,
                     };
 
-                    allocation--;
+                    allocatedRIR++;
+                    poolAllocationRir--;
                   }
+                });
+              }
 
-                  if (i === data.length - 1) {
-                    round++;
+              let roundBusd = 0;
+              let poolAllocationBusd = parseInt(pool.allocationBusd / 100) - allocatedRIR;
+              const busdWinners = {};
+
+              while (poolAllocationBusd > 0) {
+                // eslint-disable-next-line no-loop-func
+                data.forEach((row) => {
+                  const rirWinnerAddress = Object.keys(rirWinners);
+                  const busd = parseInt(row.amountBusd) / 100;
+
+                  if (
+                    busd > roundBusd &&
+                    poolAllocationBusd > 0 &&
+                    !rirWinnerAddress.includes(row.id)
+                  ) {
+                    busdWinners[row.id] = {
+                      allocationBusd: busdWinners[row.id]?.allocationBusd
+                        ? busdWinners[row.id]?.allocationBusd + 100
+                        : 100,
+                    };
+
+                    poolAllocationBusd--;
                   }
                 });
               }
@@ -119,14 +132,20 @@ const PoolInvestors = () => {
               let winnerBusd = [];
               let winnerRIR = [];
 
-              // Get data
-              Object.keys(winners).forEach((row) => {
+              // // Get data
+              Object.keys(rirWinners).forEach((row) => {
                 winnerAddress.push(row);
-                winnerBusd.push(parseEther(`${winners[row].allocationBusd}`));
-                winnerRIR.push(parseEther(`${winners[row].allocationRir}`));
+                winnerBusd.push(parseEther(`${rirWinners[row].allocationBusd}`));
+                winnerRIR.push(parseEther(`${rirWinners[row].allocationRir}`));
               });
 
-              console.log("importWinners", winners);
+              Object.keys(busdWinners).forEach((row) => {
+                winnerAddress.push(row);
+                winnerBusd.push(parseEther(`${busdWinners[row].allocationBusd}`));
+                winnerRIR.push(parseEther("0"));
+              });
+
+              console.log("importWinners", winnerAddress);
 
               actions["importWinners"].func(pool.id, winnerAddress, winnerBusd, winnerRIR);
 
