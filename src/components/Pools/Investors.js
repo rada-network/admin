@@ -210,6 +210,7 @@ const PoolInvestors = () => {
           address: row.data[0],
           amountBusd: row.data[1],
           allocationBusd: row.data[2],
+          refunded: row.data[3],
         }))
         .filter((row, i) => i > 0 && row.id);
 

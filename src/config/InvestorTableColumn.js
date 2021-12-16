@@ -4,9 +4,9 @@ const investorTableColumn = {
     { field: "address", headerName: "address", width: 400, editable: true },
     { field: "amountBusd", headerName: "amountBusd", width: 150 },
     { field: "allocationBusd", headerName: "allocationBusd", width: 150 },
+    { field: "refunded", headerName: "refunded" },
     { field: "paid", headerName: "paid" },
     { field: "approved", headerName: "approved" },
-    { field: "refunded", headerName: "refunded" },
   ],
   poolRIR: [
     { field: "id", hide: true },
