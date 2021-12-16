@@ -55,8 +55,11 @@ const PoolInvestors = () => {
 
           switch (contractType) {
             case "poolClaim":
-              const claimedToken = data.map((row) => parseEther(row.claimedToken));
-              const refunded = data.map((row) => row.refunded);
+              const claimedToken = data.map((row) =>
+                row.claimedToken ? parseEther(row.claimedToken) : "0"
+              );
+              const refunded = data.map((row) => (row.refunded ? row.refunded === "true" : false));
+
               actions["importInvestors"].func(
                 pool.id,
                 addresses,
@@ -187,7 +190,7 @@ const PoolInvestors = () => {
     const fetchData = async () => {
       auth.setLoading(true);
 
-      const response = await contractInstance.getAddresses(pool.id, "0", "100");
+      const response = await contractInstance.getAddresses(pool.id, "0", "1000");
       console.log("responseInvestor", response);
       const newInvestors = await Promise.all(
         response.map(async (investor) => {
