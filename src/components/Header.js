@@ -74,7 +74,7 @@ export default function Header() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
+  console.log(process.env.PUBLIC_URL)
   return (
     <>
       <AppBar position="absolute" open={open}>
@@ -116,25 +116,25 @@ export default function Header() {
             marginLeft: "5px",
           }}
         >
-          <ListItem button component={Link} to="/poolClaim">
+          <ListItem button component={Link} to={`${process.env.PUBLIC_URL}/poolClaim`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Only Claim Pools" />
           </ListItem>
-          <ListItem button component={Link} to="/poolRIR">
+          <ListItem button component={Link} to={`${process.env.PUBLIC_URL}/poolRIR`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="RIR Pools" />
           </ListItem>
-          <ListItem button component={Link} to="/poolWhitelist">
+          <ListItem button component={Link} to={`${process.env.PUBLIC_URL}/poolWhitelist`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Whitelist Pools" />
           </ListItem>
-          <ListItem button component={Link} to="/share2earn">
+          <ListItem button component={Link} to={`${process.env.PUBLIC_URL}/shar2earn`}>
             <ListItemIcon>
               <AttachMoneyIcon />
             </ListItemIcon>
