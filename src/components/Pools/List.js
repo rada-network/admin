@@ -11,7 +11,7 @@ export default function PoolList() {
   let navigate = useNavigate();
 
   const onClick = (params) => {
-    navigate(`${process.env.PUBLIC_UR}/${data.contractType}/${params.row.id}`);
+    navigate(`${process.env.PUBLIC_URL}/${data.contractType}/${params.row.id}`);
   };
 
   console.log("PoolList render", data);
