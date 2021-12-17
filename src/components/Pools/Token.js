@@ -16,6 +16,7 @@ const PoolToken = () => {
   const { contractInstance, pool } = usePool();
 
   const [formState, setFormState] = useState(pool);
+  const [token, setToken] = useState();
 
   const tokenInstance = useContract(pool.tokenAddress);
   const allowance = useTokenAllowance(pool.tokenAddress, auth.account, contractInstance.address);
@@ -39,6 +40,10 @@ const PoolToken = () => {
       contractInstance: tokenInstance,
       func: "approve",
     },
+    {
+      contractInstance: contractInstance,
+      func: "setToken",
+    },
   ]);
 
   const [success, handleState] = useActionState(actions);
@@ -51,12 +56,17 @@ const PoolToken = () => {
     switch (action) {
       case "deposit":
         console.log("deposit", pool.id, formState.depositAmountonChain);
-        // actions[action].func(pool.id, parseEther(formState.depositAmountonChain));
+        actions[action].func(pool.id, parseEther(formState.depositAmountonChain));
 
         break;
 
       case "approve":
         actions[action].func(contractInstance.address, ethers.constants.MaxUint256);
+        break;
+
+      case "setToken":
+        console.log("setToken", pool.id, token);
+        actions[action].func(pool.id, token);
         break;
       default:
         break;
@@ -81,6 +91,16 @@ const PoolToken = () => {
     }
   };
 
+  const handleOnchangeToken = ({ target }) => {
+    if (
+      target.value !== "0x0000000000000000000000000000000000000000" &&
+      target.value !== "" &&
+      target.value !== formState.tokenAddress
+    ) {
+      setToken(target.value);
+    }
+  };
+
   console.log("PoolDetail Token render", formState);
 
   return (
@@ -94,9 +114,8 @@ const PoolToken = () => {
             fullWidth
             autoComplete="given-name"
             variant="standard"
-            value={formState.tokenAddress}
-            onChange={handleOnchange}
-            disabled={true}
+            defaultValue={formState.tokenAddress}
+            onChange={handleOnchangeToken}
           />
         </Grid>
         <Grid item xs="6">
@@ -135,6 +154,15 @@ const PoolToken = () => {
 
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} sx={{ marginTop: "2rem", justifyContent: "flex-end" }}>
+            <Button
+              disabled={token ? false : true}
+              variant="contained"
+              color="success"
+              onClick={() => handlePool("setToken")}
+            >
+              Set Token
+            </Button>
+
             {approvedContract ? (
               <Button
                 disabled={!canAction}
