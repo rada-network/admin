@@ -160,7 +160,7 @@
       { "internalType": "uint64", "name": "_poolIdx", "type": "uint64" },
       { "internalType": "uint8", "name": "_percentage", "type": "uint8" }
     ],
-    "name": "getDepositToken",
+    "name": "getDepositAmountToken",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"

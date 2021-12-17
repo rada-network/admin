@@ -15,7 +15,7 @@ import DatePicker from "components/DatePicker";
 
 const PoolOverview = () => {
   const auth = useGlobal();
-  const { contractInstance, pool } = usePool();
+  const { contractInstance, pool, poolStat } = usePool();
 
   const [formState, setFormState] = useState(pool);
 
@@ -89,11 +89,47 @@ const PoolOverview = () => {
           )
         )}
 
+        {!pool.locked && (
+          <Grid item xs={12}>
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{ marginTop: "2rem", justifyContent: "flex-end" }}
+            >
+              <Button variant="contained" color="success" onClick={() => handlePool("updatePool")}>
+                Update Pool
+              </Button>
+            </Stack>
+          </Grid>
+        )}
+      </Grid>{" "}
+      <Grid container spacing={3} sx={{ marginTop: "2rem" }}>
+        <Grid item xs="6">
+          <TextField
+            name="tokenAddress"
+            label="tokenAddress"
+            fullWidth
+            autoComplete="given-name"
+            variant="standard"
+            defaultValue={pool.tokenAddress}
+          />
+        </Grid>
+        <Grid item xs="6">
+          <TextField
+            name="depositedToken"
+            label="depositedToken"
+            fullWidth
+            autoComplete="given-name"
+            variant="standard"
+            defaultValue={poolStat.depositedToken}
+          />
+        </Grid>
+
         <Grid item xs={12}>
-          <Stack direction="row" spacing={2} sx={{ marginTop: "2rem", justifyContent: "flex-end" }}>
+          <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
             {!pool.locked && (
               <Button variant="contained" color="success" onClick={() => handlePool("updatePool")}>
-                Update
+                Update Token
               </Button>
             )}
           </Stack>

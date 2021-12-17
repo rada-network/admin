@@ -75,7 +75,7 @@ const PoolToken = () => {
 
       if (value > 100) value = 100;
 
-      const response = await contractInstance.getDepositAmountBusd(pool.id, `${value}`);
+      const response = await contractInstance.getDepositAmountToken(pool.id, `${value}`);
 
       setFormState((state) => ({ ...state, ...{ depositAmountonChain: formatEther(response) } }));
     }
@@ -123,7 +123,7 @@ const PoolToken = () => {
             fullWidth
             autoComplete="given-name"
             variant="standard"
-            value={formState.depositAmountonChain}
+            value={formState.depositAmountonChain ?? "0"}
             onChange={handleOnchange}
             InputProps={{
               inputProps: {
