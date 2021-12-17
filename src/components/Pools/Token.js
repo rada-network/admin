@@ -138,7 +138,7 @@ const PoolToken = () => {
         <Grid item xs="6">
           <TextField
             name="depositAmountonChain"
-            label="depositAmountonChain"
+            label="depositAmount"
             fullWidth
             autoComplete="given-name"
             variant="standard"
