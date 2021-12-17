@@ -50,8 +50,8 @@ const PoolToken = () => {
 
     switch (action) {
       case "deposit":
-        console.log("deposit", pool.id, formState.depositAmount);
-        actions[action].func(pool.id, parseEther(formState.depositAmount));
+        console.log("deposit", pool.id, formState.depositAmountonChain);
+        // actions[action].func(pool.id, parseEther(formState.depositAmountonChain));
 
         break;
 
@@ -118,8 +118,8 @@ const PoolToken = () => {
         </Grid>
         <Grid item xs="6">
           <TextField
-            name="depositAmount"
-            label="depositAmount"
+            name="depositAmountonChain"
+            label="depositAmountonChain"
             fullWidth
             autoComplete="given-name"
             variant="standard"

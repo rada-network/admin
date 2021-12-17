@@ -15,7 +15,7 @@ import DatePicker from "components/DatePicker";
 
 const PoolOverview = () => {
   const auth = useGlobal();
-  const { contractInstance, pool, poolStat } = usePool();
+  const { contractInstance, pool, poolStat, contractType } = usePool();
 
   const [formState, setFormState] = useState(pool);
 
@@ -23,6 +23,10 @@ const PoolOverview = () => {
     {
       contractInstance: contractInstance,
       func: "updatePool",
+    },
+    {
+      contractInstance: contractInstance,
+      func: "updateToken",
     },
   ]);
 
@@ -41,6 +45,14 @@ const PoolOverview = () => {
           parseEther(formState.price),
           `${convertUnix(formState.startDate)}`,
           `${convertUnix(formState.endDate)}`
+        );
+        break;
+
+      case "updateToken":
+        actions[action].func(
+          formState.id,
+          formState.tokenAddress,
+          parseEther(formState.depositedToken)
         );
         break;
 
@@ -103,38 +115,48 @@ const PoolOverview = () => {
           </Grid>
         )}
       </Grid>
-      {/* <Grid container spacing={3} sx={{ marginTop: "2rem" }}>
-        <Grid item xs="6">
-          <TextField
-            name="tokenAddress"
-            label="tokenAddress"
-            fullWidth
-            autoComplete="given-name"
-            variant="standard"
-            defaultValue={pool.tokenAddress}
-          />
-        </Grid>
-        <Grid item xs="6">
-          <TextField
-            name="depositedToken"
-            label="depositedToken"
-            fullWidth
-            autoComplete="given-name"
-            variant="standard"
-            defaultValue={poolStat.depositedToken}
-          />
-        </Grid>
+      {contractType === "poolClaim" && (
+        <Grid container spacing={3} sx={{ marginTop: "2rem" }}>
+          <Grid item xs="6">
+            <TextField
+              name="tokenAddress"
+              label="tokenAddress"
+              fullWidth
+              autoComplete="given-name"
+              variant="standard"
+              defaultValue={pool.tokenAddress}
+              disabled={pool.locked}
+              onChange={handleOnchange}
+            />
+          </Grid>
+          <Grid item xs="6">
+            <TextField
+              name="depositedToken"
+              label="depositedToken"
+              fullWidth
+              autoComplete="given-name"
+              variant="standard"
+              defaultValue={poolStat.depositedToken}
+              disabled={pool.locked}
+              onChange={handleOnchange}
+            />
+          </Grid>
 
-        <Grid item xs={12}>
-          <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
-            {!pool.locked && (
-              <Button variant="contained" color="success">
-                Update Token
-              </Button>
-            )}
-          </Stack>
+          <Grid item xs={12}>
+            <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
+              {!pool.locked && (
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => handlePool("updateToken")}
+                >
+                  Update Token
+                </Button>
+              )}
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid> */}
+      )}
     </LocalizationProvider>
   );
 };
