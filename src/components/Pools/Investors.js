@@ -50,8 +50,12 @@ const PoolInvestors = () => {
           const data = investors.filter((investor) => selectedIDs.includes(investor.id));
 
           const addresses = data.map((row) => row.id);
-          const amountBusds = data.map((row) => parseEther(row.amountBusd));
-          const allocationBusd = data.map((row) => parseEther(row.allocationBusd));
+          const amountBusds = data.map((row) =>
+            row.amountBusd ? parseEther(row.amountBusd) : "0"
+          );
+          const allocationBusd = data.map((row) =>
+            row.allocationBusd ? parseEther(row.allocationBusd) : "0"
+          );
 
           switch (contractType) {
             case "poolClaim":
@@ -154,8 +158,10 @@ const PoolInvestors = () => {
 
               // // actions["importWinners"].func(pool.id, winnerAddress, winnerBusd, winnerRIR);
 
-              const allocationRir = data.map((row) => parseEther(row.allocationRir));
-              console.log("importWinners", addresses, data);
+              const allocationRir = data.map((row) =>
+                row.allocationRir ? parseEther(row.allocationRir) : "0"
+              );
+              console.log("importWinners", addresses, allocationBusd, allocationRir);
               actions["importWinners"].func(pool.id, addresses, allocationBusd, allocationRir);
 
               action = "importWinners";
