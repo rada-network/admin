@@ -40,7 +40,7 @@ const PoolDetail = () => {
             <Tab label="Overview" value="1" />
             <Tab label="Reqest changes" value="2" />
             <Tab label="Investors" value="3" />
-            <Tab label="Token" value="4" />
+            <Tab label="Deposit" value="4" />
             <Tab label="Statistics" value="5" />
           </TabList>
         </Box>

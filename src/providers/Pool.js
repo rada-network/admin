@@ -49,10 +49,7 @@ const ProvidePool = ({ children }) => {
         ...callData,
         ...{ method: "pools", args: [id] },
       },
-      {
-        ...callData,
-        ...{ method: "getDepositAmount", args: [id, "100"] },
-      },
+
       {
         ...callData,
         ...{ method: "poolsStat", args: [id] },
@@ -80,10 +77,6 @@ const ProvidePool = ({ children }) => {
           break;
 
         case 3:
-          provideValue.pool.depositAmount = formatEther(chain[0]);
-          break;
-
-        case 4:
           provideValue.poolStat = PoolStatModel(chain);
           break;
         default:

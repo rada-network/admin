@@ -70,15 +70,14 @@ const PoolToken = () => {
   };
 
   const handlePercentage = async ({ target }) => {
-    if (target.value) {
+    if (target.value > 0) {
       let value = parseInt(target.value, 10);
 
       if (value > 100) value = 100;
-      if (value < 0) value = 0;
 
-      const response = await contractInstance.getDepositAmount(pool.id, `${value}`);
+      const response = await contractInstance.getDepositAmountBusd(pool.id, `${value}`);
 
-      setFormState((state) => ({ ...state, ...{ depositAmount: formatEther(response) } }));
+      setFormState((state) => ({ ...state, ...{ depositAmountonChain: formatEther(response) } }));
     }
   };
 
@@ -124,7 +123,7 @@ const PoolToken = () => {
             fullWidth
             autoComplete="given-name"
             variant="standard"
-            value={formState.depositAmount ?? "0"}
+            value={formState.depositAmountonChain}
             onChange={handleOnchange}
             InputProps={{
               inputProps: {

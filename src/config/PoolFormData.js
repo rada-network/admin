@@ -50,13 +50,6 @@ const poolFormData = [
     readOnly: true,
     edit: true,
   },
-
-  {
-    name: "depositAmount",
-    label: "depositAmount",
-    readOnly: true,
-    edit: true,
-  },
 ];
 
 export default poolFormData;

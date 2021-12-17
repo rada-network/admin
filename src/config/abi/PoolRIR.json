@@ -162,7 +162,17 @@
       { "internalType": "uint64", "name": "_poolIdx", "type": "uint64" },
       { "internalType": "uint8", "name": "_percentage", "type": "uint8" }
     ],
-    "name": "getDepositAmount",
+    "name": "getDepositAmountBusd",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint64", "name": "_poolIdx", "type": "uint64" },
+      { "internalType": "uint8", "name": "_percentage", "type": "uint8" }
+    ],
+    "name": "getDepositToken",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -428,6 +438,16 @@
   {
     "inputs": [{ "internalType": "bool", "name": "_allow", "type": "bool" }],
     "name": "setClaimable",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint64", "name": "_poolIdx", "type": "uint64" },
+      { "internalType": "address", "name": "_tokenAddress", "type": "address" }
+    ],
+    "name": "setToken",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
