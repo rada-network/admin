@@ -4,7 +4,7 @@ import { usePool } from "providers/Pool";
 import { useEffect, useState } from "react";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { parseEther, parseUnits } from "@ethersproject/units";
+import { parseEther } from "@ethersproject/units";
 import { convertUnix } from "utils/format";
 import { useGlobal } from "providers/Global";
 import poolFormChangeRequest from "config/PoolFormChangeRequest";

@@ -1,15 +1,6 @@
 import { useActions, useActionState } from "hooks/useActions";
 import { ethers } from "ethers";
-import {
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { Button, Grid, Stack, TextField } from "@mui/material";
 import { usePool } from "providers/Pool";
 import { useState } from "react";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -22,7 +13,7 @@ import { useTokenAllowance } from "@usedapp/core";
 
 const PoolToken = () => {
   const auth = useGlobal();
-  const { contractInstance, pool, isApprover } = usePool();
+  const { contractInstance, pool } = usePool();
 
   const [formState, setFormState] = useState(pool);
 
@@ -78,12 +69,20 @@ const PoolToken = () => {
     setFormState((state) => ({ ...state, ...{ [target.name]: target.value } }));
   };
 
-  console.log("PoolDetail Token render", formState, pool, canAction);
+  const handlePercentage = async ({ target }) => {
+    if (target.value) {
+      const response = await contractInstance.getDepositAmount(pool.id, `${target.value}`);
+      console.log("handlePercentage", response);
+      setFormState((state) => ({ ...state, ...{ percentage: formatEther(response) } }));
+    }
+  };
+
+  console.log("PoolDetail Token render", formState);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Grid container spacing={3}>
-        <Grid item xs="6">
+        <Grid item xs="12">
           <TextField
             required
             name="tokenAddress"
@@ -98,38 +97,59 @@ const PoolToken = () => {
         </Grid>
         <Grid item xs="6">
           <TextField
-            required
+            name="percentage"
+            label="percentage"
+            fullWidth
+            autoComplete="given-name"
+            variant="standard"
+            onChange={handlePercentage}
+            InputProps={{
+              inputProps: {
+                type: "number",
+                min: 1,
+                max: 100,
+              },
+            }}
+          />
+        </Grid>
+        <Grid item xs="6">
+          <TextField
             name="depositAmount"
             label="depositAmount"
             fullWidth
             autoComplete="given-name"
             variant="standard"
+            value={formState.percentage ?? "0"}
             onChange={handleOnchange}
+            InputProps={{
+              inputProps: {
+                type: "number",
+              },
+            }}
           />
         </Grid>
 
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} sx={{ marginTop: "2rem", justifyContent: "flex-end" }}>
-            {isApprover &&
-              (approvedContract ? (
-                <Button
-                  disabled={!isApprover || !canAction}
-                  variant="contained"
-                  color="success"
-                  onClick={() => handlePool("deposit")}
-                >
-                  Deposit
-                </Button>
-              ) : (
-                <Button
-                  disabled={!isApprover || !canAction}
-                  variant="contained"
-                  color="success"
-                  onClick={() => handlePool("approve")}
-                >
-                  Approve Contract
-                </Button>
-              ))}
+            {approvedContract ? (
+              <Button
+                disabled={!canAction}
+                variant="contained"
+                color="success"
+                onClick={() => handlePool("deposit")}
+              >
+                Deposit
+              </Button>
+            ) : (
+              <Button
+                disabled={!canAction}
+                variant="contained"
+                color="success"
+                onClick={() => handlePool("approve")}
+              >
+                Approve Contract
+              </Button>
+            )}
           </Stack>
         </Grid>
       </Grid>

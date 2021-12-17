@@ -12,7 +12,7 @@ import PoolToken from "./Token";
 import MakePayment from "./MakePayment";
 
 const PoolDetail = () => {
-  const { pool, isApprover } = usePool();
+  const { pool } = usePool();
   const [tab, setTab] = useState("1");
 
   const handleChange = (event, newValue) => {
@@ -39,7 +39,7 @@ const PoolDetail = () => {
             <Tab label="Overview" value="1" />
             <Tab label="Reqest changes" value="2" />
             <Tab label="Investors" value="3" />
-            {isApprover && <Tab label="Token" value="4" />}
+            <Tab label="Token" value="4" />
             {/* <Tab label="Make Payment" value="5" /> */}
           </TabList>
         </Box>
