@@ -78,81 +78,85 @@ const PoolInvestors = () => {
               break;
 
             case "poolRIR":
-              // Do Winner For poolRIR
-              let poolAllocationRir = parseInt(pool.allocationRir);
+              // // Do Winner For poolRIR
+              // let poolAllocationRir = parseInt(pool.allocationRir);
 
-              // Get RIR winner
-              let roundRIR = 0;
-              let allocatedRIR = 0;
-              const rirWinners = {};
+              // // Get RIR winner
+              // let roundRIR = 0;
+              // let allocatedRIR = 0;
+              // const rirWinners = {};
 
-              while (poolAllocationRir > 0) {
-                // eslint-disable-next-line no-loop-func
-                data.forEach((row) => {
-                  const rir = parseInt(row.amountRir);
+              // while (poolAllocationRir > 0) {
+              //   // eslint-disable-next-line no-loop-func
+              //   data.forEach((row) => {
+              //     const rir = parseInt(row.amountRir);
 
-                  if (rir > roundRIR && poolAllocationRir > 0) {
-                    rirWinners[row.id] = {
-                      allocationRir: rirWinners[row.id]?.allocationRir
-                        ? rirWinners[row.id]?.allocationRir + 1
-                        : 1,
-                      allocationBusd: rirWinners[row.id]?.allocationBusd
-                        ? rirWinners[row.id]?.allocationBusd + 100
-                        : 100,
-                    };
+              //     if (rir > roundRIR && poolAllocationRir > 0) {
+              //       rirWinners[row.id] = {
+              //         allocationRir: rirWinners[row.id]?.allocationRir
+              //           ? rirWinners[row.id]?.allocationRir + 1
+              //           : 1,
+              //         allocationBusd: rirWinners[row.id]?.allocationBusd
+              //           ? rirWinners[row.id]?.allocationBusd + 100
+              //           : 100,
+              //       };
 
-                    allocatedRIR++;
-                    poolAllocationRir--;
-                  }
-                });
-              }
+              //       allocatedRIR++;
+              //       poolAllocationRir--;
+              //     }
+              //   });
+              // }
 
-              let roundBusd = 0;
-              let poolAllocationBusd = parseInt(pool.allocationBusd / 100) - allocatedRIR;
-              const busdWinners = {};
+              // let roundBusd = 0;
+              // let poolAllocationBusd = parseInt(pool.allocationBusd / 100) - allocatedRIR;
+              // const busdWinners = {};
 
-              while (poolAllocationBusd > 0) {
-                // eslint-disable-next-line no-loop-func
-                data.forEach((row) => {
-                  const rirWinnerAddress = Object.keys(rirWinners);
-                  const busd = parseInt(row.amountBusd) / 100;
+              // while (poolAllocationBusd > 0) {
+              //   // eslint-disable-next-line no-loop-func
+              //   data.forEach((row) => {
+              //     const rirWinnerAddress = Object.keys(rirWinners);
+              //     const busd = parseInt(row.amountBusd) / 100;
 
-                  if (
-                    busd > roundBusd &&
-                    poolAllocationBusd > 0 &&
-                    !rirWinnerAddress.includes(row.id)
-                  ) {
-                    busdWinners[row.id] = {
-                      allocationBusd: busdWinners[row.id]?.allocationBusd
-                        ? busdWinners[row.id]?.allocationBusd + 100
-                        : 100,
-                    };
+              //     if (
+              //       busd > roundBusd &&
+              //       poolAllocationBusd > 0 &&
+              //       !rirWinnerAddress.includes(row.id)
+              //     ) {
+              //       busdWinners[row.id] = {
+              //         allocationBusd: busdWinners[row.id]?.allocationBusd
+              //           ? busdWinners[row.id]?.allocationBusd + 100
+              //           : 100,
+              //       };
 
-                    poolAllocationBusd--;
-                  }
-                });
-              }
+              //       poolAllocationBusd--;
+              //     }
+              //   });
+              // }
 
-              let winnerAddress = [];
-              let winnerBusd = [];
-              let winnerRIR = [];
+              // let winnerAddress = [];
+              // let winnerBusd = [];
+              // let winnerRIR = [];
 
-              // // Get data
-              Object.keys(rirWinners).forEach((row) => {
-                winnerAddress.push(row);
-                winnerBusd.push(parseEther(`${rirWinners[row].allocationBusd}`));
-                winnerRIR.push(parseEther(`${rirWinners[row].allocationRir}`));
-              });
+              // // // Get data
+              // Object.keys(rirWinners).forEach((row) => {
+              //   winnerAddress.push(row);
+              //   winnerBusd.push(parseEther(`${rirWinners[row].allocationBusd}`));
+              //   winnerRIR.push(parseEther(`${rirWinners[row].allocationRir}`));
+              // });
 
-              Object.keys(busdWinners).forEach((row) => {
-                winnerAddress.push(row);
-                winnerBusd.push(parseEther(`${busdWinners[row].allocationBusd}`));
-                winnerRIR.push(parseEther("0"));
-              });
+              // Object.keys(busdWinners).forEach((row) => {
+              //   winnerAddress.push(row);
+              //   winnerBusd.push(parseEther(`${busdWinners[row].allocationBusd}`));
+              //   winnerRIR.push(parseEther("0"));
+              // });
 
-              console.log("importWinners", winnerAddress);
+              // console.log("importWinners", winnerAddress, rirWinners, busdWinners);
 
-              actions["importWinners"].func(pool.id, winnerAddress, winnerBusd, winnerRIR);
+              // // actions["importWinners"].func(pool.id, winnerAddress, winnerBusd, winnerRIR);
+
+              const allocationRir = data.map((row) => parseEther(row.allocationRir));
+              console.log("importWinners", addresses, data);
+              actions["importWinners"].func(pool.id, addresses, allocationBusd, allocationRir);
 
               action = "importWinners";
               break;
@@ -208,18 +212,33 @@ const PoolInvestors = () => {
 
   const handleOnFileLoad = (csv) => {
     if (csv.length > 0) {
-      const newInvestors = csv
-        .map((row, i) => ({
-          id: row.data[0],
-          address: row.data[0],
-          amountBusd: row.data[1],
-          allocationBusd: row.data[2],
-          claimedToken: row.data[3],
-          refunded: row.data[4],
-        }))
-        .filter((row, i) => i > 0 && row.id);
+      if (contractType === "poolRIR") {
+        const newInvestors = csv
+          .map((row, i) => ({
+            id: row.data[0],
+            address: row.data[0],
+            amountBusd: row.data[1],
+            amountRir: row.data[2],
+            allocationBusd: row.data[3],
+            allocationRir: row.data[4],
+          }))
+          .filter((row, i) => i > 0 && row.id);
 
-      setInvestors((prev) => [...prev, ...newInvestors]);
+        setInvestors((prev) => [...prev, ...newInvestors]);
+      } else {
+        const newInvestors = csv
+          .map((row, i) => ({
+            id: row.data[0],
+            address: row.data[0],
+            amountBusd: row.data[1],
+            allocationBusd: row.data[2],
+            claimedToken: row.data[3],
+            refunded: row.data[4],
+          }))
+          .filter((row, i) => i > 0 && row.id);
+
+        setInvestors((prev) => [...prev, ...newInvestors]);
+      }
     }
   };
 
@@ -240,7 +259,7 @@ const PoolInvestors = () => {
   const Toolbar = () => (
     <GridToolbarContainer>
       <Box sx={{ display: "flex", flexGrow: 1 }}>
-        {contractType !== "poolRIR" && <UploadCSV onUploadFile={handleOnFileLoad} />}
+        <UploadCSV onUploadFile={handleOnFileLoad} />
         <GridToolbarFilterButton />
         <GridToolbarExport />
         <PoolInvestorsAdd onSave={handleOnAdd} />
