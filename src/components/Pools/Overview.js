@@ -102,8 +102,8 @@ const PoolOverview = () => {
             </Stack>
           </Grid>
         )}
-      </Grid>{" "}
-      <Grid container spacing={3} sx={{ marginTop: "2rem" }}>
+      </Grid>
+      {/* <Grid container spacing={3} sx={{ marginTop: "2rem" }}>
         <Grid item xs="6">
           <TextField
             name="tokenAddress"
@@ -128,13 +128,13 @@ const PoolOverview = () => {
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
             {!pool.locked && (
-              <Button variant="contained" color="success" onClick={() => handlePool("updatePool")}>
+              <Button variant="contained" color="success">
                 Update Token
               </Button>
             )}
           </Stack>
         </Grid>
-      </Grid>
+      </Grid> */}
     </LocalizationProvider>
   );
 };
