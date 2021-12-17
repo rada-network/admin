@@ -10,7 +10,7 @@ import { convertUnix } from "utils/format";
 
 import { useGlobal } from "providers/Global";
 import poolFormData from "config/PoolFormData";
-import PoolStat from "./Stat";
+
 import DatePicker from "components/DatePicker";
 
 const PoolOverview = () => {
@@ -88,8 +88,6 @@ const PoolOverview = () => {
             </Grid>
           )
         )}
-
-        <PoolStat />
 
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} sx={{ marginTop: "2rem", justifyContent: "flex-end" }}>

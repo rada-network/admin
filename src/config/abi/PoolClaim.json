@@ -103,7 +103,7 @@
     "inputs": [{ "internalType": "uint64", "name": "_poolIdx", "type": "uint64" }],
     "name": "claim",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -113,7 +113,7 @@
     ],
     "name": "deposit",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -444,6 +444,17 @@
       { "internalType": "uint256", "name": "_endDate", "type": "uint256" }
     ],
     "name": "updatePool",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint64", "name": "_poolIdx", "type": "uint64" },
+      { "internalType": "address", "name": "_tokenAddress", "type": "address" },
+      { "internalType": "uint256", "name": "_depositedToken", "type": "uint256" }
+    ],
+    "name": "updateToken",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

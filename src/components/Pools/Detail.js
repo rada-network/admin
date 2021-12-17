@@ -9,7 +9,8 @@ import PoolOverview from "./Overview";
 import LockPool from "./Lock";
 import PoolChangeRequest from "./ChangeRequest";
 import PoolToken from "./Token";
-import MakePayment from "./MakePayment";
+
+import PoolStat from "./Stat";
 
 const PoolDetail = () => {
   const { pool } = usePool();
@@ -40,7 +41,7 @@ const PoolDetail = () => {
             <Tab label="Reqest changes" value="2" />
             <Tab label="Investors" value="3" />
             <Tab label="Token" value="4" />
-            {/* <Tab label="Make Payment" value="5" /> */}
+            <Tab label="Statistics" value="5" />
           </TabList>
         </Box>
         <TabPanel value="1">
@@ -56,7 +57,7 @@ const PoolDetail = () => {
           <PoolToken />
         </TabPanel>
         <TabPanel value="5">
-          <MakePayment />
+          <PoolStat />
         </TabPanel>
       </TabContext>
     </Box>

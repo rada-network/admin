@@ -3,7 +3,6 @@ const poolStatFormData = [
     name: "depositedToken",
     label: "depositedToken",
     readOnly: true,
-    size: 12,
   },
   {
     name: "amountBusd",

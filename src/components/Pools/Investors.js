@@ -191,11 +191,10 @@ const PoolInvestors = () => {
       auth.setLoading(true);
 
       const response = await contractInstance.getAddresses(pool.id, "0", "1000");
-      console.log("responseInvestor", response);
+
       const newInvestors = await Promise.all(
         response.map(async (investor) => {
           const responseInvestor = await contractInstance.getInvestor(pool.id, investor);
-          console.log("responseInvestor", responseInvestor);
           return InvestorModel(responseInvestor, investor);
         })
       );
@@ -253,7 +252,7 @@ const PoolInvestors = () => {
           color="success"
           onClick={() => handlePool("submit")}
         >
-          Submit
+          Import
         </Button>
 
         <Button
@@ -262,7 +261,7 @@ const PoolInvestors = () => {
           color="success"
           onClick={() => handlePool("approveInvestors")}
         >
-          Aprrove All
+          Aprrove
         </Button>
         <Button
           disabled={!isApprover || !pool.locked || selectedIDs.length === 0}

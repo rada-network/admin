@@ -9,7 +9,7 @@ const PoolStat = () => {
   console.log("PoolDetail State render", poolStat);
 
   return (
-    <>
+    <Grid container spacing={3}>
       {poolStatFormData.map((field, i) => (
         <Grid item xs={field.size ? field.size : "6"} key={i}>
           <TextField
@@ -24,7 +24,7 @@ const PoolStat = () => {
           />
         </Grid>
       ))}
-    </>
+    </Grid>
   );
 };
 
