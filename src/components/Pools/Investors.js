@@ -217,8 +217,8 @@ const PoolInvestors = () => {
           .map((row, i) => ({
             id: row.data[0],
             address: row.data[0],
-            allocationBusd: row.data[3],
-            allocationRir: row.data[4],
+            allocationBusd: row.data[1],
+            allocationRir: row.data[2],
           }))
           .filter((row, i) => i > 0 && row.id);
 
