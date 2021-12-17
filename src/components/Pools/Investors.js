@@ -217,14 +217,12 @@ const PoolInvestors = () => {
           .map((row, i) => ({
             id: row.data[0],
             address: row.data[0],
-            amountBusd: row.data[1],
-            amountRir: row.data[2],
             allocationBusd: row.data[3],
             allocationRir: row.data[4],
           }))
           .filter((row, i) => i > 0 && row.id);
 
-        setInvestors((prev) => [...prev, ...newInvestors]);
+        setInvestors(newInvestors);
       } else {
         const newInvestors = csv
           .map((row, i) => ({
