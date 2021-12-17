@@ -43,13 +43,6 @@ const poolFormData = [
     label: "endDate",
     type: "date",
   },
-
-  {
-    name: "tokenAddress",
-    label: "tokenAddress",
-    readOnly: true,
-    edit: true,
-  },
 ];
 
 export default poolFormData;
