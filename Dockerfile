@@ -14,7 +14,7 @@ RUN yarn install
 # add app
 COPY . ./
 
-RUN yarn build
+RUN yarn build:production
 RUN yarn global add serve
 
 # start app
