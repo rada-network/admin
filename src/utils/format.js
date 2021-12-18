@@ -1,4 +1,5 @@
 import { format, parseISO, getUnixTime, fromUnixTime as fromUnixTimeCore } from "date-fns";
+import { formatEther as formatEtherCore } from "@ethersproject/units";
 
 const formatString = "dd-MM-yyyy HH:mm";
 
@@ -35,4 +36,20 @@ const fromUnixTime = (unixTime) => {
 
 const formatAddress = (value) => `${value.substring(0, 4)}...${value.slice(-4)}`;
 
-export { formatDate, formatAddress, convertUnix, fromUnixTime };
+const formatEther = (value) => {
+  const v = formatEtherCore(value);
+
+  if (v < 0.0000000000001) {
+    return 0;
+  }
+
+  return v;
+};
+
+const formatNumber = (value) => {
+  if (value) {
+    return new Intl.NumberFormat().format(value);
+  }
+  return 0;
+};
+export { formatDate, formatAddress, convertUnix, fromUnixTime, formatEther, formatNumber };

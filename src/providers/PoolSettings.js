@@ -1,17 +1,13 @@
 import { createContext, useContext } from "react";
 
-import { useContractCalls } from "@usedapp/core";
-
 import { useGlobal } from "./Global";
-import PoolModel from "model/Pool";
 import { useParams } from "react-router-dom";
 import useABI from "hooks/useABI";
+import { useContractCalls } from "@usedapp/core";
 
-import PoolStatModel from "model/PoolStat";
+const poolSettingsContext = createContext();
 
-const poolContext = createContext();
-
-const ProvidePool = ({ children }) => {
+const ProvidePoolSettings = ({ children }) => {
   const global = useGlobal();
   const { type, id } = useParams();
 
@@ -23,11 +19,10 @@ const ProvidePool = ({ children }) => {
     id: id,
     isAdmin: false,
     isApprover: false,
-    pool: {},
+    isOwner: false,
     contractName: contractName,
     contractType: contractType,
     contractInstance: contractInstance,
-    poolStat: {},
   };
 
   const callData = {
@@ -47,12 +42,7 @@ const ProvidePool = ({ children }) => {
       },
       {
         ...callData,
-        ...{ method: "pools", args: [id] },
-      },
-
-      {
-        ...callData,
-        ...{ method: "poolsStat", args: [id] },
+        ...{ method: "owner", args: [] },
       },
     ]).filter((a) => a) ?? [];
 
@@ -69,33 +59,32 @@ const ProvidePool = ({ children }) => {
 
         case 1:
           provideValue.isApprover = true;
-
           break;
-
         case 2:
-          provideValue.pool = PoolModel(chain, id);
+          if (chain[0] === global.account) {
+            provideValue.isOwner = true;
+          }
           break;
 
-        case 3:
-          provideValue.poolStat = PoolStatModel(chain);
-          break;
         default:
           break;
       }
     }
   });
 
-  if (!provideValue.pool || (!provideValue.isApprover && !provideValue.isAdmin)) {
+  if (!provideValue.isApprover && !provideValue.isAdmin) {
     return "Ops...You are not a admin or approver";
   }
 
-  console.log("ProvidePool render", provideValue, contractChain);
+  console.log("provideValue", provideValue);
 
-  return <poolContext.Provider value={provideValue}>{children}</poolContext.Provider>;
+  return (
+    <poolSettingsContext.Provider value={provideValue}>{children}</poolSettingsContext.Provider>
+  );
 };
 
-const usePool = () => {
-  return useContext(poolContext);
+const usePoolSettings = () => {
+  return useContext(poolSettingsContext);
 };
 
-export { ProvidePool, usePool };
+export { ProvidePoolSettings, usePoolSettings };
