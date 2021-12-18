@@ -1,4 +1,4 @@
-import { formatEther } from "@ethersproject/units";
+import { formatEther } from "utils/format";
 
 const InvestorModel = (data = {}, address = "") => {
   return {
@@ -12,6 +12,7 @@ const InvestorModel = (data = {}, address = "") => {
     approved: data.approved ?? false,
     refunded: data.refunded ?? false,
     paid: data.paid ?? false,
+    onchain: true,
   };
 };
 

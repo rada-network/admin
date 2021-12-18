@@ -13,7 +13,7 @@ import { useTokenAllowance } from "@usedapp/core";
 
 const PoolToken = () => {
   const auth = useGlobal();
-  const { contractInstance, pool } = usePool();
+  const { contractInstance, pool, poolStat } = usePool();
 
   const [formState, setFormState] = useState(pool);
   const [token, setToken] = useState();
@@ -106,7 +106,7 @@ const PoolToken = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Grid container spacing={3}>
-        <Grid item xs="12">
+        <Grid item xs="6">
           <TextField
             required
             name="tokenAddress"
@@ -116,6 +116,17 @@ const PoolToken = () => {
             variant="standard"
             defaultValue={formState.tokenAddress}
             onChange={handleOnchangeToken}
+          />
+        </Grid>
+        <Grid item xs="6">
+          <TextField
+            name="depositedToken"
+            label="depositedToken"
+            fullWidth
+            autoComplete="given-name"
+            variant="standard"
+            value={poolStat.depositedToken}
+            disabled={true}
           />
         </Grid>
         <Grid item xs="6">

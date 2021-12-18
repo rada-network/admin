@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import Table from "components/Table";
 import Title from "components/Title";
 import poolTableColumn from "config/PoolTableColumn";
@@ -14,6 +14,10 @@ export default function PoolList() {
     navigate(`${process.env.PUBLIC_URL}/${data.contractType}/${params.row.id}`);
   };
 
+  const onSettings = (params) => {
+    navigate(`${process.env.PUBLIC_URL}/${data.contractType}/settings`);
+  };
+
   console.log("PoolList render", data);
 
   return (
@@ -25,7 +29,12 @@ export default function PoolList() {
         sx={{ marginBottom: "1rem" }}
       >
         <Title>{data.contractName}</Title>
-        <PoolAddButton type="payable" text="Add a Pool" />
+        <Stack direction="row" spacing={2}>
+          <PoolAddButton type="payable" text="Add a Pool" />
+          <Button variant="contained" onClick={onSettings}>
+            Settings
+          </Button>
+        </Stack>
       </Stack>
       <Table rows={data.pools} columns={poolTableColumn} onCellClick={onClick} />
     </>

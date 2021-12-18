@@ -1,5 +1,4 @@
-import { formatEther } from "@ethersproject/units";
-import { formatAddress, fromUnixTime } from "utils/format";
+import { formatAddress, fromUnixTime, formatEther } from "utils/format";
 
 const PoolModel = (data, i) => {
   let tokenAddress = "";

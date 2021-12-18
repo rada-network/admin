@@ -15,7 +15,7 @@ import PoolInvestorsAdd from "./InvestorsAdd";
 
 const PoolInvestors = () => {
   const auth = useGlobal();
-  const { contractInstance, pool, isApprover, contractType } = usePool();
+  const { contractInstance, pool, isApprover, isAdmin, contractType } = usePool();
 
   const [investors, setInvestors] = useState([]);
   const [selectedIDs, setSelectedIDs] = useState([]);
@@ -64,6 +64,16 @@ const PoolInvestors = () => {
               );
               const refunded = data.map((row) => (row.refunded ? row.refunded === "true" : false));
 
+              console.log(
+                "importInvestors",
+                pool.id,
+                addresses,
+                amountBusds,
+                allocationBusd,
+                claimedToken,
+                refunded
+              );
+
               actions["importInvestors"].func(
                 pool.id,
                 addresses,
@@ -82,86 +92,10 @@ const PoolInvestors = () => {
               break;
 
             case "poolRIR":
-              // // Do Winner For poolRIR
-              // let poolAllocationRir = parseInt(pool.allocationRir);
-
-              // // Get RIR winner
-              // let roundRIR = 0;
-              // let allocatedRIR = 0;
-              // const rirWinners = {};
-
-              // while (poolAllocationRir > 0) {
-              //   // eslint-disable-next-line no-loop-func
-              //   data.forEach((row) => {
-              //     const rir = parseInt(row.amountRir);
-
-              //     if (rir > roundRIR && poolAllocationRir > 0) {
-              //       rirWinners[row.id] = {
-              //         allocationRir: rirWinners[row.id]?.allocationRir
-              //           ? rirWinners[row.id]?.allocationRir + 1
-              //           : 1,
-              //         allocationBusd: rirWinners[row.id]?.allocationBusd
-              //           ? rirWinners[row.id]?.allocationBusd + 100
-              //           : 100,
-              //       };
-
-              //       allocatedRIR++;
-              //       poolAllocationRir--;
-              //     }
-              //   });
-              // }
-
-              // let roundBusd = 0;
-              // let poolAllocationBusd = parseInt(pool.allocationBusd / 100) - allocatedRIR;
-              // const busdWinners = {};
-
-              // while (poolAllocationBusd > 0) {
-              //   // eslint-disable-next-line no-loop-func
-              //   data.forEach((row) => {
-              //     const rirWinnerAddress = Object.keys(rirWinners);
-              //     const busd = parseInt(row.amountBusd) / 100;
-
-              //     if (
-              //       busd > roundBusd &&
-              //       poolAllocationBusd > 0 &&
-              //       !rirWinnerAddress.includes(row.id)
-              //     ) {
-              //       busdWinners[row.id] = {
-              //         allocationBusd: busdWinners[row.id]?.allocationBusd
-              //           ? busdWinners[row.id]?.allocationBusd + 100
-              //           : 100,
-              //       };
-
-              //       poolAllocationBusd--;
-              //     }
-              //   });
-              // }
-
-              // let winnerAddress = [];
-              // let winnerBusd = [];
-              // let winnerRIR = [];
-
-              // // // Get data
-              // Object.keys(rirWinners).forEach((row) => {
-              //   winnerAddress.push(row);
-              //   winnerBusd.push(parseEther(`${rirWinners[row].allocationBusd}`));
-              //   winnerRIR.push(parseEther(`${rirWinners[row].allocationRir}`));
-              // });
-
-              // Object.keys(busdWinners).forEach((row) => {
-              //   winnerAddress.push(row);
-              //   winnerBusd.push(parseEther(`${busdWinners[row].allocationBusd}`));
-              //   winnerRIR.push(parseEther("0"));
-              // });
-
-              // console.log("importWinners", winnerAddress, rirWinners, busdWinners);
-
-              // // actions["importWinners"].func(pool.id, winnerAddress, winnerBusd, winnerRIR);
-
               const allocationRir = data.map((row) =>
                 row.allocationRir ? parseEther(row.allocationRir) : "0"
               );
-              console.log("importWinners", addresses, allocationBusd, allocationRir);
+
               actions["importWinners"].func(pool.id, addresses, allocationBusd, allocationRir);
 
               action = "importWinners";
@@ -218,8 +152,9 @@ const PoolInvestors = () => {
 
   const handleOnFileLoad = (csv) => {
     if (csv.length > 0) {
+      let newInvestors = [];
       if (contractType === "poolRIR") {
-        const newInvestors = csv
+        newInvestors = csv
           .map((row, i) => ({
             id: row.data[0],
             address: row.data[0],
@@ -227,10 +162,8 @@ const PoolInvestors = () => {
             allocationRir: row.data[2],
           }))
           .filter((row, i) => i > 0 && row.id);
-
-        setInvestors(newInvestors);
       } else {
-        const newInvestors = csv
+        newInvestors = csv
           .map((row, i) => ({
             id: row.data[0],
             address: row.data[0],
@@ -240,9 +173,15 @@ const PoolInvestors = () => {
             refunded: row.data[4],
           }))
           .filter((row, i) => i > 0 && row.id);
-
-        setInvestors((prev) => [...prev, ...newInvestors]);
       }
+
+      const result = newInvestors.concat(
+        investors.filter((bo) => newInvestors.every((ao) => ao.address !== bo.address))
+      );
+
+      console.log("newInvestors", result);
+
+      setInvestors(result);
     }
   };
 
@@ -255,48 +194,61 @@ const PoolInvestors = () => {
     data.id = data.address;
     console.log("handleOnAdd", data);
 
-    setInvestors((prev) => [...prev, data]);
+    setInvestors([...investors, data]);
   };
 
   const columns = investorTableColumn[contractType];
 
-  const Toolbar = () => (
-    <GridToolbarContainer>
-      <Box sx={{ display: "flex", flexGrow: 1 }}>
-        <UploadCSV onUploadFile={handleOnFileLoad} />
-        <GridToolbarFilterButton />
-        <GridToolbarExport />
-        <PoolInvestorsAdd onSave={handleOnAdd} />
-      </Box>
-      <Stack direction="row" spacing={2}>
-        <Button
-          disabled={selectedIDs.length === 0}
-          variant="contained"
-          color="success"
-          onClick={() => handlePool("submit")}
-        >
-          Import
-        </Button>
+  const Toolbar = () => {
+    const hasApproved = investors.filter((investor) => !investor.approved);
 
-        <Button
-          disabled={!isApprover || !pool.locked}
-          variant="contained"
-          color="success"
-          onClick={() => handlePool("approveInvestors")}
-        >
-          Aprrove
-        </Button>
-        <Button
-          disabled={!isApprover || !pool.locked || selectedIDs.length === 0}
-          variant="contained"
-          color="success"
-          onClick={() => handlePool("unapproveInvestor")}
-        >
-          Unaprrove
-        </Button>
-      </Stack>
-    </GridToolbarContainer>
-  );
+    console.log("hasApproved", hasApproved);
+    return (
+      <GridToolbarContainer>
+        <Box sx={{ display: "flex", flexGrow: 1 }}>
+          {isAdmin && <UploadCSV onUploadFile={handleOnFileLoad} />}
+          <GridToolbarFilterButton />
+          <GridToolbarExport />
+          {isAdmin && <PoolInvestorsAdd onSave={handleOnAdd} />}
+        </Box>
+        <Stack direction="row" spacing={2}>
+          {isAdmin && (
+            <Button
+              disabled={selectedIDs.length === 0}
+              variant="contained"
+              color="success"
+              onClick={() => handlePool("submit")}
+            >
+              Import
+            </Button>
+          )}
+
+          {isApprover && (
+            <>
+              {hasApproved.length > 0 && (
+                <Button
+                  disabled={!isApprover || !pool.locked}
+                  variant="contained"
+                  color="success"
+                  onClick={() => handlePool("approveInvestors")}
+                >
+                  Aprrove
+                </Button>
+              )}
+              <Button
+                disabled={!isApprover || !pool.locked || selectedIDs.length === 0}
+                variant="contained"
+                color="success"
+                onClick={() => handlePool("unapproveInvestor")}
+              >
+                Unaprrove
+              </Button>{" "}
+            </>
+          )}
+        </Stack>
+      </GridToolbarContainer>
+    );
+  };
 
   console.log("PoolInvestors render", investors, pool);
 
@@ -306,7 +258,6 @@ const PoolInvestors = () => {
       columns={columns}
       checkboxSelection
       disableSelectionOnClick
-      pageSize={30}
       components={{
         Toolbar: Toolbar,
       }}
