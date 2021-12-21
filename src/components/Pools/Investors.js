@@ -13,6 +13,9 @@ import { useGlobal } from "providers/Global";
 import investorTableColumn from "config/InvestorTableColumn";
 import PoolInvestorsAdd from "./InvestorsAdd";
 
+import { createIndexDB, getInvestor } from "utils/investors";
+import indexDbService from "utils/indexDbService";
+
 const PoolInvestors = () => {
   const auth = useGlobal();
   const { contractInstance, pool, isApprover, isAdmin, contractType } = usePool();
@@ -132,16 +135,16 @@ const PoolInvestors = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      let start = 0;
+      let limit = 1000;
+
       auth.setLoading(true);
 
-      const response = await contractInstance.getAddresses(pool.id, "0", "1000");
+      await createIndexDB();
+      await indexDbService.clear("investors");
+      await getInvestor(contractInstance, pool.id, start, limit);
 
-      const newInvestors = await Promise.all(
-        response.map(async (investor) => {
-          const responseInvestor = await contractInstance.getInvestor(pool.id, investor);
-          return InvestorModel(responseInvestor, investor);
-        })
-      );
+      const newInvestors = await indexDbService.getAll("investors");
 
       setInvestors(newInvestors);
 

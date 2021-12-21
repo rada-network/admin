@@ -5,7 +5,6 @@ import { Box } from "@mui/system";
 import Title from "components/Title";
 
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 
 import PoolSetAdmin from "./SetAdmin";
 import PoolSettings from "./Settings";

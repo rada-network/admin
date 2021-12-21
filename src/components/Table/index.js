@@ -5,7 +5,7 @@ import Toolbar from "./Toolbar";
 
 const Table = (props) => {
   const data = {
-    pageSize: 50,
+    pageSize: 100,
     components: {
       Toolbar: Toolbar,
     },
