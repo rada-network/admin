@@ -11,9 +11,10 @@ import PoolChangeRequest from "./ChangeRequest";
 import PoolToken from "./Token";
 
 import PoolStat from "./Stat";
+import PoolImport from "./Import";
 
 const PoolDetail = () => {
-  const { pool } = usePool();
+  const { pool, isAdmin } = usePool();
   const [tab, setTab] = useState("1");
 
   const handleChange = (event, newValue) => {
@@ -42,6 +43,7 @@ const PoolDetail = () => {
             <Tab label="Investors" value="3" />
             <Tab label="Deposit" value="4" />
             <Tab label="Statistics" value="5" />
+            {isAdmin && <Tab label="Import Winner" value="6" />}
           </TabList>
         </Box>
         <TabPanel value="1">
@@ -58,6 +60,9 @@ const PoolDetail = () => {
         </TabPanel>
         <TabPanel value="5">
           <PoolStat />
+        </TabPanel>
+        <TabPanel value="6">
+          <PoolImport />
         </TabPanel>
       </TabContext>
     </Box>
