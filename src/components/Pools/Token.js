@@ -13,7 +13,7 @@ import { useTokenAllowance } from "@usedapp/core";
 
 const PoolToken = () => {
   const auth = useGlobal();
-  const { contractInstance, pool, poolStat } = usePool();
+  const { contractInstance, pool, poolStat, isAdmin } = usePool();
 
   const [formState, setFormState] = useState(pool);
   const [token, setToken] = useState();
@@ -165,7 +165,7 @@ const PoolToken = () => {
 
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} sx={{ marginTop: "2rem", justifyContent: "flex-end" }}>
-            {auth.iAdmin && (
+            {isAdmin && (
               <Button
                 disabled={token ? false : true}
                 variant="contained"

@@ -30,7 +30,7 @@ export default function PoolList() {
       >
         <Title>{data.contractName}</Title>
         <Stack direction="row" spacing={2}>
-          <PoolAddButton type="payable" text="Add a Pool" />
+          {data.isAdmin && <PoolAddButton type="payable" text="Add a Pool" />}
           <Button variant="contained" onClick={onSettings}>
             Settings
           </Button>
