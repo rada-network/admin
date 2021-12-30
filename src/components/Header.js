@@ -10,7 +10,6 @@ import {
   Typography,
   Divider,
   List,
-  ListItem,
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
@@ -22,6 +21,9 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 import { Link } from "react-router-dom";
 import Wallet from "./Wallet";
+import { useState } from "react";
+import { useGlobal } from "providers/Global";
+import MenuLink from "./MenuLink";
 
 const drawerWidth = 240;
 
@@ -70,11 +72,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
 );
 
 export default function Header() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
+  const { type } = useGlobal();
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  console.log(process.env.PUBLIC_URL)
+
   return (
     <>
       <AppBar position="absolute" open={open}>
@@ -92,7 +96,7 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            RADA Admin
+            RADA {type}
           </Typography>
           <Wallet />
         </Toolbar>
@@ -116,30 +120,30 @@ export default function Header() {
             marginLeft: "5px",
           }}
         >
-          <ListItem button component={Link} to={`${process.env.PUBLIC_URL}/poolClaim`}>
+          <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/poolClaim`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Only Claim Pools" />
-          </ListItem>
-          <ListItem button component={Link} to={`${process.env.PUBLIC_URL}/poolRIR`}>
+          </MenuLink>
+          <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/poolRIR`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="RIR Pools" />
-          </ListItem>
-          <ListItem button component={Link} to={`${process.env.PUBLIC_URL}/poolWhitelist`}>
+          </MenuLink>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/poolWhitelist`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Whitelist Pools" />
-          </ListItem>
-          <ListItem button component={Link} to={`${process.env.PUBLIC_URL}/shar2earn`}>
+          </MenuLink>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/shar2earn`}>
             <ListItemIcon>
               <AttachMoneyIcon />
             </ListItemIcon>
             <ListItemText primary="Share2earn" />
-          </ListItem>
+          </MenuLink>
         </List>
       </Drawer>
     </>

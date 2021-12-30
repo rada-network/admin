@@ -55,6 +55,7 @@ const ProvidePools = ({ children }) => {
       switch (i) {
         case 0:
           provideValue.isAdmin = true;
+
           break;
 
         case 1:
@@ -72,6 +73,8 @@ const ProvidePools = ({ children }) => {
       }
     }
   });
+
+  global.handleType(provideValue);
 
   console.log("ProvidePools render", provideValue, contractChain);
 
