@@ -46,9 +46,9 @@ const PoolSettings = () => {
 
     switch (action) {
       case "setClaimable":
-        console.log("setClaimable", claimable);
+        console.log("setClaimable", claimable === "true");
 
-        actions[action].func(claimable);
+        actions[action].func(claimable === "true");
         break;
       case "requestChangeWithdrawAddress":
         console.log("requestChangeWithdrawAddress", formState.requestWithdrawAddress);

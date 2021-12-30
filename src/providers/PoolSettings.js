@@ -76,7 +76,7 @@ const ProvidePoolSettings = ({ children }) => {
     return "Ops...You are not a admin or approver";
   }
 
-  console.log("provideValue", provideValue);
+  console.log("ProvidePoolSettings", provideValue);
 
   return (
     <poolSettingsContext.Provider value={provideValue}>{children}</poolSettingsContext.Provider>
