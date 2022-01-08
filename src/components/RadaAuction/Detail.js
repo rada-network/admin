@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRadaAuction } from "providers/RadaAuction";
 import RadaAuctionOverview from "./Overview";
 import RadaAuctionImport from "./Import";
-import RadaAuctionSettings from "./Settings";
+import RadaAuctionStats from "./Stat";
 
 const RadaAuctionDetail = () => {
   const { isOwner, pool } = useRadaAuction();
@@ -27,14 +27,18 @@ const RadaAuctionDetail = () => {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange}>
             <Tab label="Detail" value="1" />
-            {isOwner && <Tab label="Import Whitelist" value="2" />}
+            <Tab label="Statistics" value="2" />
+            {isOwner && <Tab label="Import Whitelist" value="3" />}
           </TabList>
         </Box>
         <TabPanel value="1">
           <RadaAuctionOverview />
         </TabPanel>
+        <TabPanel value="2">
+          <RadaAuctionStats />
+        </TabPanel>
         {isOwner && (
-          <TabPanel value="2">
+          <TabPanel value="3">
             <RadaAuctionImport />
           </TabPanel>
         )}

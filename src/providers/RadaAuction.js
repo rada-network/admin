@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import useABI from "hooks/useABI";
 import { useContractCalls } from "@usedapp/core";
 import RadaAuctionModel from "model/RadaAuction";
+import RadaAuctionStatsModel from "model/RadaAuctionStats";
 
 const radaAuctionContext = createContext();
 
@@ -21,6 +22,7 @@ const ProvideRadaAuction = ({ children }) => {
     contractType: contractType,
     contractInstance: contractInstance,
     pool: null,
+    poolStat: null,
   };
 
   const callData = {
@@ -44,6 +46,11 @@ const ProvideRadaAuction = ({ children }) => {
       ...callData,
       ...{ method: "pools", args: [id] },
     });
+
+    calls.push({
+      ...callData,
+      ...{ method: "poolStats", args: [id] },
+    });
   }
 
   const contractChain = useContractCalls(calls).filter((a) => a) ?? [];
@@ -53,7 +60,7 @@ const ProvideRadaAuction = ({ children }) => {
   }
 
   contractChain.forEach((chain, i) => {
-    if (chain[0]) {
+    if (chain) {
       switch (i) {
         case 0:
           provideValue.isAdmin = true;
@@ -72,6 +79,11 @@ const ProvideRadaAuction = ({ children }) => {
 
           break;
 
+        case 3:
+          provideValue.poolStat = RadaAuctionStatsModel(chain);
+
+          break;
+
         default:
           break;
       }
@@ -80,11 +92,11 @@ const ProvideRadaAuction = ({ children }) => {
 
   global.handleType(provideValue);
 
-  console.log("ProvideRadaAuction render", provideValue, id);
-
   if (!provideValue.isAdmin) {
     return "Ops...You are not a admin";
   }
+
+  console.log("ProvideRadaAuction render", provideValue);
 
   return <radaAuctionContext.Provider value={provideValue}>{children}</radaAuctionContext.Provider>;
 };

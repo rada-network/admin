@@ -28,6 +28,10 @@ const RadaAuctionOverview = () => {
       contractInstance: contractInstance,
       func: "setEnd",
     },
+    {
+      contractInstance: contractInstance,
+      func: "handlePublicPool",
+    },
   ]);
 
   const [success, handleState] = useActionState(actions);
@@ -57,6 +61,10 @@ const RadaAuctionOverview = () => {
         actions[action].func(formState.poolId, formState.ended === "true");
         break;
 
+      case "handlePublicPool":
+        actions[action].func(formState.poolId, formState.isPublic === "true");
+        break;
+
       default:
         break;
     }
@@ -72,6 +80,14 @@ const RadaAuctionOverview = () => {
     {
       name: "ended",
       label: "ended",
+      type: "bool",
+    },
+  ];
+
+  const formPublicPool = [
+    {
+      name: "isPublic",
+      label: "isPublic",
       type: "bool",
     },
   ];
@@ -97,6 +113,20 @@ const RadaAuctionOverview = () => {
             <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
               <Button variant="contained" color="success" onClick={() => handlePool("setEnd")}>
                 Set End
+              </Button>
+            </Stack>
+          </Grid>
+
+          {formGenerator(formPublicPool, formState, handleOnchange)}
+
+          <Grid item xs="12">
+            <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => handlePool("handlePublicPool")}
+              >
+                Set Public
               </Button>
             </Stack>
           </Grid>

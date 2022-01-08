@@ -4,10 +4,11 @@ import RadaAuctionDetail from "components/RadaAuction/Detail";
 import RadaAuctionSettingsButton from "components/RadaAuction/SettingsButton";
 import Title from "components/Title";
 import { ProvideRadaAuction } from "providers/RadaAuction";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function RadaAuction() {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleOnChange = ({ key, target }) => {
     console.log(key, target);
@@ -30,6 +31,7 @@ export default function RadaAuction() {
           variant="standard"
           onKeyPress={handleOnChange}
           placeholder="poolId"
+          defaultValue={id}
         />
       </Stack>
 
