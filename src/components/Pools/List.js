@@ -8,7 +8,7 @@ import PoolAddButton from "./Add";
 
 export default function PoolList() {
   const data = usePools();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const onClick = (params) => {
     navigate(`${process.env.PUBLIC_URL}/${data.contractType}/${params.row.id}`);

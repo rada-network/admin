@@ -3,6 +3,8 @@ import BEP20 from "../config/abi/BEP20.json";
 import poolClaim from "../config/abi/PoolClaim.json";
 import poolRIR from "../config/abi/PoolRIR.json";
 import poolWhitelist from "../config/abi/PoolWhitelist.json";
+import radaAuction from "../config/abi/RadaAuction.json";
+import radaFixedSwap from "../config/abi/RadaFixedSwap.json";
 import { Contract } from "@ethersproject/contracts";
 import { useEthers } from "@usedapp/core";
 
@@ -31,6 +33,18 @@ const useABI = (contractType) => {
       contractABI = new utils.Interface(poolWhitelist);
       contractAddress = process.env.REACT_APP_POOLWHITELIST_CONTRACT;
       contractName = "Whitelist Pools";
+      break;
+
+    case "radaAuction":
+      contractABI = new utils.Interface(radaAuction);
+      contractAddress = process.env.REACT_APP_RADAAUCTION_CONTRACT;
+      contractName = "RADA Auction";
+      break;
+
+    case "radaFixedSwap":
+      contractABI = new utils.Interface(radaFixedSwap);
+      contractAddress = process.env.REACT_APP_RADAFIXEDSWAP_CONTRACT;
+      contractName = "RADA Fixed Swap";
       break;
 
     default:

@@ -5,6 +5,7 @@ import { useState } from "react";
 import investorFormData from "config/InvestorFormData";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import modalStyle from "style/modal";
 
 const PoolInvestorsAdd = (props) => {
   const [open, setOpen] = useState(false);
@@ -30,18 +31,6 @@ const PoolInvestorsAdd = (props) => {
     setFormState((state) => ({ ...state, ...{ [target.name]: target.value } }));
   };
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
-
   console.log("PoolInvestorsAdd render");
 
   return (
@@ -56,7 +45,7 @@ const PoolInvestorsAdd = (props) => {
         aria-labelledby="add-modal-title"
         aria-describedby="add-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           <h2 id="add-modal-title">Add a Investor</h2>
           <Grid container spacing={3}>
             {investorFormData.map((field, i) => (

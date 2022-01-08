@@ -37,7 +37,7 @@ const PoolDetail = () => {
 
       <TabContext value={tab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList onChange={handleChange}>
             <Tab label="Overview" value="1" />
             <Tab label="Reqest changes" value="2" />
             <Tab label="Investors" value="3" />

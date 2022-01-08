@@ -19,6 +19,10 @@ const ProvideGlobal = ({ children }) => {
     if (provideValue.isApprovers) {
       setType("Approver");
     }
+
+    if (provideValue.isOwner) {
+      setType("Owner");
+    }
   }, []);
 
   if (!account) {

@@ -11,6 +11,7 @@ import { parseEther } from "@ethersproject/units";
 import { useGlobal } from "providers/Global";
 import poolFormData from "config/PoolFormData";
 import PoolModel from "model/Pool";
+import modalStyle from "style/modal";
 
 const PoolAddButton = (props) => {
   const context = usePools();
@@ -63,18 +64,6 @@ const PoolAddButton = (props) => {
     setOpen(false);
   }, [success]);
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
-
   const formData = poolFormData;
 
   console.log("PoolAddButton Model", formState);
@@ -91,7 +80,7 @@ const PoolAddButton = (props) => {
         aria-labelledby="add-modal-title"
         aria-describedby="add-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           <h2 id="add-modal-title">Add a Pool</h2>
           <Grid container spacing={3}>
             {formData.map((field, i) =>
