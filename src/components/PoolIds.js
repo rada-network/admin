@@ -12,6 +12,10 @@ const PoolIds = () => {
     navigate(`${process.env.PUBLIC_URL}/rada/${type}/${target.value}`);
   };
 
+  if (poolIds.length === 0) {
+    return "";
+  }
+
   return (
     <Stack direction="row" spacing={2} sx={{ marginBottom: "1rem" }}>
       <FormControl sx={{ m: 1, minWidth: 120 }}>

@@ -2,6 +2,12 @@ import DatePicker from "components/DatePicker";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Box } from "@mui/system";
+
+const boolOptions = [
+  { label: "Yes", value: true },
+  { label: "No", value: false },
+];
 
 const formGenerator = (formFields, formState, handleOnchange, addView = false) => (
   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -40,23 +46,27 @@ const renderField = (field, formState, handleOnchange) => {
             value={formState[field.name]}
             onChange={handleOnchange}
           >
-            <MenuItem value={true}>Yes</MenuItem>
-            <MenuItem value={false}>No</MenuItem>
+            {field.options
+              ? field.options.map((item) => <MenuItem value={item.value}>{item.label}</MenuItem>)
+              : boolOptions.map((item) => <MenuItem value={item.value}>{item.label}</MenuItem>)}
           </Select>
         </FormControl>
       );
 
     default:
       return (
-        <TextField
-          name={field.name}
-          label={field.label}
-          fullWidth
-          autoComplete="given-name"
-          variant="standard"
-          value={formState[field.name]}
-          onChange={handleOnchange}
-        />
+        <Box sx={{ display: field.display }}>
+          <TextField
+            name={field.name}
+            label={field.label}
+            fullWidth
+            autoComplete="given-name"
+            variant="standard"
+            value={formState[field.name]}
+            onChange={handleOnchange}
+            sx={{ display: { xl: "none", xs: "block" } }}
+          />
+        </Box>
       );
   }
 };

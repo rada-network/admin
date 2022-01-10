@@ -99,7 +99,7 @@ const ProvideRada = ({ children }) => {
     }
   });
 
-  //global.handleType(provideValue);
+  global.handleType(provideValue);
 
   if (!provideValue.isAdmin) {
     return "Ops...You are not a admin";

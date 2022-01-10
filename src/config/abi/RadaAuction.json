@@ -148,13 +148,6 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint16", "name": "_poolId", "type": "uint16" }],
-    "name": "claimAll",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "getPoolIds",
     "outputs": [{ "internalType": "uint16[]", "name": "", "type": "uint16[]" }],

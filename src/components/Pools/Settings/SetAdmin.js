@@ -31,7 +31,7 @@ const PoolSetAdmin = () => {
     },
   ]);
 
-  const [, handleState] = useActionState(actions);
+  const [, , handleState] = useActionState(actions);
 
   const handlePool = (action) => {
     auth.setLoading(true);

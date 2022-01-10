@@ -3,7 +3,6 @@ import { fromUnixTime, formatEther } from "utils/format";
 const RadaAuction = (data, i = 0) => {
   return {
     poolId: i,
-    title: data.title ?? "",
     addressItem: data.addressItem ?? "",
     isSaleToken: data.isSaleToken ?? false,
     startId: data.startId ?? "0",

@@ -29,7 +29,7 @@ export default function MakePayment() {
     amountRir: "0",
   });
 
-  const [success, handleState] = useActionState(actions);
+  const [, success, handleState] = useActionState(actions);
 
   const handlePool = (action) => {
     console.log("makePayment", action, success);

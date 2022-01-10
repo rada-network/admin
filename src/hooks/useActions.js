@@ -9,7 +9,7 @@ const useActions = (actionArray) => {
   actionArray.forEach((action) => {
     const [state, func] = GetContractFunction(action.contractInstance, action.func);
 
-    actions[action.func] = {
+    actions[action.key ?? action.func] = {
       state: state,
       func: func,
     };
@@ -22,12 +22,17 @@ const useActions = (actionArray) => {
 
 const useActionState = (actions) => {
   const [action, setAction] = useState("");
+  const [lastAction, setLastAction] = useState("");
   const [success, setSuccess] = useState(false);
   const global = useGlobal();
 
   const handleState = useCallback(async (action) => {
     setAction(action);
   }, []);
+
+  useEffect(() => {
+    setLastAction(action);
+  }, [action]);
 
   useEffect(() => {
     if (action) {
@@ -54,7 +59,7 @@ const useActionState = (actions) => {
     }
   }, [action, actions, global]);
 
-  return [success, handleState];
+  return [lastAction, success, handleState];
 };
 
 const GetContractFunction = (contract, method) => {

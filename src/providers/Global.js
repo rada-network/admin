@@ -11,18 +11,21 @@ const ProvideGlobal = ({ children }) => {
   const { activateBrowserWallet, account } = useEthers();
 
   const handleType = useCallback((provideValue) => {
-    console.log("handleType", provideValue);
+    let title = "";
+
     if (provideValue.isAdmin) {
-      setType("Admin");
+      title = "Admin";
     }
 
     if (provideValue.isApprovers) {
-      setType("Approver");
+      title = "Approver";
     }
 
     if (provideValue.isOwner) {
-      setType("Owner");
+      title = "Owner";
     }
+
+    setType(`${title} - ${provideValue.contractName}`);
   }, []);
 
   if (!account) {

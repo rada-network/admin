@@ -32,7 +32,7 @@ const PoolImport = () => {
     },
   ]);
 
-  const [success, handleState] = useActionState(actions);
+  const [, success, handleState] = useActionState(actions);
 
   const handlePool = (action) => {
     auth.setLoading(true);

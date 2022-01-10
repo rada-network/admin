@@ -53,7 +53,6 @@
   {
     "inputs": [
       { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
-      { "internalType": "string", "name": "_title", "type": "string" },
       { "internalType": "uint256", "name": "_startPrice", "type": "uint256" },
       { "internalType": "address", "name": "_addressItem", "type": "address" },
       { "internalType": "bool", "name": "_isSaleToken", "type": "bool" }
@@ -190,7 +189,6 @@
     "inputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
     "name": "pools",
     "outputs": [
-      { "internalType": "string", "name": "title", "type": "string" },
       { "internalType": "address", "name": "addressItem", "type": "address" },
       { "internalType": "bool", "name": "isSaleToken", "type": "bool" },
       { "internalType": "uint256", "name": "startId", "type": "uint256" },
@@ -251,7 +249,6 @@
   {
     "inputs": [
       { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
-      { "internalType": "string", "name": "_title", "type": "string" },
       { "internalType": "address", "name": "_addressItem", "type": "address" },
       { "internalType": "bool", "name": "_isSaleToken", "type": "bool" },
       { "internalType": "uint32", "name": "_startId", "type": "uint32" },

@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Modal, Stack } from "@mui/material";
-import radaForm from "config/RadaForm";
+import { radaFormAdd } from "config/RadaForm";
 import { useActions, useActionState } from "hooks/useActions";
 import { useGlobal } from "providers/Global";
 import { useRada } from "providers/Rada";
@@ -8,23 +8,33 @@ import modalStyle from "style/modal";
 import { parseEther } from "@ethersproject/units";
 import RadaAuction from "model/RadaAuction";
 import formGenerator from "utils/form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import useABI from "hooks/useABI";
 
 const RadaAdd = () => {
   const context = useRada();
   const global = useGlobal();
   const navigate = useNavigate();
+  const { type } = useParams();
 
   const [open, setOpen] = useState(false);
+
+  const openBoxContract = useABI("openbox");
 
   const actions = useActions([
     {
       contractInstance: context.contractInstance,
       func: "addPool",
     },
+
+    {
+      contractInstance: openBoxContract.contractInstance,
+      func: "addPool",
+      key: "addPoolOpenBox",
+    },
   ]);
 
-  const [success, handleState] = useActionState(actions);
+  const [lastAction, success, handleState] = useActionState(actions);
 
   const [formState, setFormState] = useState(RadaAuction({}));
 
@@ -43,38 +53,40 @@ const RadaAdd = () => {
   const handleSave = () => {
     global.setLoading(true);
 
-    switch (context.contractType) {
-      case "auction":
-        actions["addPool"].func(
-          formState.poolId,
-          parseEther(formState.startPrice ?? "0"),
-          formState.addressItem,
-          formState.isSaleToken
-        );
-
-        break;
-      case "fixedswap":
-        actions["addPool"].func(
-          formState.poolId,
-          formState.title,
-          parseEther(formState.startPrice ?? "0"),
-          formState.addressItem,
-          formState.isSaleToken
-        );
-        break;
-      default:
-        break;
-    }
+    actions["addPool"].func(
+      formState.poolId,
+      parseEther(formState.startPrice ?? "0"),
+      formState.addressItem,
+      formState.isSaleToken
+    );
 
     handleState("addPool");
   };
 
   useEffect(() => {
-    setOpen(false);
-    // navigate(`${process.env.PUBLIC_URL}/rada/${formState.poolId}`);
-  }, [success]);
+    if (success) {
+      if (lastAction === "addPool") {
+        global.setLoading(true);
+        actions["addPoolOpenBox"].func(
+          formState.poolId,
+          formState.nftAddress,
+          formState.isSaleToken,
+          formState.isSaleToken
+            ? formState.addressItem
+            : "0x0000000000000000000000000000000000000000",
+          !formState.isSaleToken
+            ? formState.addressItem
+            : "0x0000000000000000000000000000000000000000"
+        );
+        handleState("addPoolOpenBox");
+      } else if (lastAction === "addPoolOpenBox") {
+        setOpen(false);
+        navigate(`${process.env.PUBLIC_URL}/rada/${type}/${formState.poolId}`);
+      }
+    }
+  }, [lastAction, success]);
 
-  const formData = radaForm;
+  console.log("openBoxContract", openBoxContract);
 
   return (
     <Stack direction="row" justifyContent="end">
@@ -91,7 +103,7 @@ const RadaAdd = () => {
         <Box sx={modalStyle}>
           <h2 id="add-modal-title">Add a Pool</h2>
           <Grid container spacing={3}>
-            {formGenerator(formData, formState, handleOnchange, true)}
+            {formGenerator(radaFormAdd, formState, handleOnchange)}
             <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
               <Button onClick={handleSave} variant="contained" sx={{ mt: 3, ml: 1 }}>
                 Add

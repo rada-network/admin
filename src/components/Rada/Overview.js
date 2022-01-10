@@ -15,7 +15,7 @@ import formGenerator from "utils/form";
 
 const RadaOverview = () => {
   const auth = useGlobal();
-  const { contractInstance, contractType, pool, isOwner } = useRada();
+  const { contractInstance, pool, isOwner } = useRada();
 
   const [formState, setFormState] = useState(pool);
 
@@ -34,11 +34,7 @@ const RadaOverview = () => {
     },
   ]);
 
-  const [, handleState] = useActionState(actions);
-
-  // useEffect(() => {
-  //   setFormState(pool);
-  // }, [pool]);
+  const [, , handleState] = useActionState(actions);
 
   const handlePool = (action) => {
     console.log("handlePool", formState);
@@ -47,39 +43,18 @@ const RadaOverview = () => {
 
     switch (action) {
       case "updatePool":
-        switch (contractType) {
-          case "auction":
-            actions[action].func(
-              formState.poolId,
-              formState.addressItem,
-              formState.isSaleToken,
-              formState.startId,
-              formState.endId,
-              `${convertUnix(formState.startTime)}`,
-              `${convertUnix(formState.endTime)}`,
-              parseEther(formState.startPrice),
-              formState.requireWhitelist,
-              formState.maxBuyPerAddress
-            );
-            break;
-          case "fixedswap":
-            actions[action].func(
-              formState.poolId,
-              formState.title,
-              formState.addressItem,
-              formState.isSaleToken,
-              formState.startId,
-              formState.endId,
-              `${convertUnix(formState.startTime)}`,
-              `${convertUnix(formState.endTime)}`,
-              parseEther(formState.startPrice),
-              formState.requireWhitelist,
-              formState.maxBuyPerAddress
-            );
-            break;
-          default:
-            break;
-        }
+        actions[action].func(
+          formState.poolId,
+          formState.addressItem,
+          formState.isSaleToken,
+          formState.startId,
+          formState.endId,
+          `${convertUnix(formState.startTime)}`,
+          `${convertUnix(formState.endTime)}`,
+          parseEther(formState.startPrice),
+          formState.requireWhitelist,
+          formState.maxBuyPerAddress
+        );
 
         break;
 

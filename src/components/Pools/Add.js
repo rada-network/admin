@@ -26,7 +26,7 @@ const PoolAddButton = (props) => {
     },
   ]);
 
-  const [success, handleState] = useActionState(actions);
+  const [, success, handleState] = useActionState(actions);
 
   const [formState, setFormState] = useState(PoolModel({}, ""));
 

@@ -46,7 +46,7 @@ const PoolToken = () => {
     },
   ]);
 
-  const [success, handleState] = useActionState(actions);
+  const [, success, handleState] = useActionState(actions);
 
   const handlePool = (action) => {
     console.log("handlePool", action, success);
