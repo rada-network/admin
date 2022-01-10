@@ -25,7 +25,7 @@ const RadaImport = () => {
     },
   ]);
 
-  const [success, handleState] = useActionState(actions);
+  const [, success, handleState] = useActionState(actions);
 
   const handleImportWhitelist = () => {
     auth.setLoading(true);
