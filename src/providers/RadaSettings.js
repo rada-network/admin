@@ -4,13 +4,13 @@ import { useGlobal } from "./Global";
 import useABI from "hooks/useABI";
 import { useContractCalls } from "@usedapp/core";
 
-const radaAuctionSettingsContext = createContext();
+const radaSettingsContext = createContext();
 
-const ProvideRadaAuctionSettings = ({ children }) => {
+const ProvideRadaSettings = ({ children }) => {
   const global = useGlobal();
 
   const { contractABI, contractAddress, contractName, contractType, contractInstance } =
-    useABI("radaAuction");
+    useABI("rada");
 
   const provideValue = {
     isOwner: false,
@@ -63,21 +63,19 @@ const ProvideRadaAuctionSettings = ({ children }) => {
 
   global.handleType(provideValue);
 
-  console.log("ProvideRadaAuctionSettings render", provideValue);
+  console.log("ProvideRadaSettings render", provideValue);
 
   if (!provideValue.isAdmin) {
     return "Ops...You are not a admin";
   }
 
   return (
-    <radaAuctionSettingsContext.Provider value={provideValue}>
-      {children}
-    </radaAuctionSettingsContext.Provider>
+    <radaSettingsContext.Provider value={provideValue}>{children}</radaSettingsContext.Provider>
   );
 };
 
-const useRadaAuctionSettings = () => {
-  return useContext(radaAuctionSettingsContext);
+const useRadaSettings = () => {
+  return useContext(radaSettingsContext);
 };
 
-export { ProvideRadaAuctionSettings, useRadaAuctionSettings };
+export { ProvideRadaSettings, useRadaSettings };

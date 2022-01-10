@@ -35,13 +35,13 @@ const useABI = (contractType) => {
       contractName = "Whitelist Pools";
       break;
 
-    case "radaAuction":
+    case "auction":
       contractABI = new utils.Interface(radaAuction);
       contractAddress = process.env.REACT_APP_RADAAUCTION_CONTRACT;
       contractName = "RADA Auction";
       break;
 
-    case "radaFixedSwap":
+    case "fixedswap":
       contractABI = new utils.Interface(radaFixedSwap);
       contractAddress = process.env.REACT_APP_RADAFIXEDSWAP_CONTRACT;
       contractName = "RADA Fixed Swap";

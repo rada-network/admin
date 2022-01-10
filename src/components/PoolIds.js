@@ -1,15 +1,15 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
-import { useRadaAuction } from "providers/RadaAuction";
+import { useRada } from "providers/Rada";
 import { useNavigate, useParams } from "react-router-dom";
 
 const PoolIds = () => {
-  const { id } = useParams();
-  const { poolIds } = useRadaAuction();
+  const { type, id } = useParams();
+  const { poolIds } = useRada();
 
   const navigate = useNavigate();
 
   const handleChange = ({ key, target }) => {
-    navigate(`${process.env.PUBLIC_URL}/radaAuction/${target.value}`);
+    navigate(`${process.env.PUBLIC_URL}/rada/${type}/${target.value}`);
   };
 
   return (

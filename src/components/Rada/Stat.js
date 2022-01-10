@@ -1,10 +1,10 @@
 import { Grid, TextField } from "@mui/material";
-import { useRadaAuction } from "providers/RadaAuction";
+import { useRada } from "providers/Rada";
 
-const RadaAuctionStats = () => {
-  const { poolStat } = useRadaAuction();
+const RadaStats = () => {
+  const { poolStat } = useRada();
 
-  console.log("RadaAuctionStats State render", poolStat);
+  console.log("RadaStats State render", poolStat);
 
   const poolStatFormData = [
     {
@@ -53,4 +53,4 @@ const RadaAuctionStats = () => {
   );
 };
 
-export default RadaAuctionStats;
+export default RadaStats;

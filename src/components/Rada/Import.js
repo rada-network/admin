@@ -10,11 +10,11 @@ import { useActions, useActionState } from "hooks/useActions";
 import UploadCSV from "components/UploadCSV";
 import { useGlobal } from "providers/Global";
 
-import { useRadaAuction } from "providers/RadaAuction";
+import { useRada } from "providers/Rada";
 
-const RadaAuctionImport = () => {
+const RadaImport = () => {
   const auth = useGlobal();
-  const { contractInstance, pool } = useRadaAuction();
+  const { contractInstance, pool } = useRada();
 
   const [whitelist, setWhitelist] = useState([]);
 
@@ -75,7 +75,7 @@ const RadaAuctionImport = () => {
     { field: "allow", headerName: "allow" },
   ];
 
-  console.log("RadaAuctionImport render", columns, success);
+  console.log("RadaImport render", columns, success);
 
   return (
     <Table
@@ -89,4 +89,4 @@ const RadaAuctionImport = () => {
   );
 };
 
-export default RadaAuctionImport;
+export default RadaImport;

@@ -1,7 +1,12 @@
-const radaAuctionForm = [
+const radaForm = [
   {
     name: "poolId",
     label: "poolId",
+    addView: true,
+  },
+  {
+    name: "title",
+    label: "title",
     addView: true,
   },
   {
@@ -53,4 +58,4 @@ const radaAuctionForm = [
   },
 ];
 
-export default radaAuctionForm;
+export default radaForm;

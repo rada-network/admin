@@ -1,8 +1,9 @@
 import { fromUnixTime, formatEther } from "utils/format";
 
-const RadaAuctionModel = (data, i = 0) => {
+const RadaAuction = (data, i = 0) => {
   return {
     poolId: i,
+    title: data.title ?? "",
     addressItem: data.addressItem ?? "",
     isSaleToken: data.isSaleToken ?? false,
     startId: data.startId ?? "0",
@@ -17,4 +18,4 @@ const RadaAuctionModel = (data, i = 0) => {
   };
 };
 
-export default RadaAuctionModel;
+export default RadaAuction;

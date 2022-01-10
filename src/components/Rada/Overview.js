@@ -9,13 +9,13 @@ import { convertUnix } from "utils/format";
 
 import { useGlobal } from "providers/Global";
 
-import { useRadaAuction } from "providers/RadaAuction";
-import radaAuctionForm from "config/RadaAuctionForm";
+import { useRada } from "providers/Rada";
+import radaForm from "config/RadaForm";
 import formGenerator from "utils/form";
 
-const RadaAuctionOverview = () => {
+const RadaOverview = () => {
   const auth = useGlobal();
-  const { contractInstance, pool, isOwner } = useRadaAuction();
+  const { contractInstance, contractType, pool, isOwner } = useRada();
 
   const [formState, setFormState] = useState(pool);
 
@@ -36,9 +36,9 @@ const RadaAuctionOverview = () => {
 
   const [, handleState] = useActionState(actions);
 
-  useEffect(() => {
-    setFormState(pool);
-  }, [pool]);
+  // useEffect(() => {
+  //   setFormState(pool);
+  // }, [pool]);
 
   const handlePool = (action) => {
     console.log("handlePool", formState);
@@ -47,18 +47,40 @@ const RadaAuctionOverview = () => {
 
     switch (action) {
       case "updatePool":
-        actions[action].func(
-          formState.poolId,
-          formState.addressItem,
-          formState.isSaleToken,
-          formState.startId,
-          formState.endId,
-          `${convertUnix(formState.startTime)}`,
-          `${convertUnix(formState.endTime)}`,
-          parseEther(formState.startPrice),
-          formState.requireWhitelist,
-          formState.maxBuyPerAddress
-        );
+        switch (contractType) {
+          case "auction":
+            actions[action].func(
+              formState.poolId,
+              formState.addressItem,
+              formState.isSaleToken,
+              formState.startId,
+              formState.endId,
+              `${convertUnix(formState.startTime)}`,
+              `${convertUnix(formState.endTime)}`,
+              parseEther(formState.startPrice),
+              formState.requireWhitelist,
+              formState.maxBuyPerAddress
+            );
+            break;
+          case "fixedswap":
+            actions[action].func(
+              formState.poolId,
+              formState.title,
+              formState.addressItem,
+              formState.isSaleToken,
+              formState.startId,
+              formState.endId,
+              `${convertUnix(formState.startTime)}`,
+              `${convertUnix(formState.endTime)}`,
+              parseEther(formState.startPrice),
+              formState.requireWhitelist,
+              formState.maxBuyPerAddress
+            );
+            break;
+          default:
+            break;
+        }
+
         break;
 
       case "setEnd":
@@ -97,12 +119,12 @@ const RadaAuctionOverview = () => {
     },
   ];
 
-  console.log("RadaAuctionOverview", formState);
+  console.log("RadaOverview", formState);
 
   return (
     <>
       <Grid container spacing={3}>
-        {formGenerator(radaAuctionForm, formState, handleOnchange)}
+        {formGenerator(radaForm, formState, handleOnchange)}
       </Grid>
       <Grid item xs={12}>
         <Stack direction="row" spacing={2} sx={{ marginTop: "2rem", justifyContent: "flex-end" }}>
@@ -143,4 +165,4 @@ const RadaAuctionOverview = () => {
   );
 };
 
-export default RadaAuctionOverview;
+export default RadaOverview;

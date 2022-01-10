@@ -2,20 +2,20 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Tab } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { useRadaAuction } from "providers/RadaAuction";
-import RadaAuctionOverview from "./Overview";
-import RadaAuctionImport from "./Import";
-import RadaAuctionStats from "./Stat";
+import { useRada } from "providers/Rada";
+import RadaOverview from "./Overview";
+import RadaImport from "./Import";
+import RadaStats from "./Stat";
 
-const RadaAuctionDetail = () => {
-  const { isOwner, pool } = useRadaAuction();
+const RadaDetail = () => {
+  const { isOwner, pool } = useRada();
   const [tab, setTab] = useState("1");
 
   const handleChange = (event, newValue) => {
     setTab(newValue);
   };
 
-  console.log("RadaAuctionDetail", pool);
+  console.log("RadaDetail", pool);
 
   return (
     pool && (
@@ -29,14 +29,14 @@ const RadaAuctionDetail = () => {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <RadaAuctionOverview />
+            <RadaOverview />
           </TabPanel>
           <TabPanel value="2">
-            <RadaAuctionStats />
+            <RadaStats />
           </TabPanel>
           {isOwner && (
             <TabPanel value="3">
-              <RadaAuctionImport />
+              <RadaImport />
             </TabPanel>
           )}
         </TabContext>
@@ -45,4 +45,4 @@ const RadaAuctionDetail = () => {
   );
 };
 
-export default RadaAuctionDetail;
+export default RadaDetail;

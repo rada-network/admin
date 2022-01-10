@@ -3,8 +3,8 @@ import React, { lazy } from "react";
 const Pools = lazy(() => import("../containers/Pools"));
 const Pool = lazy(() => import("../containers/Pool"));
 const PoolSettingsContainer = lazy(() => import("../containers/PoolSettings"));
-const RadaAuction = lazy(() => import("../containers/RadaAuction"));
-const RadaAuctionSettingsContainer = lazy(() => import("../containers/RadaAuctionSettings"));
+const Rada = lazy(() => import("../containers/Rada"));
+const RadaSettingsContainer = lazy(() => import("../containers/RadaSettings"));
 
 const Share2earn = lazy(() => import("../containers/Share2earn"));
 
@@ -16,21 +16,21 @@ const mainRoutes = [
   },
 
   {
-    path: "/radaAuction",
+    path: "/rada/:type",
     exact: true,
-    element: <RadaAuction />,
+    element: <Rada />,
   },
 
   {
-    path: "/radaAuction/:id",
+    path: "/rada/:type/:id",
     exact: true,
-    element: <RadaAuction />,
+    element: <Rada />,
   },
 
   {
-    path: "/radaAuction/settings",
+    path: "/rada/settings",
     exact: true,
-    element: <RadaAuctionSettingsContainer />,
+    element: <RadaSettingsContainer />,
   },
 
   {

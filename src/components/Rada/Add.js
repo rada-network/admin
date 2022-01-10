@@ -1,17 +1,17 @@
 import { Box, Button, Grid, Modal, Stack } from "@mui/material";
-import radaAuctionForm from "config/RadaAuctionForm";
+import radaForm from "config/RadaForm";
 import { useActions, useActionState } from "hooks/useActions";
 import { useGlobal } from "providers/Global";
-import { useRadaAuction } from "providers/RadaAuction";
+import { useRada } from "providers/Rada";
 import { useCallback, useEffect, useState } from "react";
 import modalStyle from "style/modal";
 import { parseEther } from "@ethersproject/units";
-import RadaAuctionModel from "model/RadaAuction";
+import RadaAuction from "model/RadaAuction";
 import formGenerator from "utils/form";
 import { useNavigate } from "react-router-dom";
 
-const RadaAuctionAdd = () => {
-  const context = useRadaAuction();
+const RadaAdd = () => {
+  const context = useRada();
   const global = useGlobal();
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ const RadaAuctionAdd = () => {
 
   const [success, handleState] = useActionState(actions);
 
-  const [formState, setFormState] = useState(RadaAuctionModel({}));
+  const [formState, setFormState] = useState(RadaAuction({}));
 
   const handleOpen = () => {
     setOpen(true);
@@ -43,22 +43,38 @@ const RadaAuctionAdd = () => {
   const handleSave = () => {
     global.setLoading(true);
 
-    actions["addPool"].func(
-      formState.poolId,
-      parseEther(formState.startPrice ?? "0"),
-      formState.addressItem,
-      formState.isSaleToken === "true"
-    );
+    switch (context.contractType) {
+      case "auction":
+        actions["addPool"].func(
+          formState.poolId,
+          parseEther(formState.startPrice ?? "0"),
+          formState.addressItem,
+          formState.isSaleToken
+        );
+
+        break;
+      case "fixedswap":
+        actions["addPool"].func(
+          formState.poolId,
+          formState.title,
+          parseEther(formState.startPrice ?? "0"),
+          formState.addressItem,
+          formState.isSaleToken
+        );
+        break;
+      default:
+        break;
+    }
 
     handleState("addPool");
   };
 
   useEffect(() => {
     setOpen(false);
-    navigate(`${process.env.PUBLIC_URL}/radaAuction/${formState.poolId}`);
+    // navigate(`${process.env.PUBLIC_URL}/rada/${formState.poolId}`);
   }, [success]);
 
-  const formData = radaAuctionForm;
+  const formData = radaForm;
 
   return (
     <Stack direction="row" justifyContent="end">
@@ -88,4 +104,4 @@ const RadaAuctionAdd = () => {
   );
 };
 
-export default RadaAuctionAdd;
+export default RadaAdd;

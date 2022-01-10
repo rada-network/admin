@@ -1,14 +1,14 @@
 import { Button, Grid, Stack, TextField } from "@mui/material";
 import { useActions, useActionState } from "hooks/useActions";
 import { useGlobal } from "providers/Global";
-import { useRadaAuctionSettings } from "providers/RadaAuctionSettings";
+import { useRadaSettings } from "providers/RadaSettings";
 import { useCallback } from "react";
 import { useState } from "react";
 import formGenerator from "utils/form";
 
-const RadaAuctionSettings = () => {
+const RadaSettings = () => {
   const auth = useGlobal();
-  const { contractInstance, WITHDRAW_ADDRESS } = useRadaAuctionSettings();
+  const { contractInstance, WITHDRAW_ADDRESS } = useRadaSettings();
 
   const [formState, setFormState] = useState({
     adminAddress: "",
@@ -103,4 +103,4 @@ const RadaAuctionSettings = () => {
   );
 };
 
-export default RadaAuctionSettings;
+export default RadaSettings;

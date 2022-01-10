@@ -3,17 +3,17 @@ import { useGlobal } from "./Global";
 import { useParams } from "react-router-dom";
 import useABI from "hooks/useABI";
 import { useContractCalls } from "@usedapp/core";
-import RadaAuctionModel from "model/RadaAuction";
-import RadaAuctionStatsModel from "model/RadaAuctionStats";
+import RadaAuction from "model/RadaAuction";
+import RadaAuctionStats from "model/RadaAuctionStats";
 
-const radaAuctionContext = createContext();
+const radaContext = createContext();
 
-const ProvideRadaAuction = ({ children }) => {
+const ProvideRada = ({ children }) => {
   const global = useGlobal();
-  const { id } = useParams();
+  const { type, id } = useParams();
 
   const { contractABI, contractAddress, contractName, contractType, contractInstance } =
-    useABI("radaAuction");
+    useABI(type);
 
   const provideValue = {
     isAdmin: false,
@@ -84,12 +84,12 @@ const ProvideRadaAuction = ({ children }) => {
 
           break;
         case 3:
-          provideValue.pool = RadaAuctionModel(chain, id);
+          provideValue.pool = RadaAuction(chain, id);
 
           break;
 
         case 4:
-          provideValue.poolStat = RadaAuctionStatsModel(chain);
+          provideValue.poolStat = RadaAuctionStats(chain);
 
           break;
 
@@ -99,19 +99,19 @@ const ProvideRadaAuction = ({ children }) => {
     }
   });
 
-  global.handleType(provideValue);
+  //global.handleType(provideValue);
 
   if (!provideValue.isAdmin) {
     return "Ops...You are not a admin";
   }
 
-  console.log("ProvideRadaAuction render", provideValue);
+  console.log("ProvideRada render", provideValue);
 
-  return <radaAuctionContext.Provider value={provideValue}>{children}</radaAuctionContext.Provider>;
+  return <radaContext.Provider value={provideValue}>{children}</radaContext.Provider>;
 };
 
-const useRadaAuction = () => {
-  return useContext(radaAuctionContext);
+const useRada = () => {
+  return useContext(radaContext);
 };
 
-export { ProvideRadaAuction, useRadaAuction };
+export { ProvideRada, useRada };

@@ -138,11 +138,17 @@ export default function Header() {
             </ListItemIcon>
             <ListItemText primary="Whitelist Pools" />
           </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/radaAuction`}>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/fixedswap`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="RADA Auction" />
+            <ListItemText primary="FixedSwap Pools" />
+          </MenuLink>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/auction`}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Auction Pools" />
           </MenuLink>
           <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/shar2earn`}>
             <ListItemIcon>

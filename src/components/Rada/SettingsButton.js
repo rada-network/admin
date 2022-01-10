@@ -1,13 +1,13 @@
 import { Button } from "@mui/material";
-import { useRadaAuction } from "providers/RadaAuction";
+import { useRada } from "providers/Rada";
 import { useNavigate } from "react-router-dom";
 
-const RadaAuctionSettingsButton = (props) => {
+const RadaSettingsButton = (props) => {
   const navigate = useNavigate();
-  const { isOwner } = useRadaAuction();
+  const { isOwner } = useRada();
 
   const onSettings = (params) => {
-    navigate(`${process.env.PUBLIC_URL}/radaAuction/settings`);
+    navigate(`${process.env.PUBLIC_URL}/rada/settings`);
   };
 
   if (!isOwner) {
@@ -21,4 +21,4 @@ const RadaAuctionSettingsButton = (props) => {
   );
 };
 
-export default RadaAuctionSettingsButton;
+export default RadaSettingsButton;

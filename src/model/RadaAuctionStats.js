@@ -1,7 +1,7 @@
 import { fromUnixTime, formatEther } from "utils/format";
 
-const RadaAuctionStatsModel = (data) => {
-  console.log("RadaAuctionStatsModel", data);
+const RadaAuctionStats = (data) => {
+  console.log("RadaStatsModel", data);
   return {
     totalBid: data.totalBid ?? "0",
     totalBidItem: data.totalBidItem ? formatEther(data.totalBidItem) : "0",
@@ -12,4 +12,4 @@ const RadaAuctionStatsModel = (data) => {
   };
 };
 
-export default RadaAuctionStatsModel;
+export default RadaAuctionStats;
