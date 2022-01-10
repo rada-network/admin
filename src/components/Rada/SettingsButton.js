@@ -1,13 +1,14 @@
 import { Button } from "@mui/material";
 import { useRada } from "providers/Rada";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const RadaSettingsButton = (props) => {
   const navigate = useNavigate();
   const { isOwner } = useRada();
+  const { type } = useParams();
 
   const onSettings = (params) => {
-    navigate(`${process.env.PUBLIC_URL}/rada/settings`);
+    navigate(`${process.env.PUBLIC_URL}/rada/${type}/settings`);
   };
 
   if (!isOwner) {

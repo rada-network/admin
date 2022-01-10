@@ -1,16 +1,16 @@
 import { createContext, useContext } from "react";
 import { useGlobal } from "./Global";
-
 import useABI from "hooks/useABI";
 import { useContractCalls } from "@usedapp/core";
-
+import { useParams } from "react-router-dom";
 const radaSettingsContext = createContext();
 
 const ProvideRadaSettings = ({ children }) => {
   const global = useGlobal();
+  const { type } = useParams();
 
   const { contractABI, contractAddress, contractName, contractType, contractInstance } =
-    useABI("rada");
+    useABI(type);
 
   const provideValue = {
     isOwner: false,

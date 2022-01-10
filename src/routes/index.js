@@ -28,7 +28,7 @@ const mainRoutes = [
   },
 
   {
-    path: "/rada/settings",
+    path: "/rada/:type/settings",
     exact: true,
     element: <RadaSettingsContainer />,
   },
