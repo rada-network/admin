@@ -23,6 +23,7 @@ const ProvideRadaAuction = ({ children }) => {
     contractInstance: contractInstance,
     pool: null,
     poolStat: null,
+    poolIds: [],
   };
 
   const callData = {
@@ -38,6 +39,10 @@ const ProvideRadaAuction = ({ children }) => {
     {
       ...callData,
       ...{ method: "owner", args: [] },
+    },
+    {
+      ...callData,
+      ...{ method: "getPoolIds", args: [] },
     },
   ];
 
@@ -55,7 +60,7 @@ const ProvideRadaAuction = ({ children }) => {
 
   const contractChain = useContractCalls(calls).filter((a) => a) ?? [];
 
-  if (contractChain.length < 2) {
+  if (contractChain.length < 3) {
     return "Loading....";
   }
 
@@ -75,11 +80,15 @@ const ProvideRadaAuction = ({ children }) => {
           break;
 
         case 2:
+          provideValue.poolIds = chain[0];
+
+          break;
+        case 3:
           provideValue.pool = RadaAuctionModel(chain, id);
 
           break;
 
-        case 3:
+        case 4:
           provideValue.poolStat = RadaAuctionStatsModel(chain);
 
           break;

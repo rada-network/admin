@@ -17,7 +17,7 @@ const formGenerator = (formFields, formState, handleOnchange, addView = false) =
   </LocalizationProvider>
 );
 
-const renderField = (field, formState, handleOnchange, addView) => {
+const renderField = (field, formState, handleOnchange) => {
   switch (field.type) {
     case "date":
       return (
@@ -40,8 +40,8 @@ const renderField = (field, formState, handleOnchange, addView) => {
             value={formState[field.name]}
             onChange={handleOnchange}
           >
-            <MenuItem value="true">Yes</MenuItem>
-            <MenuItem value="false">No</MenuItem>
+            <MenuItem value={true}>Yes</MenuItem>
+            <MenuItem value={false}>No</MenuItem>
           </Select>
         </FormControl>
       );

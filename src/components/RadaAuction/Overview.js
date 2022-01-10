@@ -2,7 +2,7 @@ import { useActions, useActionState } from "hooks/useActions";
 
 import { Grid, Stack, Button } from "@mui/material";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { parseEther } from "@ethersproject/units";
 import { convertUnix } from "utils/format";
@@ -34,10 +34,14 @@ const RadaAuctionOverview = () => {
     },
   ]);
 
-  const [success, handleState] = useActionState(actions);
+  const [, handleState] = useActionState(actions);
+
+  useEffect(() => {
+    setFormState(pool);
+  }, [pool]);
 
   const handlePool = (action) => {
-    console.log("handlePool", action, success);
+    console.log("handlePool", formState);
 
     auth.setLoading(true);
 
@@ -46,23 +50,23 @@ const RadaAuctionOverview = () => {
         actions[action].func(
           formState.poolId,
           formState.addressItem,
-          formState.isSaleToken === "true",
+          formState.isSaleToken,
           formState.startId,
           formState.endId,
           `${convertUnix(formState.startTime)}`,
           `${convertUnix(formState.endTime)}`,
           parseEther(formState.startPrice),
-          formState.requireWhitelist === "true",
+          formState.requireWhitelist,
           formState.maxBuyPerAddress
         );
         break;
 
       case "setEnd":
-        actions[action].func(formState.poolId, formState.ended === "true");
+        actions[action].func(formState.poolId, formState.ended);
         break;
 
       case "handlePublicPool":
-        actions[action].func(formState.poolId, formState.isPublic === "true");
+        actions[action].func(formState.poolId, formState.isPublic);
         break;
 
       default:
@@ -73,6 +77,7 @@ const RadaAuctionOverview = () => {
   };
 
   const handleOnchange = useCallback(({ target }) => {
+    console.log("handlePool", target);
     setFormState((state) => ({ ...state, ...{ [target.name]: target.value } }));
   }, []);
 
@@ -91,6 +96,8 @@ const RadaAuctionOverview = () => {
       type: "bool",
     },
   ];
+
+  console.log("RadaAuctionOverview", formState);
 
   return (
     <>

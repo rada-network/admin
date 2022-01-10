@@ -155,6 +155,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getPoolIds",
+    "outputs": [{ "internalType": "uint16[]", "name": "", "type": "uint16[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
       { "internalType": "uint32[]", "name": "bidsIndex", "type": "uint32[]" },
@@ -213,12 +220,21 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "poolIds",
+    "outputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
     "name": "poolStats",
     "outputs": [
       { "internalType": "uint32", "name": "totalBid", "type": "uint32" },
       { "internalType": "uint256", "name": "totalBidItem", "type": "uint256" },
+      { "internalType": "uint256", "name": "totalBidAmount", "type": "uint256" },
       { "internalType": "uint256", "name": "totalSold", "type": "uint256" },
+      { "internalType": "uint256", "name": "totalSoldAmount", "type": "uint256" },
       { "internalType": "uint256", "name": "highestPrice", "type": "uint256" }
     ],
     "stateMutability": "view",
@@ -328,13 +344,6 @@
     "name": "upgradeToAndCall",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "version",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
-    "stateMutability": "pure",
     "type": "function"
   },
   {

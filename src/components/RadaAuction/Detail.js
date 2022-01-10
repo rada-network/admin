@@ -17,33 +17,31 @@ const RadaAuctionDetail = () => {
 
   console.log("RadaAuctionDetail", pool);
 
-  if (!pool) {
-    return "";
-  }
-
   return (
-    <Box sx={{ width: "100%", typography: "body" }}>
-      <TabContext value={tab}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange}>
-            <Tab label="Detail" value="1" />
-            <Tab label="Statistics" value="2" />
-            {isOwner && <Tab label="Import Whitelist" value="3" />}
-          </TabList>
-        </Box>
-        <TabPanel value="1">
-          <RadaAuctionOverview />
-        </TabPanel>
-        <TabPanel value="2">
-          <RadaAuctionStats />
-        </TabPanel>
-        {isOwner && (
-          <TabPanel value="3">
-            <RadaAuctionImport />
+    pool && (
+      <Box sx={{ width: "100%", typography: "body" }}>
+        <TabContext value={tab}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <TabList onChange={handleChange}>
+              <Tab label="Detail" value="1" />
+              <Tab label="Statistics" value="2" />
+              {isOwner && pool.requireWhitelist && <Tab label="Import Whitelist" value="3" />}
+            </TabList>
+          </Box>
+          <TabPanel value="1">
+            <RadaAuctionOverview />
           </TabPanel>
-        )}
-      </TabContext>
-    </Box>
+          <TabPanel value="2">
+            <RadaAuctionStats />
+          </TabPanel>
+          {isOwner && (
+            <TabPanel value="3">
+              <RadaAuctionImport />
+            </TabPanel>
+          )}
+        </TabContext>
+      </Box>
+    )
   );
 };
 

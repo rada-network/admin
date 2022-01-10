@@ -8,10 +8,12 @@ import modalStyle from "style/modal";
 import { parseEther } from "@ethersproject/units";
 import RadaAuctionModel from "model/RadaAuction";
 import formGenerator from "utils/form";
+import { useNavigate } from "react-router-dom";
 
-const RadaAuctionAdd = (props) => {
+const RadaAuctionAdd = () => {
   const context = useRadaAuction();
   const global = useGlobal();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
 
@@ -53,6 +55,7 @@ const RadaAuctionAdd = (props) => {
 
   useEffect(() => {
     setOpen(false);
+    navigate(`${process.env.PUBLIC_URL}/radaAuction/${formState.poolId}`);
   }, [success]);
 
   const formData = radaAuctionForm;
