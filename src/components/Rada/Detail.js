@@ -8,17 +8,22 @@ import RadaImport from "./Import";
 import RadaStats from "./Stat";
 import RadaOpenbox from "./OpenBox";
 import RadaBids from "./Bids";
-import MakePayment from "./MakePayment";
+import { useParams } from "react-router-dom";
 
 const RadaDetail = () => {
-  const { isOwner, pool } = useRada();
+  const { pool } = useRada();
   const [tab, setTab] = useState("1");
+  const { id } = useParams();
 
   const handleChange = (event, newValue) => {
     setTab(newValue);
   };
 
   console.log("RadaDetail", pool);
+
+  if (id && !pool) {
+    return "Loading...";
+  }
 
   return (
     pool && (
