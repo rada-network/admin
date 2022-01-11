@@ -68,7 +68,7 @@ const ProvideRada = ({ children }) => {
     if (chain) {
       switch (i) {
         case 0:
-          provideValue.isAdmin = true;
+          provideValue.isAdmin = chain[0];
 
           break;
 
@@ -105,7 +105,7 @@ const ProvideRada = ({ children }) => {
     return "Ops...You are not a admin";
   }
 
-  console.log("ProvideRada render", provideValue);
+  console.log("ProvideRada render", contractChain);
 
   return <radaContext.Provider value={provideValue}>{children}</radaContext.Provider>;
 };

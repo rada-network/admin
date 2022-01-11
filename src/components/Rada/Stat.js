@@ -1,37 +1,13 @@
 import { Grid, TextField } from "@mui/material";
+import { radaStatsForm } from "config/RadaStatsForm";
 import { useRada } from "providers/Rada";
 
 const RadaStats = () => {
-  const { poolStat } = useRada();
+  const { poolStat, contractType } = useRada();
 
-  console.log("RadaStats State render", poolStat);
+  console.log("RadaStats render", poolStat);
 
-  const poolStatFormData = [
-    {
-      name: "totalBid",
-      label: "totalBid",
-    },
-    {
-      name: "highestPrice",
-      label: "highestPrice",
-    },
-    {
-      name: "totalBidItem",
-      label: "totalBidItem",
-    },
-    {
-      name: "totalBidAmount",
-      label: "totalBidAmount",
-    },
-    {
-      name: "totalSold",
-      label: "totalSold",
-    },
-    {
-      name: "totalSoldAmount",
-      label: "totalSoldAmount",
-    },
-  ];
+  const poolStatFormData = radaStatsForm[contractType];
 
   return (
     <Grid container spacing={3}>

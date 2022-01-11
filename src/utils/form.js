@@ -64,7 +64,6 @@ const renderField = (field, formState, handleOnchange) => {
             variant="standard"
             value={formState[field.name]}
             onChange={handleOnchange}
-            sx={{ display: { xl: "none", xs: "block" } }}
           />
         </Box>
       );

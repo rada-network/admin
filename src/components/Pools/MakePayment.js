@@ -10,7 +10,7 @@ export default function MakePayment() {
   const global = useGlobal();
   const { contractInstance, pool } = usePool();
 
-  const busdInstance = useContract("0x6945239350AE805b0823cB292a4dA5974d166640");
+  const busdInstance = useContract("0x862BcFA4305DD0ecF1a82796fFc9c3627E0b592a");
   const rirInstance = useContract("0x6768BDC5d03A87942cE7cB143fA74e0DadE0371b");
 
   const actions = useActions([

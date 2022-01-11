@@ -7,6 +7,8 @@ import RadaOverview from "./Overview";
 import RadaImport from "./Import";
 import RadaStats from "./Stat";
 import RadaOpenbox from "./OpenBox";
+import RadaBids from "./Bids";
+import MakePayment from "./MakePayment";
 
 const RadaDetail = () => {
   const { isOwner, pool } = useRada();
@@ -25,25 +27,27 @@ const RadaDetail = () => {
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange}>
               <Tab label="Detail" value="1" />
-              <Tab label="Statistics" value="2" />
-              <Tab label="OpenBox Contract" value="3" />
-              {isOwner && pool.requireWhitelist && <Tab label="Import Whitelist" value="4" />}
+              <Tab label="OpenBox Contract" value="2" />
+              <Tab label="Investors" value="3" />
+              <Tab label="Statistics" value="4" />
+              {pool.requireWhitelist && <Tab label="Import Whitelist" value="5" />}
             </TabList>
           </Box>
           <TabPanel value="1">
             <RadaOverview />
           </TabPanel>
           <TabPanel value="2">
-            <RadaStats />
-          </TabPanel>
-          <TabPanel value="3">
             <RadaOpenbox />
           </TabPanel>
-          {isOwner && (
-            <TabPanel value="4">
-              <RadaImport />
-            </TabPanel>
-          )}
+          <TabPanel value="3">
+            <RadaBids />
+          </TabPanel>
+          <TabPanel value="4">
+            <RadaStats />
+          </TabPanel>
+          <TabPanel value="5">
+            <RadaImport />
+          </TabPanel>
         </TabContext>
       </Box>
     )
