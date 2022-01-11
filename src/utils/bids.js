@@ -34,8 +34,7 @@ const getBids = async (contractInstance, poolId, start = 0, limit = 10, total) =
 };
 
 const getWinners = async (pool) => {
-  //const totalBox = parseInt(pool.endId) - parseInt(pool.startId) + 1;
-  const totalBox = 5;
+  const totalBox = parseInt(pool.endId) - parseInt(pool.startId) + 1;
   const indexedBids = await indexDbService.getAll("bids");
 
   indexedBids.sort((a, b) => (a.priceEach < b.priceEach ? 1 : b.priceEach < a.priceEach ? -1 : 0));
