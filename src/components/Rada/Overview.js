@@ -12,10 +12,11 @@ import { useGlobal } from "providers/Global";
 import { useRada } from "providers/Rada";
 import radaForm from "config/RadaForm";
 import formGenerator from "utils/form";
+import RadaPublic from "./Public";
 
 const RadaOverview = () => {
   const auth = useGlobal();
-  const { contractInstance, pool, isOwner } = useRada();
+  const { contractInstance, contractType, pool, isOwner } = useRada();
 
   const [formState, setFormState] = useState(pool);
 
@@ -27,10 +28,6 @@ const RadaOverview = () => {
     {
       contractInstance: contractInstance,
       func: "setEnd",
-    },
-    {
-      contractInstance: contractInstance,
-      func: "handlePublicPool",
     },
   ]);
 
@@ -62,10 +59,6 @@ const RadaOverview = () => {
         actions[action].func(formState.poolId, formState.ended);
         break;
 
-      case "handlePublicPool":
-        actions[action].func(formState.poolId, formState.isPublic);
-        break;
-
       default:
         break;
     }
@@ -86,14 +79,6 @@ const RadaOverview = () => {
     },
   ];
 
-  const formPublicPool = [
-    {
-      name: "isPublic",
-      label: "isPublic",
-      type: "bool",
-    },
-  ];
-
   console.log("RadaOverview", formState);
 
   return (
@@ -101,36 +86,23 @@ const RadaOverview = () => {
       <Grid container spacing={3}>
         {formGenerator(radaForm, formState, handleOnchange)}
       </Grid>
-      <Grid item xs={12}>
-        <Stack direction="row" spacing={2} sx={{ marginTop: "2rem", justifyContent: "flex-end" }}>
+
+      <Stack direction="row" spacing={2} sx={{ marginTop: "1rem", justifyContent: "flex-end" }}>
+        <RadaPublic />
+        {!pool.isPublic && (
           <Button variant="contained" color="success" onClick={() => handlePool("updatePool")}>
             Update Pool
           </Button>
-        </Stack>
-      </Grid>
+        )}
+      </Stack>
 
-      {isOwner && (
+      {isOwner && contractType === "auction" && (
         <>
-          {formGenerator(formSetEnd, formState, handleOnchange)}
-
           <Grid item xs="12">
-            <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
+            <Stack direction="row" spacing={2}>
+              {formGenerator(formSetEnd, formState, handleOnchange)}
               <Button variant="contained" color="success" onClick={() => handlePool("setEnd")}>
                 Set End
-              </Button>
-            </Stack>
-          </Grid>
-
-          {formGenerator(formPublicPool, formState, handleOnchange)}
-
-          <Grid item xs="12">
-            <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => handlePool("handlePublicPool")}
-              >
-                Set Public
               </Button>
             </Stack>
           </Grid>
