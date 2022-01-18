@@ -2,6 +2,7 @@ import { useContractFunction } from "@usedapp/core";
 import { useGlobal } from "providers/Global";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import messages from "config/messages.json";
 
 const useActions = (actionArray) => {
   const actions = {};
@@ -36,8 +37,6 @@ const useActionState = (actions) => {
 
   useEffect(() => {
     if (action) {
-      console.log("useActionState", action, actions);
-
       const state = actions[action]?.state;
 
       switch (state.status) {
@@ -48,7 +47,14 @@ const useActionState = (actions) => {
         case "Mining":
           break;
         case "Exception":
-          toast(state.errorMessage);
+          const mes = parseInt(state.errorMessage.replace("execution reverted:", ""));
+
+          if (messages[mes]) {
+            toast(`execution reverted: ${messages[mes]}`);
+          } else {
+            toast(state.errorMessage);
+          }
+
           global.setLoading(false);
           setAction("");
           state.status = "";

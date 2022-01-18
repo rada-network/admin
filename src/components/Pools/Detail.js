@@ -12,6 +12,7 @@ import PoolToken from "./Token";
 
 import PoolStat from "./Stat";
 import PoolImport from "./Import";
+import WithdrawBusdFunds from "./WithdrawBusdFunds";
 
 const PoolDetail = () => {
   const { pool, isAdmin } = usePool();
@@ -32,7 +33,10 @@ const PoolDetail = () => {
         sx={{ marginBottom: "1rem" }}
       >
         <Title>Pool : {pool.title}</Title>
-        <LockPool />
+        <Stack direction="row" spacing={1}>
+          <LockPool />
+          <WithdrawBusdFunds />
+        </Stack>
       </Stack>
 
       <TabContext value={tab}>
