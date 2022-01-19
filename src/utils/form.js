@@ -2,7 +2,6 @@ import DatePicker from "components/DatePicker";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import { Box } from "@mui/system";
 
 const boolOptions = [
   { label: "Yes", value: true },
@@ -55,17 +54,16 @@ const renderField = (field, formState, handleOnchange) => {
 
     default:
       return (
-        <Box sx={{ display: field.display }}>
-          <TextField
-            name={field.name}
-            label={field.label}
-            fullWidth
-            autoComplete="given-name"
-            variant="standard"
-            value={formState[field.name]}
-            onChange={handleOnchange}
-          />
-        </Box>
+        <TextField
+          name={field.name}
+          label={field.label}
+          fullWidth
+          autoComplete="given-name"
+          variant="standard"
+          value={formState[field.name]}
+          onChange={handleOnchange}
+          InputProps={field.props}
+        />
       );
   }
 };

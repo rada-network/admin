@@ -5,6 +5,7 @@ import useABI from "hooks/useABI";
 import { useContractCalls } from "@usedapp/core";
 import RadaAuction from "model/RadaAuction";
 import RadaAuctionStats from "model/RadaAuctionStats";
+import useDataCalls from "hooks/useDataCalls";
 
 const radaContext = createContext();
 
@@ -29,20 +30,21 @@ const ProvideRada = ({ children }) => {
   const callData = {
     address: contractAddress,
     abi: contractABI,
+    sender: global.account,
   };
 
   let calls = [
     {
       ...callData,
-      ...{ method: "admins", args: [global.account] },
+      ...{ method: "isAdmin", args: [global.account] },
     },
     {
       ...callData,
-      ...{ method: "owner", args: [] },
+      ...{ method: "owner" },
     },
     {
       ...callData,
-      ...{ method: "getPoolIds", args: [] },
+      ...{ method: "getPoolIds" },
     },
   ];
 
@@ -58,9 +60,9 @@ const ProvideRada = ({ children }) => {
     });
   }
 
-  const contractChain = useContractCalls(calls).filter((a) => a) ?? [];
+  const contractChain = useDataCalls(calls).filter((a) => a) ?? [];
 
-  if (contractChain.length < 3) {
+  if (contractChain.length < 1) {
     return "Loading....";
   }
 
@@ -68,19 +70,19 @@ const ProvideRada = ({ children }) => {
     if (chain) {
       switch (i) {
         case 0:
-          provideValue.isAdmin = chain[0];
+          provideValue.isAdmin = chain;
 
           break;
 
         case 1:
-          if (chain[0] === global.account) {
+          if (chain === global.account) {
             provideValue.isOwner = true;
           }
 
           break;
 
         case 2:
-          provideValue.poolIds = chain[0];
+          provideValue.poolIds = chain;
 
           break;
         case 3:
@@ -105,7 +107,7 @@ const ProvideRada = ({ children }) => {
     return "Ops...You are not a admin";
   }
 
-  console.log("ProvideRada render", contractChain);
+  console.log("ProvideRada render", provideValue);
 
   return <radaContext.Provider value={provideValue}>{children}</radaContext.Provider>;
 };

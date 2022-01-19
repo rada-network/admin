@@ -32,7 +32,6 @@ const RadaDetail = () => {
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange}>
               <Tab label="Detail" value="1" />
-              <Tab label="OpenBox Contract" value="2" />
               <Tab label="Investors" value="3" />
               <Tab label="Statistics" value="4" />
               {pool.requireWhitelist && <Tab label="Import Whitelist" value="5" />}

@@ -2,8 +2,6 @@ import { useGlobal } from "providers/Global";
 import { useRada } from "providers/Rada";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useContractCalls } from "@usedapp/core";
-import useABI from "hooks/useABI";
 import { getBids, createIndexDB, getWinners } from "utils/bids";
 import indexDbService from "utils/indexDbService";
 import Table from "components/Table";
@@ -17,7 +15,6 @@ const RadaBids = () => {
   const { id } = useParams();
   const { poolStat } = useRada();
   const [bids, setBids] = useState([]);
-  const [winners, setWinners] = useState([]);
   const [filterModel, setFilterModel] = useState();
   const { contractInstance, contractType, pool } = useRada();
 

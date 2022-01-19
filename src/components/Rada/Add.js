@@ -10,31 +10,23 @@ import RadaAuction from "model/RadaAuction";
 import formGenerator from "utils/form";
 import { useNavigate, useParams } from "react-router-dom";
 import useABI from "hooks/useABI";
+import { convertUnix } from "utils/format";
+import argsGenerator from "utils/pool";
 
 const RadaAdd = () => {
   const context = useRada();
   const global = useGlobal();
-  const navigate = useNavigate();
-  const { type } = useParams();
 
   const [open, setOpen] = useState(false);
-
-  const openBoxContract = useABI("openbox");
 
   const actions = useActions([
     {
       contractInstance: context.contractInstance,
-      func: "addPool",
-    },
-
-    {
-      contractInstance: openBoxContract.contractInstance,
-      func: "addPool",
-      key: "addPoolOpenBox",
+      func: "addOrUpdatePool",
     },
   ]);
 
-  const [lastAction, success, handleState] = useActionState(actions);
+  const [, , handleState] = useActionState(actions);
 
   const [formState, setFormState] = useState(RadaAuction({}));
 
@@ -53,40 +45,10 @@ const RadaAdd = () => {
   const handleSave = () => {
     global.setLoading(true);
 
-    actions["addPool"].func(
-      formState.poolId,
-      parseEther(formState.startPrice ?? "0"),
-      formState.addressItem,
-      formState.isSaleToken
-    );
+    actions["addOrUpdatePool"].func(...argsGenerator(context.contractType, formState));
 
-    handleState("addPool");
+    handleState("addOrUpdatePool");
   };
-
-  useEffect(() => {
-    if (success) {
-      if (lastAction === "addPool") {
-        global.setLoading(true);
-        actions["addPoolOpenBox"].func(
-          formState.poolId,
-          formState.nftAddress,
-          formState.isSaleToken,
-          formState.isSaleToken
-            ? formState.addressItem
-            : "0x0000000000000000000000000000000000000000",
-          !formState.isSaleToken
-            ? formState.addressItem
-            : "0x0000000000000000000000000000000000000000"
-        );
-        handleState("addPoolOpenBox");
-      } else if (lastAction === "addPoolOpenBox") {
-        setOpen(false);
-        navigate(`${process.env.PUBLIC_URL}/rada/${type}/${formState.poolId}`);
-      }
-    }
-  }, [lastAction, success]);
-
-  console.log("openBoxContract", openBoxContract);
 
   return (
     <Stack direction="row" justifyContent="end">
@@ -103,7 +65,7 @@ const RadaAdd = () => {
         <Box sx={modalStyle}>
           <h2 id="add-modal-title">Add a Pool</h2>
           <Grid container spacing={3}>
-            {formGenerator(radaFormAdd, formState, handleOnchange)}
+            {formGenerator(radaFormAdd[context.contractType], formState, handleOnchange)}
             <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
               <Button onClick={handleSave} variant="contained" sx={{ mt: 3, ml: 1 }}>
                 Add

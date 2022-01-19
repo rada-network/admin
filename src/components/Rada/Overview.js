@@ -10,9 +10,11 @@ import { convertUnix } from "utils/format";
 import { useGlobal } from "providers/Global";
 
 import { useRada } from "providers/Rada";
-import radaForm from "config/RadaForm";
+import { radaAppUpdateParams, radaForm } from "config/RadaForm";
 import formGenerator from "utils/form";
 import RadaPublic from "./Public";
+import MakePayment from "./MakePayment";
+import argsGenerator from "utils/pool";
 
 const RadaOverview = () => {
   const auth = useGlobal();
@@ -23,7 +25,7 @@ const RadaOverview = () => {
   const actions = useActions([
     {
       contractInstance: contractInstance,
-      func: "updatePool",
+      func: "addOrUpdatePool",
     },
     {
       contractInstance: contractInstance,
@@ -39,19 +41,8 @@ const RadaOverview = () => {
     auth.setLoading(true);
 
     switch (action) {
-      case "updatePool":
-        actions[action].func(
-          formState.poolId,
-          formState.addressItem,
-          formState.isSaleToken,
-          formState.startId,
-          formState.endId,
-          `${convertUnix(formState.startTime)}`,
-          `${convertUnix(formState.endTime)}`,
-          parseEther(formState.startPrice),
-          formState.requireWhitelist,
-          formState.maxBuyPerAddress
-        );
+      case "addOrUpdatePool":
+        actions[action].func(...argsGenerator(contractType, formState));
 
         break;
 
@@ -84,13 +75,13 @@ const RadaOverview = () => {
   return (
     <>
       <Grid container spacing={3}>
-        {formGenerator(radaForm, formState, handleOnchange)}
+        {formGenerator(radaForm[contractType], formState, handleOnchange)}
       </Grid>
 
       <Stack direction="row" spacing={2} sx={{ marginTop: "1rem", justifyContent: "flex-end" }}>
         <RadaPublic />
         {!pool.isPublic && (
-          <Button variant="contained" color="success" onClick={() => handlePool("updatePool")}>
+          <Button variant="contained" color="success" onClick={() => handlePool("addOrUpdatePool")}>
             Update Pool
           </Button>
         )}

@@ -75,7 +75,8 @@
       { "internalType": "uint256", "name": "_endTime", "type": "uint256" },
       { "internalType": "uint256", "name": "_startPrice", "type": "uint256" },
       { "internalType": "bool", "name": "_requireWhitelist", "type": "bool" },
-      { "internalType": "uint256", "name": "_maxBuyPerAddress", "type": "uint256" }
+      { "internalType": "uint256", "name": "_maxBuyPerAddress", "type": "uint256" },
+      { "internalType": "uint256", "name": "_maxBuyPerOrder", "type": "uint256" }
     ],
     "name": "addOrUpdatePool",
     "outputs": [],
@@ -224,7 +225,8 @@
       { "internalType": "bool", "name": "isPublic", "type": "bool" },
       { "internalType": "bool", "name": "ended", "type": "bool" },
       { "internalType": "bool", "name": "requireWhitelist", "type": "bool" },
-      { "internalType": "uint256", "name": "maxBuyPerAddress", "type": "uint256" }
+      { "internalType": "uint256", "name": "maxBuyPerAddress", "type": "uint256" },
+      { "internalType": "uint256", "name": "maxBuyPerOrder", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"

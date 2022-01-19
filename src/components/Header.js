@@ -138,25 +138,25 @@ export default function Header() {
             </ListItemIcon>
             <ListItemText primary="Whitelist Pools" />
           </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/auction/radaFixedSwap`}>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/radaFixedSwap`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="RADA Fixedswap" />
           </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/auction/radaAuction`}>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/radaAuction`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="RADA Auction" />
           </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/auction/nftFixedSwap`}>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftFixedSwap`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="NFT Fixedswap" />
           </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/auction/nftAuction`}>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftAuction`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
