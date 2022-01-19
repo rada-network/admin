@@ -62,7 +62,7 @@ const ProvideRada = ({ children }) => {
 
   const contractChain = useDataCalls(calls).filter((a) => a) ?? [];
 
-  if (contractChain.length < 1) {
+  if (contractChain.length < 3) {
     return "Loading....";
   }
 

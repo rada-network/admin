@@ -5,18 +5,16 @@ import { useGlobal } from "providers/Global";
 import { useRada } from "providers/Rada";
 import { useCallback, useEffect, useState } from "react";
 import modalStyle from "style/modal";
-import { parseEther } from "@ethersproject/units";
 import RadaAuction from "model/RadaAuction";
 import formGenerator from "utils/form";
-import { useNavigate, useParams } from "react-router-dom";
-import useABI from "hooks/useABI";
-import { convertUnix } from "utils/format";
+import { useNavigate } from "react-router-dom";
+
 import argsGenerator from "utils/pool";
 
 const RadaAdd = () => {
   const context = useRada();
   const global = useGlobal();
-
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const actions = useActions([
@@ -26,7 +24,14 @@ const RadaAdd = () => {
     },
   ]);
 
-  const [, , handleState] = useActionState(actions);
+  const [, success, handleState] = useActionState(actions);
+
+  useEffect(() => {
+    if (success) {
+      setOpen(false);
+      navigate(`${process.env.PUBLIC_URL}/rada/${context.contractType}/${formState.poolId}`);
+    }
+  }, [success]);
 
   const [formState, setFormState] = useState(RadaAuction({}));
 
