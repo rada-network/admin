@@ -33,15 +33,7 @@ const radaForm = [
     label: "endTime",
     type: "date",
   },
-  {
-    name: "isSaleToken",
-    label: "Token or NFT",
-    type: "bool",
-    options: [
-      { label: "Token", value: true },
-      { label: "NFT", value: false },
-    ],
-  },
+
   {
     name: "requireWhitelist",
     label: "requireWhitelist",
@@ -51,33 +43,47 @@ const radaForm = [
 
 export default radaForm;
 
-const radaFormAdd = [
-  {
-    name: "poolId",
-    label: "pool ID",
-  },
-  {
-    name: "startPrice",
-    label: "Start Price",
-  },
-  {
-    name: "addressItem",
-    label: "Token/NFT Address",
-  },
-  {
-    name: "isSaleToken",
-    label: "Token or NFT",
-    type: "bool",
-    options: [
-      { label: "Token", value: true },
-      { label: "NFT", value: false },
-    ],
-  },
+const radaFormAdd = {
+  radaFixedSwap: [
+    {
+      name: "poolId",
+      label: "pool ID",
+    },
+    {
+      name: "startPrice",
+      label: "Start Price",
+    },
+    {
+      name: "addressItem",
+      label: "Token Box Address",
+    },
+    {
+      name: "totalItems",
+      label: "Total Token Box",
+    },
 
-  {
-    name: "nftAddress",
-    label: "NFT Contract",
-  },
-];
+    {
+      name: "requireWhitelist",
+      label: "requireWhitelist",
+      type: "bool",
+    },
+    {
+      name: "maxBuyPerAddress",
+      label: "Max Buy Per Address",
+    },
+    {
+      name: "startTime",
+      label: "startTime",
+      type: "date",
+    },
+    {
+      name: "endTime",
+      label: "endTime",
+      type: "date",
+    },
+  ],
+
+  openbox: [],
+};
 
 export { radaFormAdd };

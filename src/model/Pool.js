@@ -1,4 +1,5 @@
-import { formatAddress, fromUnixTime, formatEther } from "utils/format";
+import { fromUnixTime, formatEther } from "utils/format";
+import { shortenAddress } from "@usedapp/core";
 
 const PoolModel = (data, i) => {
   let tokenAddress = "";
@@ -10,7 +11,7 @@ const PoolModel = (data, i) => {
   return {
     id: i ?? "",
     title: data.title ?? "",
-    address: tokenAddress ? formatAddress(data.tokenAddress) : "",
+    address: tokenAddress ? shortenAddress(data.tokenAddress) : "",
     tokenAddress: tokenAddress ?? "",
     allocationBusd: data.allocationBusd ? formatEther(data.allocationBusd) : "0",
     minAllocationBusd: data.minAllocationBusd ? formatEther(data.minAllocationBusd) : "0",

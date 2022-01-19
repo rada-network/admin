@@ -18,15 +18,6 @@
   {
     "anonymous": false,
     "inputs": [
-      { "indexed": false, "internalType": "address", "name": "buyerAddress", "type": "address" },
-      { "indexed": true, "internalType": "uint16", "name": "poolId", "type": "uint16" }
-    ],
-    "name": "ClaimAll",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
       { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
       { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
     ],
@@ -47,9 +38,9 @@
       { "indexed": false, "internalType": "address", "name": "buyerAddress", "type": "address" },
       { "indexed": true, "internalType": "uint16", "name": "poolId", "type": "uint16" },
       { "indexed": false, "internalType": "uint256", "name": "quantity", "type": "uint256" },
-      { "indexed": false, "internalType": "uint256", "name": "priceEach", "type": "uint256" }
+      { "indexed": false, "internalType": "uint256", "name": "totalAmount", "type": "uint256" }
     ],
-    "name": "PlaceBid",
+    "name": "PlaceOrder",
     "type": "event"
   },
   {
@@ -79,7 +70,6 @@
     "inputs": [
       { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
       { "internalType": "address", "name": "_addressItem", "type": "address" },
-      { "internalType": "uint256", "name": "_totalItems", "type": "uint256" },
       { "internalType": "uint256", "name": "_startTime", "type": "uint256" },
       { "internalType": "uint256", "name": "_endTime", "type": "uint256" },
       { "internalType": "uint256", "name": "_startPrice", "type": "uint256" },
@@ -98,11 +88,9 @@
     ],
     "name": "bids",
     "outputs": [
+      { "internalType": "uint16", "name": "poolId", "type": "uint16" },
       { "internalType": "address", "name": "creator", "type": "address" },
-      { "internalType": "uint256", "name": "priceEach", "type": "uint256" },
-      { "internalType": "uint256", "name": "quantity", "type": "uint256" },
-      { "internalType": "uint256", "name": "winQuantity", "type": "uint256" },
-      { "internalType": "bool", "name": "claimed", "type": "bool" }
+      { "internalType": "uint256", "name": "priceEach", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -139,28 +127,20 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint16", "name": "_poolId", "type": "uint16" }],
-    "name": "claimAll",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getPoolIds",
-    "outputs": [{ "internalType": "uint16[]", "name": "", "type": "uint16[]" }],
+    "inputs": [
+      { "internalType": "uint16", "name": "", "type": "uint16" },
+      { "internalType": "address", "name": "", "type": "address" }
+    ],
+    "name": "buyerItemsTotal",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
-      { "internalType": "uint32[]", "name": "bidsIndex", "type": "uint32[]" },
-      { "internalType": "uint32[]", "name": "quantityWin", "type": "uint32[]" }
-    ],
-    "name": "handleEndAuction",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "inputs": [{ "internalType": "uint16", "name": "_poolId", "type": "uint16" }],
+    "name": "getSaleTokenIds",
+    "outputs": [{ "internalType": "uint256[]", "name": "", "type": "uint256[]" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -169,18 +149,6 @@
       { "internalType": "bool", "name": "_isPublic", "type": "bool" }
     ],
     "name": "handlePublicPool",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
-      { "internalType": "uint16", "name": "_bidIndex", "type": "uint16" },
-      { "internalType": "uint32", "name": "_quantity", "type": "uint32" },
-      { "internalType": "uint256", "name": "_priceEach", "type": "uint256" }
-    ],
-    "name": "increaseBid",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -200,6 +168,18 @@
     "type": "function"
   },
   {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "bytes", "name": "", "type": "bytes" }
+    ],
+    "name": "onERC721Received",
+    "outputs": [{ "internalType": "bytes4", "name": "", "type": "bytes4" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
@@ -216,10 +196,9 @@
   {
     "inputs": [
       { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
-      { "internalType": "uint256", "name": "_quantity", "type": "uint256" },
-      { "internalType": "uint256", "name": "_priceEach", "type": "uint256" }
+      { "internalType": "uint256", "name": "_quantity", "type": "uint256" }
     ],
-    "name": "placeBid",
+    "name": "placeOrder",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -232,15 +211,22 @@
     "type": "function"
   },
   {
+    "inputs": [
+      { "internalType": "uint16", "name": "", "type": "uint16" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "name": "poolSaleTokenIds",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
     "name": "poolStats",
     "outputs": [
       { "internalType": "uint32", "name": "totalBid", "type": "uint32" },
       { "internalType": "uint256", "name": "totalBidItem", "type": "uint256" },
-      { "internalType": "uint256", "name": "totalBidAmount", "type": "uint256" },
-      { "internalType": "uint256", "name": "totalSold", "type": "uint256" },
-      { "internalType": "uint256", "name": "totalSoldAmount", "type": "uint256" },
-      { "internalType": "uint256", "name": "highestPrice", "type": "uint256" }
+      { "internalType": "uint256", "name": "totalSold", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -250,7 +236,6 @@
     "name": "pools",
     "outputs": [
       { "internalType": "address", "name": "addressItem", "type": "address" },
-      { "internalType": "uint256", "name": "totalItems", "type": "uint256" },
       { "internalType": "uint256", "name": "startTime", "type": "uint256" },
       { "internalType": "uint256", "name": "endTime", "type": "uint256" },
       { "internalType": "uint256", "name": "startPrice", "type": "uint256" },
@@ -307,6 +292,16 @@
   {
     "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
     "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
+      { "internalType": "uint256[]", "name": "_saleTokenIds", "type": "uint256[]" }
+    ],
+    "name": "updateSalePool",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

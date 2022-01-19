@@ -27,12 +27,28 @@
   {
     "anonymous": false,
     "inputs": [
+      { "indexed": false, "internalType": "address", "name": "account", "type": "address" }
+    ],
+    "name": "Paused",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
       { "indexed": false, "internalType": "address", "name": "buyerAddress", "type": "address" },
       { "indexed": true, "internalType": "uint16", "name": "poolId", "type": "uint16" },
       { "indexed": false, "internalType": "uint256", "name": "quantity", "type": "uint256" },
       { "indexed": false, "internalType": "uint256", "name": "priceEach", "type": "uint256" }
     ],
     "name": "PlaceOrder",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "address", "name": "account", "type": "address" }
+    ],
+    "name": "Unpaused",
     "type": "event"
   },
   {
@@ -53,20 +69,17 @@
   {
     "inputs": [
       { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
-      { "internalType": "uint256", "name": "_startPrice", "type": "uint256" },
       { "internalType": "address", "name": "_addressItem", "type": "address" },
-      { "internalType": "bool", "name": "_isSaleToken", "type": "bool" }
+      { "internalType": "uint256", "name": "_totalItems", "type": "uint256" },
+      { "internalType": "uint256", "name": "_startTime", "type": "uint256" },
+      { "internalType": "uint256", "name": "_endTime", "type": "uint256" },
+      { "internalType": "uint256", "name": "_startPrice", "type": "uint256" },
+      { "internalType": "bool", "name": "_requireWhitelist", "type": "bool" },
+      { "internalType": "uint256", "name": "_maxBuyPerAddress", "type": "uint256" }
     ],
-    "name": "addPool",
+    "name": "addOrUpdatePool",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "admins",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -151,9 +164,23 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }],
+    "name": "isAdmin",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "paused",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -190,9 +217,7 @@
     "name": "pools",
     "outputs": [
       { "internalType": "address", "name": "addressItem", "type": "address" },
-      { "internalType": "bool", "name": "isSaleToken", "type": "bool" },
-      { "internalType": "uint256", "name": "startId", "type": "uint256" },
-      { "internalType": "uint256", "name": "endId", "type": "uint256" },
+      { "internalType": "uint256", "name": "totalItems", "type": "uint256" },
       { "internalType": "uint256", "name": "startTime", "type": "uint256" },
       { "internalType": "uint256", "name": "endTime", "type": "uint256" },
       { "internalType": "uint256", "name": "startPrice", "type": "uint256" },
@@ -222,6 +247,13 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "bool", "name": "_allow", "type": "bool" }],
+    "name": "setPause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
       { "internalType": "address[]", "name": "_addresses", "type": "address[]" },
@@ -242,24 +274,6 @@
   {
     "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
     "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
-      { "internalType": "address", "name": "_addressItem", "type": "address" },
-      { "internalType": "bool", "name": "_isSaleToken", "type": "bool" },
-      { "internalType": "uint32", "name": "_startId", "type": "uint32" },
-      { "internalType": "uint32", "name": "_endId", "type": "uint32" },
-      { "internalType": "uint256", "name": "_startTime", "type": "uint256" },
-      { "internalType": "uint256", "name": "_endTime", "type": "uint256" },
-      { "internalType": "uint256", "name": "_startPrice", "type": "uint256" },
-      { "internalType": "bool", "name": "_requireWhitelist", "type": "bool" },
-      { "internalType": "uint256", "name": "_maxBuyPerAddress", "type": "uint256" }
-    ],
-    "name": "updatePool",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

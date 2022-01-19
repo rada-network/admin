@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { formatAddress } from "utils/format";
+import { shortenAddress } from "@usedapp/core";
 import { useGlobal } from "providers/Global";
 
 export default function Wallet() {
@@ -11,5 +11,5 @@ export default function Wallet() {
 
   console.log("Wallet render...", global.account);
 
-  return <Typography>{formatAddress(global.account)}</Typography>;
+  return <Typography>{shortenAddress(global.account)}</Typography>;
 }

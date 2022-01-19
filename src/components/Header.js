@@ -138,17 +138,29 @@ export default function Header() {
             </ListItemIcon>
             <ListItemText primary="Whitelist Pools" />
           </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/fixedswap`}>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/auction/radaFixedSwap`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="FixedSwap Pools" />
+            <ListItemText primary="RADA Fixedswap" />
           </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/auction`}>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/auction/radaAuction`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="Auction Pools" />
+            <ListItemText primary="RADA Auction" />
+          </MenuLink>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/auction/nftFixedSwap`}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="NFT Fixedswap" />
+          </MenuLink>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/auction/nftAuction`}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="NFT Auction" />
           </MenuLink>
           <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/shar2earn`}>
             <ListItemIcon>

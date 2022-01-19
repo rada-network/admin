@@ -5,6 +5,9 @@ import poolRIR from "../config/abi/PoolRIR.json";
 import poolWhitelist from "../config/abi/PoolWhitelist.json";
 import radaAuction from "../config/abi/RadaAuction.json";
 import radaFixedSwap from "../config/abi/RadaFixedSwap.json";
+import nftAuction from "../config/abi/NFTAuction.json";
+import nftFixedSwap from "../config/abi/NFTFixedSwap.json";
+
 import openbox from "../config/abi/OpenBox.json";
 import { Contract } from "@ethersproject/contracts";
 import { useEthers } from "@usedapp/core";
@@ -36,16 +39,28 @@ const useABI = (contractType) => {
       contractName = "Whitelist Pools";
       break;
 
-    case "auction":
+    case "radaAuction":
       contractABI = new utils.Interface(radaAuction);
       contractAddress = process.env.REACT_APP_RADAAUCTION_CONTRACT;
-      contractName = "Auction Pools";
+      contractName = "RADA Auction";
       break;
 
-    case "fixedswap":
+    case "radaFixedSwap":
       contractABI = new utils.Interface(radaFixedSwap);
       contractAddress = process.env.REACT_APP_RADAFIXEDSWAP_CONTRACT;
-      contractName = "Fixed Swap Pools";
+      contractName = "RADA FixedSwap";
+      break;
+
+    case "nftAuction":
+      contractABI = new utils.Interface(nftAuction);
+      contractAddress = process.env.REACT_APP_NFTAUCTION_CONTRACT;
+      contractName = "NFT Auction";
+      break;
+
+    case "nftFixedSwap":
+      contractABI = new utils.Interface(nftFixedSwap);
+      contractAddress = process.env.REACT_APP_NTFFIXEDSWAP_CONTRACT;
+      contractName = "NFT FixedSwap";
       break;
 
     case "openbox":

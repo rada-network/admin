@@ -34,8 +34,6 @@ const fromUnixTime = (unixTime) => {
   return "";
 };
 
-const formatAddress = (value) => `${value.substring(0, 4)}...${value.slice(-4)}`;
-
 const formatEther = (value) => {
   const v = formatEtherCore(value);
 
@@ -52,4 +50,4 @@ const formatNumber = (value) => {
   }
   return 0;
 };
-export { formatDate, formatAddress, convertUnix, fromUnixTime, formatEther, formatNumber };
+export { formatDate, convertUnix, fromUnixTime, formatEther, formatNumber };
