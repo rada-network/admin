@@ -32,6 +32,10 @@ const PoolInvestors = () => {
       contractInstance: contractInstance,
       func: "unapproveInvestor",
     },
+    {
+      contractInstance: contractInstance,
+      func: "unApproveInvestors",
+    },
   ]);
 
   const [, success, handleState] = useActionState(actions);
@@ -54,6 +58,10 @@ const PoolInvestors = () => {
         } else {
           auth.setLoading(false);
         }
+        break;
+
+      case "unApproveInvestors":
+        actions[action].func(pool.id);
         break;
 
       default:
@@ -123,6 +131,16 @@ const PoolInvestors = () => {
                   Aprrove
                 </Button>
               )}
+
+              <Button
+                disabled={!isApprover || !pool.locked}
+                variant="contained"
+                color="success"
+                onClick={() => handlePool("unApproveInvestors")}
+              >
+                Unaprrove All
+              </Button>
+
               <Button
                 disabled={!isApprover || !pool.locked || selectedIDs.length === 0}
                 variant="contained"
