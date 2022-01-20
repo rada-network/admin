@@ -9,9 +9,10 @@ import RadaStats from "./Stat";
 import RadaOpenbox from "./OpenBox";
 import RadaBids from "./Bids";
 import { useParams } from "react-router-dom";
+import UpdateSalePool from "./UpdateSalePool";
 
 const RadaDetail = () => {
-  const { pool } = useRada();
+  const { pool, contractType } = useRada();
   const [tab, setTab] = useState("1");
   const { id } = useParams();
 
@@ -35,6 +36,9 @@ const RadaDetail = () => {
               <Tab label="Investors" value="3" />
               <Tab label="Statistics" value="4" />
               {pool.requireWhitelist && <Tab label="Import Whitelist" value="5" />}
+              {(contractType === "nftFixedSwap" || contractType === "nftAuction") && (
+                <Tab label="Sale Token" value="6" />
+              )}
             </TabList>
           </Box>
           <TabPanel value="1">
@@ -51,6 +55,9 @@ const RadaDetail = () => {
           </TabPanel>
           <TabPanel value="5">
             <RadaImport />
+          </TabPanel>
+          <TabPanel value="6">
+            <UpdateSalePool />
           </TabPanel>
         </TabContext>
       </Box>

@@ -41,7 +41,14 @@ function App() {
               <Suspense fallback={<Backdrop />}>
                 <Routes>
                   {mainRoutes.map(({ path, exact, element }, i) => {
-                    return <Route key={i} exact={exact} path={path} element={element} />;
+                    return (
+                      <Route
+                        key={i}
+                        exact={exact}
+                        path={path}
+                        element={<React.Suspense fallback={<>...</>}>{element}</React.Suspense>}
+                      />
+                    );
                   })}
                 </Routes>
               </Suspense>
