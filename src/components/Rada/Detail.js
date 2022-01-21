@@ -26,7 +26,7 @@ const RadaDetail = () => {
     return "Loading...";
   }
 
-  if (pool.startPrice === 0) {
+  if (pool?.startPrice === 0) {
     return "";
   }
 
