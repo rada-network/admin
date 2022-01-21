@@ -22,11 +22,14 @@ export default function Wallet() {
   console.log("Wallet render...", global.account);
 
   return (
-    <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
+    <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end", alignItems: "center" }}>
+      <Typography>
+        {isPolygon(chainId) ? "Polygon" : "BSC"}: {shortenAddress(global.account)}
+      </Typography>
+
       <Button variant="contained" color="success" onClick={() => handleChange()}>
         Change to {isPolygon(chainId) ? "BSC" : "Polygon"}
       </Button>
-      <Typography>{shortenAddress(global.account)}</Typography>
     </Stack>
   );
 }
