@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 import { useGlobal } from "./Global";
 import { useParams } from "react-router-dom";
 import useABI from "hooks/useABI";
-import { useContractCalls } from "@usedapp/core";
+
 import RadaAuction from "model/RadaAuction";
 import RadaAuctionStats from "model/RadaAuctionStats";
 import useDataCalls from "hooks/useDataCalls";

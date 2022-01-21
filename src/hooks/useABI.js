@@ -11,9 +11,10 @@ import nftFixedSwap from "../config/abi/NFTFixedSwap.json";
 import openbox from "../config/abi/OpenBox.json";
 import { Contract } from "@ethersproject/contracts";
 import { useEthers } from "@usedapp/core";
+import { isPolygon } from "config/Chain";
 
 const useABI = (contractType) => {
-  const { library } = useEthers();
+  const { library, chainId } = useEthers();
   let contractABI = new utils.Interface(BEP20);
   let contractAddress = "";
   let contractName = "BEP20";
@@ -41,32 +42,34 @@ const useABI = (contractType) => {
 
     case "radaAuction":
       contractABI = new utils.Interface(radaAuction);
-      contractAddress = process.env.REACT_APP_RADAAUCTION_CONTRACT;
+      contractAddress = isPolygon(chainId)
+        ? process.env.REACT_APP_POLYGON_RADAAUCTION_CONTRACT
+        : process.env.REACT_APP_RADAAUCTION_CONTRACT;
       contractName = "RADA Auction";
       break;
 
     case "radaFixedSwap":
       contractABI = new utils.Interface(radaFixedSwap);
-      contractAddress = process.env.REACT_APP_RADAFIXEDSWAP_CONTRACT;
+      contractAddress = isPolygon(chainId)
+        ? process.env.REACT_APP_POLYGON_RADAFIXEDSWAP_CONTRACT
+        : process.env.REACT_APP_RADAFIXEDSWAP_CONTRACT;
       contractName = "RADA FixedSwap";
       break;
 
     case "nftAuction":
       contractABI = new utils.Interface(nftAuction);
-      contractAddress = process.env.REACT_APP_NFTAUCTION_CONTRACT;
+      contractAddress = isPolygon(chainId)
+        ? process.env.REACT_APP_POLYGON_NFTAUCTION_CONTRACT
+        : process.env.REACT_APP_NFTAUCTION_CONTRACT;
       contractName = "NFT Auction";
       break;
 
     case "nftFixedSwap":
       contractABI = new utils.Interface(nftFixedSwap);
-      contractAddress = process.env.REACT_APP_NTFFIXEDSWAP_CONTRACT;
+      contractAddress = isPolygon(chainId)
+        ? process.env.REACT_APP_POLYGON_NTFFIXEDSWAP_CONTRACT
+        : process.env.REACT_APP_NTFFIXEDSWAP_CONTRACT;
       contractName = "NFT FixedSwap";
-      break;
-
-    case "openbox":
-      contractABI = new utils.Interface(openbox);
-      contractAddress = process.env.REACT_APP_OPENBOX_CONTRACT;
-      contractName = "Open Box Pools";
       break;
 
     default:

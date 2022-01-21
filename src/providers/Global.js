@@ -1,12 +1,14 @@
 import { createContext, useContext, useState } from "react";
 import { useEthers } from "@usedapp/core";
 import { useCallback } from "react";
+import { useParams } from "react-router-dom";
 
 const globalContext = createContext();
 
 const ProvideGlobal = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState();
+  const [typeUser, setTypeUser] = useState();
+  const { type } = useParams();
 
   const { activateBrowserWallet, account } = useEthers();
 
@@ -25,7 +27,7 @@ const ProvideGlobal = ({ children }) => {
       title = "Owner";
     }
 
-    setType(`${title} - ${provideValue.contractName}`);
+    setTypeUser(`${title} - ${provideValue.contractName}`);
   }, []);
 
   if (!account) {
@@ -40,7 +42,8 @@ const ProvideGlobal = ({ children }) => {
       value={{
         account: account,
         loading: loading,
-        type: type,
+        typeUser: typeUser,
+        typeRouter: type,
         handleType: handleType,
         setLoading: setLoading,
       }}

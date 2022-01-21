@@ -73,7 +73,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
 
 export default function Header() {
   const [open, setOpen] = useState(true);
-  const { type } = useGlobal();
+  const { typeUser } = useGlobal();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -96,7 +96,7 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            RADA {type}
+            RADA {typeUser}
           </Typography>
           <Wallet />
         </Toolbar>
