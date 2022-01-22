@@ -132,21 +132,23 @@ const WhitelistDetail = () => {
             value={title}
           />
         </Grid>
-        <Grid item xs={3}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Allow</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              name="allow"
-              label="Allow"
-              value={allow}
-              onChange={handleAllow}
-            >
-              <MenuItem value={true}>true</MenuItem>
-              <MenuItem value={false}>false</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
+        {id !== "add" && (
+          <Grid item xs={3}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Allow</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                name="allow"
+                label="Allow"
+                value={allow}
+                onChange={handleAllow}
+              >
+                <MenuItem value={true}>true</MenuItem>
+                <MenuItem value={false}>false</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        )}
       </Grid>
       <Stack spacing={3} sx={{ marginTop: "2rem" }}>
         <Table
