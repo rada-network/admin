@@ -62,36 +62,36 @@ const ProvideRada = ({ children }) => {
 
   const contractChain = useDataCalls(calls).filter((a) => a) ?? [];
 
-  if (contractChain.length < 3) {
-    return "Loading....";
+  if (contractChain.length < 1) {
+    return "Loading...";
   }
 
   contractChain.forEach((chain, i) => {
-    if (chain) {
+    if (chain[0]) {
       switch (i) {
         case 0:
-          provideValue.isAdmin = chain;
+          provideValue.isAdmin = chain[0];
 
           break;
 
         case 1:
-          if (chain === global.account) {
+          if (chain[0] === global.account) {
             provideValue.isOwner = true;
           }
 
           break;
 
         case 2:
-          provideValue.poolIds = chain;
+          provideValue.poolIds = chain[0];
 
           break;
         case 3:
-          provideValue.pool = RadaAuction(chain, id);
+          provideValue.pool = RadaAuction(chain[0], id);
 
           break;
 
         case 4:
-          provideValue.poolStat = RadaAuctionStats(chain);
+          provideValue.poolStat = RadaAuctionStats(chain[0]);
 
           break;
 
@@ -107,7 +107,7 @@ const ProvideRada = ({ children }) => {
     return "Ops...You are not a admin";
   }
 
-  console.log("ProvideRada render", provideValue);
+  console.log("ProvideRada render", provideValue, contractChain);
 
   return <radaContext.Provider value={provideValue}>{children}</radaContext.Provider>;
 };

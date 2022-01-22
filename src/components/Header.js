@@ -162,11 +162,11 @@ export default function Header() {
             </ListItemIcon>
             <ListItemText primary="NFT Auction" />
           </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/shar2earn`}>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/whitelist`}>
             <ListItemIcon>
-              <AttachMoneyIcon />
+              <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="Share2earn" />
+            <ListItemText primary="Whitelist" />
           </MenuLink>
         </List>
       </Drawer>

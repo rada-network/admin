@@ -9,22 +9,27 @@ const useDataCalls = (calls) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const r = await Promise.all(
-          calls.map(async (call) => {
-            const contractInstance = new Contract(call.address, call.abi, library);
+      const r = await Promise.all(
+        calls.map(async (call) => {
+          const contractInstance = new Contract(call.address, call.abi, library);
 
-            return await contractInstance
-              .connect(call.sender)
-              [call.method](call.args ? call.args.join(",") : null);
-          })
-        );
+          try {
+            return [
+              await contractInstance
+                .connect(call.sender)
+                [call.method](call.args ? call.args.join(",") : null),
+            ];
+          } catch (error) {
+            console.log("useDataCalls error", error);
+            return [undefined];
+          }
+        })
+      );
 
-        if (r) {
-          console.log("useDataCalls", r);
-          setResult(r);
-        }
-      } catch (error) {}
+      if (r) {
+        console.log("useDataCalls", r);
+        setResult(r);
+      }
     };
     fetchData();
   }, [JSON.stringify(calls)]);

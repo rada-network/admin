@@ -7,8 +7,9 @@ import radaAuction from "../config/abi/RadaAuction.json";
 import radaFixedSwap from "../config/abi/RadaFixedSwap.json";
 import nftAuction from "../config/abi/NFTAuction.json";
 import nftFixedSwap from "../config/abi/NFTFixedSwap.json";
+import randomizeByRarity from "../config/abi/RandomizeByRarity.json";
+import whitelist from "../config/abi/Whitelist.json";
 
-import openbox from "../config/abi/OpenBox.json";
 import { Contract } from "@ethersproject/contracts";
 import { useEthers } from "@usedapp/core";
 import { isPolygon } from "config/Chain";
@@ -58,18 +59,26 @@ const useABI = (contractType) => {
 
     case "nftAuction":
       contractABI = new utils.Interface(nftAuction);
-      contractAddress = isPolygon(chainId)
-        ? process.env.REACT_APP_POLYGON_NFTAUCTION_CONTRACT
-        : process.env.REACT_APP_NFTAUCTION_CONTRACT;
+      contractAddress = process.env.REACT_APP_NFTAUCTION_CONTRACT;
       contractName = "NFT Auction";
       break;
 
     case "nftFixedSwap":
       contractABI = new utils.Interface(nftFixedSwap);
-      contractAddress = isPolygon(chainId)
-        ? process.env.REACT_APP_POLYGON_NTFFIXEDSWAP_CONTRACT
-        : process.env.REACT_APP_NTFFIXEDSWAP_CONTRACT;
+      contractAddress = process.env.REACT_APP_NFTFIXEDSWAP_CONTRACT;
       contractName = "NFT FixedSwap";
+      break;
+
+    case "randomizeByRarity":
+      contractABI = new utils.Interface(randomizeByRarity);
+      contractAddress = process.env.REACT_APP_POLYGON_RANDOMIZE_CONTRACT;
+      contractName = "RandomizeByRarity";
+      break;
+
+    case "whitelist":
+      contractABI = new utils.Interface(whitelist);
+      contractAddress = process.env.REACT_APP_POLYGON_WHITELIST_CONTRACT;
+      contractName = "Whitelist";
       break;
 
     default:
@@ -79,6 +88,8 @@ const useABI = (contractType) => {
   if (contractAddress) {
     contractInstance = new Contract(contractAddress, contractABI, library);
   }
+
+  console.log("contractAddress", contractAddress);
 
   return { contractABI, contractAddress, contractType, contractName, contractInstance };
 };

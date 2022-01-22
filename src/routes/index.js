@@ -8,6 +8,7 @@ const RadaSettingsContainer = lazy(() => import("../containers/RadaSettings"));
 
 const Share2earn = lazy(() => import("../containers/Share2earn"));
 const AuctionPoolsContainer = lazy(() => import("containers/AuctionPools"));
+const WhitelistContainer = lazy(() => import("containers/Whitelist"));
 
 const mainRoutes = [
   {
@@ -62,6 +63,18 @@ const mainRoutes = [
     path: "/:type/settings",
     exact: true,
     element: <PoolSettingsContainer />,
+  },
+
+  {
+    path: "/whitelist",
+    exact: true,
+    element: <WhitelistContainer />,
+  },
+
+  {
+    path: "/whitelist/:id",
+    exact: true,
+    element: <WhitelistContainer />,
   },
 
   {
