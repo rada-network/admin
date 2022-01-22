@@ -1,6 +1,15 @@
 import Table from "components/Table";
 
-import { Button, Modal, Stack, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { GridToolbarContainer } from "@mui/x-data-grid";
 
@@ -18,6 +27,7 @@ const WhitelistDetail = () => {
   const global = useGlobal();
   const [whitelist, setWhitelist] = useState([]);
   const [title, setTitle] = useState();
+  const [allow, setAllow] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -48,6 +58,10 @@ const WhitelistDetail = () => {
     }
   }, [success]);
 
+  if (!id) {
+    return "";
+  }
+
   const handleSave = () => {
     global.setLoading(true);
 
@@ -55,12 +69,11 @@ const WhitelistDetail = () => {
 
     if (id === "add") {
       actions["addList"].func(title, addresses);
+      handleState("addList");
     } else {
-      console.log("updateList", id, title, addresses);
-      actions["updateList"].func(id, title, addresses);
+      actions["updateList"].func(id, title, addresses, allow);
+      handleState("updateList");
     }
-
-    handleState("addList");
   };
 
   const handleOnFileLoad = (csv) => {
@@ -77,6 +90,10 @@ const WhitelistDetail = () => {
 
   const handleTitle = ({ target }) => {
     setTitle(target.value);
+  };
+
+  const handleAllow = ({ target }) => {
+    setAllow(target.value);
   };
 
   const Toolbar = () => {
@@ -101,30 +118,47 @@ const WhitelistDetail = () => {
 
   const columns = [{ field: "address", headerName: "address", width: 600 }];
 
-  if (!id) {
-    return "";
-  }
-
   return (
-    <Stack spacing={3}>
-      <TextField
-        name="title"
-        label="title"
-        fullWidth
-        autoComplete="given-name"
-        variant="standard"
-        onChange={handleTitle}
-        value={title}
-      />
-      <Table
-        rows={whitelist}
-        columns={columns}
-        components={{
-          Toolbar: Toolbar,
-        }}
-        getRowId={(row) => row.address}
-      />
-    </Stack>
+    <>
+      <Grid container spacing={3}>
+        <Grid item xs={9}>
+          <TextField
+            name="title"
+            label="title"
+            fullWidth
+            autoComplete="given-name"
+            variant="standard"
+            onChange={handleTitle}
+            value={title}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Allow</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              name="allow"
+              label="Allow"
+              value={allow}
+              onChange={handleAllow}
+            >
+              <MenuItem value={true}>true</MenuItem>
+              <MenuItem value={false}>false</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <Stack spacing={3} sx={{ marginTop: "2rem" }}>
+        <Table
+          rows={whitelist}
+          columns={columns}
+          components={{
+            Toolbar: Toolbar,
+          }}
+          getRowId={(row) => row.address}
+        />
+      </Stack>
+    </>
   );
 };
 
