@@ -61,13 +61,17 @@ const useABI = (contractType) => {
 
     case "nftAuction":
       contractABI = new utils.Interface(nftAuction);
-      contractAddress = process.env.REACT_APP_NFTAUCTION_CONTRACT;
+      contractAddress = isPolygon(chainId)
+        ? process.env.REACT_APP_POLYGON_NFTAUCTION_CONTRACT
+        : process.env.REACT_APP_NFTAUCTION_CONTRACT;
       contractName = "NFT Auction";
       break;
 
     case "nftFixedSwap":
       contractABI = new utils.Interface(nftFixedSwap);
-      contractAddress = process.env.REACT_APP_NFTFIXEDSWAP_CONTRACT;
+      contractAddress = isPolygon(chainId)
+        ? process.env.REACT_APP_POLYGON_NFTFIXEDSWAP_CONTRACT
+        : process.env.REACT_APP_NFTFIXEDSWAP_CONTRACT;
       contractName = "NFT FixedSwap";
       break;
 
@@ -79,19 +83,25 @@ const useABI = (contractType) => {
 
     case "whitelist":
       contractABI = new utils.Interface(whitelist);
-      contractAddress = process.env.REACT_APP_POLYGON_WHITELIST_CONTRACT;
+      contractAddress = isPolygon(chainId)
+        ? process.env.REACT_APP_WHITELIST_CONTRACT
+        : process.env.REACT_APP_POLYGON_WHITELIST_CONTRACT;
       contractName = "Whitelist";
       break;
 
     case "nftClaim":
       contractABI = new utils.Interface(nftClaim);
-      contractAddress = process.env.REACT_APP_POLYGON_NTFCLAIM_CONTRACT;
+      contractAddress = isPolygon(chainId)
+        ? process.env.REACT_APP_NTFCLAIM_CONTRACT
+        : process.env.REACT_APP_POLYGON_NTFCLAIM_CONTRACT;
       contractName = "NFTClaim";
       break;
 
     case "nftMan":
       contractABI = new utils.Interface(nftMan);
-      contractAddress = process.env.REACT_APP_POLYGON_NTFMAN_CONTRACT;
+      contractAddress = isPolygon(chainId)
+        ? process.env.REACT_APP_NTFMAN_CONTRACT
+        : process.env.REACT_APP_POLYGON_NTFMAN_CONTRACT;
       contractName = "NFTMan";
       break;
 
