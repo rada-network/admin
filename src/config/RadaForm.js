@@ -207,6 +207,35 @@ const radaForm = {
       label: "Token Allocation Busd",
     },
   ],
+  nftMan: [
+    {
+      name: "poolId",
+      label: "pool ID",
+    },
+    {
+      name: "startTime",
+      label: "startTime",
+      type: "date",
+    },
+    {
+      name: "nftAddress",
+      label: "NFT Address",
+      size: 12,
+    },
+    {
+      name: "tokenAddress",
+      label: "Address contract Token",
+      size: 12,
+    },
+    {
+      name: "startId",
+      label: "startId",
+    },
+    {
+      name: "endId",
+      label: "endId",
+    },
+  ],
 };
 
 const radaFormAdd = {
@@ -404,6 +433,36 @@ const radaFormAdd = {
       label: "Token Allocation Busd",
     },
   ],
+
+  nftMan: [
+    {
+      name: "poolId",
+      label: "pool ID",
+    },
+    {
+      name: "startTime",
+      label: "startTime",
+      type: "date",
+    },
+    {
+      name: "nftAddress",
+      label: "NFT Address",
+      size: 12,
+    },
+    {
+      name: "tokenAddress",
+      label: "Address contract Token",
+      size: 12,
+    },
+    {
+      name: "startId",
+      label: "startId",
+    },
+    {
+      name: "endId",
+      label: "endId",
+    },
+  ],
 };
 
 const radaAppUpdateParams = {
@@ -553,6 +612,28 @@ const radaAppUpdateParams = {
     {
       name: "tokenAllocationBusd",
       type: "ether",
+    },
+  ],
+
+  nftMan: [
+    {
+      name: "poolId",
+    },
+    {
+      name: "nftAddress",
+    },
+    {
+      name: "startId",
+    },
+    {
+      name: "endId",
+    },
+    {
+      name: "tokenAddress",
+    },
+    {
+      name: "startTime",
+      type: "date",
     },
   ],
 };

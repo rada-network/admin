@@ -19,11 +19,12 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Wallet from "./Wallet";
 import { useState } from "react";
 import { useGlobal } from "providers/Global";
 import MenuLink from "./MenuLink";
+import { useLocation, matchPath } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -74,6 +75,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
 export default function Header() {
   const [open, setOpen] = useState(true);
   const { typeUser } = useGlobal();
+  const { pathname } = useLocation();
+  const last = pathname.split("/").at(-1);
+  const id = isNaN(last) ? "" : last;
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -138,13 +142,17 @@ export default function Header() {
             </ListItemIcon>
             <ListItemText primary="Whitelist Pools" />
           </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/radaFixedSwap`}>
+          <MenuLink
+            button
+            component={Link}
+            to={`${process.env.PUBLIC_URL}/rada/radaFixedSwap/${id}`}
+          >
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="RADA Fixedswap" />
           </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/radaAuction`}>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/radaAuction/${id}`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
@@ -162,18 +170,23 @@ export default function Header() {
             </ListItemIcon>
             <ListItemText primary="NFT Auction" />
           </MenuLink>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftMan/${id}`}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="NFT Man" />
+          </MenuLink>
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftClaim/${id}`}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="NFT Claim" />
+          </MenuLink>{" "}
           <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/whitelist`}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Whitelist" />
-          </MenuLink>
-
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftClaim`}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="NFT Claim" />
           </MenuLink>
         </List>
       </Drawer>

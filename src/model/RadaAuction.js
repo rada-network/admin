@@ -20,6 +20,9 @@ const RadaAuction = (data, i = 0) => {
     tokenAddress: data.tokenAddress ?? "",
     tokenPrice: data.tokenPrice ? formatEther(data.tokenPrice) : "0",
     tokenAllocationBusd: data.tokenAllocationBusd ? formatEther(data.tokenAllocationBusd) : "0",
+    startId: data.startId ?? "0",
+    endId: data.endId ?? "0",
+    nftAddress: data.nftAddress ?? "",
   };
 };
 

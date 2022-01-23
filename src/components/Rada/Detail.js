@@ -40,8 +40,12 @@ const RadaDetail = () => {
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange}>
               <Tab label="Detail" value="1" />
-              {contractType !== "nftClaim" && <Tab label="Investors" value="3" />}
-              {contractType !== "nftClaim" && <Tab label="Statistics" value="4" />}
+              {contractType !== "nftClaim" && contractType !== "nftMan" && (
+                <Tab label="Investors" value="3" />
+              )}
+              {contractType !== "nftClaim" && contractType !== "nftMan" && (
+                <Tab label="Statistics" value="4" />
+              )}
               {pool.requireWhitelist &&
                 (contractType === "nftFixedSwap" || contractType === "nftAuction") && (
                   <Tab label="Whitelist" value="5" />

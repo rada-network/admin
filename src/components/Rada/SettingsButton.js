@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const RadaSettingsButton = (props) => {
   const navigate = useNavigate();
-  const { isOwner } = useRada();
+  const { isOwner, contractType } = useRada();
   const { type } = useParams();
 
   const onSettings = (params) => {
@@ -16,9 +16,12 @@ const RadaSettingsButton = (props) => {
   }
 
   return (
-    <Button variant="contained" onClick={onSettings}>
-      Settings
-    </Button>
+    contractType !== "nftClaim" &&
+    contractType !== "nftMan" && (
+      <Button variant="contained" onClick={onSettings}>
+        Settings
+      </Button>
+    )
   );
 };
 

@@ -8,7 +8,7 @@ import formGenerator from "utils/form";
 
 const RadaSettings = () => {
   const auth = useGlobal();
-  const { contractInstance, WITHDRAW_ADDRESS } = useRadaSettings();
+  const { contractType, contractInstance, WITHDRAW_ADDRESS } = useRadaSettings();
 
   const [formState, setFormState] = useState({
     adminAddress: "",
@@ -74,30 +74,33 @@ const RadaSettings = () => {
   ];
 
   return (
-    <Grid container spacing={3}>
-      {formGenerator(formSetAdmin, formState, handleOnchange)}
-      <Grid item xs="12">
-        <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
-          <Button variant="contained" color="success" onClick={() => handlePool("setAdmin")}>
-            Set Admin
-          </Button>
-        </Stack>
-      </Grid>
+    contractType !== "nftClaim" &&
+    contractType !== "nftMan" && (
+      <Grid container spacing={3}>
+        {formGenerator(formSetAdmin, formState, handleOnchange)}
+        <Grid item xs="12">
+          <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
+            <Button variant="contained" color="success" onClick={() => handlePool("setAdmin")}>
+              Set Admin
+            </Button>
+          </Stack>
+        </Grid>
 
-      {formGenerator(formSetWithdrawAddress, formState, handleOnchange)}
+        {formGenerator(formSetWithdrawAddress, formState, handleOnchange)}
 
-      <Grid item xs="12">
-        <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => handlePool("setWithdrawAddress")}
-          >
-            Set WithdrawAddress
-          </Button>
-        </Stack>
+        <Grid item xs="12">
+          <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => handlePool("setWithdrawAddress")}
+            >
+              Set WithdrawAddress
+            </Button>
+          </Stack>
+        </Grid>
       </Grid>
-    </Grid>
+    )
   );
 };
 
