@@ -25,6 +25,7 @@ const ProvideRada = ({ children }) => {
     pool: null,
     poolStat: null,
     poolIds: [],
+    whitelistIds: [],
   };
 
   const callData = {
@@ -57,6 +58,11 @@ const ProvideRada = ({ children }) => {
     calls.push({
       ...callData,
       ...{ method: "poolStats", args: [id] },
+    });
+
+    calls.push({
+      ...callData,
+      ...{ method: "getWhitelistIds", args: [id] },
     });
   }
 
@@ -92,6 +98,10 @@ const ProvideRada = ({ children }) => {
 
         case 4:
           provideValue.poolStat = RadaAuctionStats(chain[0]);
+          break;
+
+        case 5:
+          provideValue.whitelistIds = chain[0];
 
           break;
 

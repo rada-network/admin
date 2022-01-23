@@ -1,7 +1,7 @@
 import { useActions, useActionState } from "hooks/useActions";
 
 import { Grid, Stack, Button } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useGlobal } from "providers/Global";
 import { useRada } from "providers/Rada";
 import { radaForm } from "config/RadaForm";
@@ -9,11 +9,12 @@ import formGenerator from "utils/form";
 import RadaPublic from "./Public";
 
 import argsGenerator from "utils/pool";
+import useWhitelistHook from "hooks/useWhitelist";
 
 const RadaOverview = () => {
   const auth = useGlobal();
   const { contractInstance, contractType, pool, isOwner } = useRada();
-
+  const allWhitelistIds = useWhitelistHook();
   const [formState, setFormState] = useState(pool);
 
   const actions = useActions([
@@ -64,12 +65,19 @@ const RadaOverview = () => {
     },
   ];
 
+  const form = radaForm[contractType].map((item) => {
+    if (item.name === "whitelistIds") {
+      item.options = allWhitelistIds;
+    }
+    return item;
+  });
+
   console.log("RadaOverview", formState);
 
   return (
     <>
       <Grid container spacing={3}>
-        {formGenerator(radaForm[contractType], formState, handleOnchange)}
+        {formGenerator(form, formState, handleOnchange)}
       </Grid>
 
       <Stack direction="row" spacing={2} sx={{ marginTop: "1rem", justifyContent: "flex-end" }}>

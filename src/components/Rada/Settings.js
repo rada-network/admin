@@ -74,32 +74,30 @@ const RadaSettings = () => {
   ];
 
   return (
-    <>
-      <Grid container spacing={3}>
-        {formGenerator(formSetAdmin, formState, handleOnchange)}
-        <Grid item xs="12">
-          <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
-            <Button variant="contained" color="success" onClick={() => handlePool("setAdmin")}>
-              Set Admin
-            </Button>
-          </Stack>
-        </Grid>
-
-        {formGenerator(formSetWithdrawAddress, formState, handleOnchange)}
-
-        <Grid item xs="12">
-          <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => handlePool("setWithdrawAddress")}
-            >
-              Set WithdrawAddress
-            </Button>
-          </Stack>
-        </Grid>
+    <Grid container spacing={3}>
+      {formGenerator(formSetAdmin, formState, handleOnchange)}
+      <Grid item xs="12">
+        <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
+          <Button variant="contained" color="success" onClick={() => handlePool("setAdmin")}>
+            Set Admin
+          </Button>
+        </Stack>
       </Grid>
-    </>
+
+      {formGenerator(formSetWithdrawAddress, formState, handleOnchange)}
+
+      <Grid item xs="12">
+        <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handlePool("setWithdrawAddress")}
+          >
+            Set WithdrawAddress
+          </Button>
+        </Stack>
+      </Grid>
+    </Grid>
   );
 };
 

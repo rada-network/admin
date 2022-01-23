@@ -15,7 +15,6 @@ const isPolygon = (chainId) => polygon.includes(chainId);
 const isBsc = (chainId) => bsc.includes(chainId);
 
 const hexChainId = (chainId) => {
-  console.log("isPolygon", isPolygon(chainId));
   if (isPolygon(chainId)) {
     return `0x${Number(bsc[getChainId()]).toString(16)}`;
   } else {

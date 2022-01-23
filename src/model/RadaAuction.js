@@ -5,6 +5,7 @@ const RadaAuction = (data, i = 0) => {
   return {
     poolId: i,
     addressItem: data.addressItem ?? "",
+    addressPayable: data.addressPayable ?? "",
     totalItems: data.totalItems ? formatUnits(data.totalItems, 0) : "0",
     startTime: data.startTime ? fromUnixTime(data.startTime) : "",
     endTime: data.endTime ? fromUnixTime(data.endTime) : "",
@@ -12,6 +13,7 @@ const RadaAuction = (data, i = 0) => {
     isPublic: data.isPublic ?? false,
     ended: data.ended ?? false,
     requireWhitelist: data.requireWhitelist ?? false,
+    whitelistIds: data.whitelistIds ?? [],
     maxBuyPerAddress: data.maxBuyPerAddress ? formatUnits(data.maxBuyPerAddress, 0) : "0",
     maxBuyPerOrder: data.maxBuyPerOrder ? formatUnits(data.maxBuyPerOrder, 0) : "0",
   };

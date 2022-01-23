@@ -17,6 +17,11 @@ const radaForm = {
       size: 12,
     },
     {
+      name: "addressPayable",
+      label: "addressPayable (BUSD/USDT)",
+      size: 12,
+    },
+    {
       name: "totalItems",
       label: "Total Token Box",
     },
@@ -63,18 +68,28 @@ const radaForm = {
       size: 12,
     },
     {
+      name: "addressPayable",
+      label: "addressPayable (BUSD/USDT)",
+      size: 12,
+    },
+    {
       name: "totalItems",
       label: "Total Token Box",
     },
-
+    {
+      name: "maxBuyPerAddress",
+      label: "Max Buy Per Address",
+    },
     {
       name: "requireWhitelist",
       label: "requireWhitelist",
       type: "bool",
     },
     {
-      name: "maxBuyPerAddress",
-      label: "Max Buy Per Address",
+      name: "whitelistIds",
+      label: "whitelistIds",
+      type: "bool",
+      multiple: true,
     },
 
     {
@@ -188,6 +203,11 @@ const radaFormAdd = {
       size: 12,
     },
     {
+      name: "addressPayable",
+      label: "addressPayable (BUSD/USDT)",
+      size: 12,
+    },
+    {
       name: "totalItems",
       label: "Total Token Box",
     },
@@ -229,20 +249,31 @@ const radaFormAdd = {
     {
       name: "addressItem",
       label: "Token Address",
+      size: 12,
+    },
+    {
+      name: "addressPayable",
+      label: "addressPayable (BUSD/USDT)",
+      size: 12,
     },
     {
       name: "totalItems",
       label: "Total Token Box",
     },
-
+    {
+      name: "maxBuyPerAddress",
+      label: "Max Buy Per Address",
+    },
     {
       name: "requireWhitelist",
       label: "requireWhitelist",
       type: "bool",
     },
     {
-      name: "maxBuyPerAddress",
-      label: "Max Buy Per Address",
+      name: "whitelistIds",
+      label: "whitelistIds",
+      type: "bool",
+      multiple: true,
     },
 
     {
@@ -343,8 +374,12 @@ const radaAppUpdateParams = {
       name: "addressItem",
     },
     {
+      name: "addressPayable",
+    },
+    {
       name: "totalItems",
     },
+
     {
       name: "startTime",
       type: "date",
@@ -376,6 +411,9 @@ const radaAppUpdateParams = {
       name: "addressItem",
     },
     {
+      name: "addressPayable",
+    },
+    {
       name: "totalItems",
     },
     {
@@ -392,6 +430,9 @@ const radaAppUpdateParams = {
     },
     {
       name: "requireWhitelist",
+    },
+    {
+      name: "whitelistIds",
     },
     {
       name: "maxBuyPerAddress",

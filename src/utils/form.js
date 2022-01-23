@@ -23,6 +23,7 @@ const formGenerator = (formFields, formState, handleOnchange, addView = false) =
 );
 
 const renderField = (field, formState, handleOnchange) => {
+  console.log("renderField", field, formState[field.name]);
   switch (field.type) {
     case "date":
       return (
@@ -44,6 +45,7 @@ const renderField = (field, formState, handleOnchange) => {
             label={field.label}
             value={formState[field.name]}
             onChange={handleOnchange}
+            multiple={field.multiple}
           >
             {field.options
               ? field.options.map((item) => <MenuItem value={item.value}>{item.label}</MenuItem>)

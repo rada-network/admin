@@ -10,11 +10,13 @@ import formGenerator from "utils/form";
 import { useNavigate } from "react-router-dom";
 
 import argsGenerator from "utils/pool";
+import useWhitelistHook from "hooks/useWhitelist";
 
 const RadaAdd = () => {
   const context = useRada();
   const global = useGlobal();
   const navigate = useNavigate();
+  const whitelistIds = useWhitelistHook();
   const [open, setOpen] = useState(false);
 
   const actions = useActions([
@@ -50,10 +52,21 @@ const RadaAdd = () => {
   const handleSave = () => {
     global.setLoading(true);
 
+    console.log("addOrUpdatePool", argsGenerator(context.contractType, formState));
+
     actions["addOrUpdatePool"].func(...argsGenerator(context.contractType, formState));
 
     handleState("addOrUpdatePool");
   };
+
+  const form = radaFormAdd[context.contractType].map((item) => {
+    if (item.name === "whitelistIds") {
+      item.options = whitelistIds;
+    }
+    return item;
+  });
+
+  console.log("formState", formState);
 
   return (
     <Stack direction="row" justifyContent="end">
@@ -70,7 +83,7 @@ const RadaAdd = () => {
         <Box sx={modalStyle}>
           <h2 id="add-modal-title">Add a Pool</h2>
           <Grid container spacing={3}>
-            {formGenerator(radaFormAdd[context.contractType], formState, handleOnchange)}
+            {formGenerator(form, formState, handleOnchange)}
             <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
               <Button onClick={handleSave} variant="contained" sx={{ mt: 3, ml: 1 }}>
                 Add
