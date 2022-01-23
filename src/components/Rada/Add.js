@@ -24,6 +24,10 @@ const RadaAdd = () => {
       contractInstance: context.contractInstance,
       func: "addOrUpdatePool",
     },
+    {
+      contractInstance: context.contractInstance,
+      func: "addPool",
+    },
   ]);
 
   const [, success, handleState] = useActionState(actions);
@@ -52,11 +56,15 @@ const RadaAdd = () => {
   const handleSave = () => {
     global.setLoading(true);
 
-    console.log("addOrUpdatePool", argsGenerator(context.contractType, formState));
+    if (context.contractType === "nftClaim") {
+      actions["addPool"].func(...argsGenerator(context.contractType, formState));
+      handleState("addPool");
+    } else {
+      actions["addOrUpdatePool"].func(...argsGenerator(context.contractType, formState));
+      handleState("addOrUpdatePool");
+    }
 
-    actions["addOrUpdatePool"].func(...argsGenerator(context.contractType, formState));
-
-    handleState("addOrUpdatePool");
+    console.log("handleSave", argsGenerator(context.contractType, formState));
   };
 
   const form = radaFormAdd[context.contractType].map((item) => {

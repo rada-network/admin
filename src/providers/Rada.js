@@ -50,20 +50,27 @@ const ProvideRada = ({ children }) => {
   ];
 
   if (id) {
-    calls.push({
-      ...callData,
-      ...{ method: "pools", args: [id] },
-    });
+    if (contractType === "nftClaim") {
+      calls.push({
+        ...callData,
+        ...{ method: "getPool", args: [id] },
+      });
+    } else {
+      calls.push({
+        ...callData,
+        ...{ method: "pools", args: [id] },
+      });
 
-    calls.push({
-      ...callData,
-      ...{ method: "poolStats", args: [id] },
-    });
+      calls.push({
+        ...callData,
+        ...{ method: "poolStats", args: [id] },
+      });
 
-    calls.push({
-      ...callData,
-      ...{ method: "getWhitelistIds", args: [id] },
-    });
+      calls.push({
+        ...callData,
+        ...{ method: "getWhitelistIds", args: [id] },
+      });
+    }
   }
 
   const contractChain = useDataCalls(calls).filter((a) => a) ?? [];

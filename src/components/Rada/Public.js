@@ -5,9 +5,17 @@ import { useRada } from "providers/Rada";
 
 export default function RadaPublic() {
   const global = useGlobal();
-  const { contractInstance, pool } = useRada();
+  const { contractInstance, contractType, pool } = useRada();
 
   const actions = useActions([
+    {
+      contractInstance: contractInstance,
+      func: "publishPool",
+    },
+    {
+      contractInstance: contractInstance,
+      func: "unpublishPool",
+    },
     {
       contractInstance: contractInstance,
       func: "handlePublicPool",
@@ -19,9 +27,18 @@ export default function RadaPublic() {
   const handlePublicPool = (state) => {
     global.setLoading(true);
 
-    actions["handlePublicPool"].func(pool.poolId, state);
-
-    handleState("handlePublicPool");
+    if (contractType === "nftClaim") {
+      if (state) {
+        actions["publishPool"].func(pool.poolId);
+        handleState("publishPool");
+      } else {
+        actions["unpublishPool"].func(pool.poolId);
+        handleState("unpublishPool");
+      }
+    } else {
+      actions["handlePublicPool"].func(pool.poolId, state);
+      handleState("handlePublicPool");
+    }
   };
 
   return pool.isPublic ? (

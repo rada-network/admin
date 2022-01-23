@@ -11,6 +11,8 @@ import RadaBids from "./Bids";
 import { useParams } from "react-router-dom";
 import UpdateSalePool from "./UpdateSalePool";
 import RadaSetWhitelist from "./SetWhitelist";
+import RadaRarityAllocations from "./RarityAllocations";
+import RadaVestingPlan from "./VestingPlan";
 
 const RadaDetail = () => {
   const { pool, contractType } = useRada();
@@ -38,8 +40,8 @@ const RadaDetail = () => {
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange}>
               <Tab label="Detail" value="1" />
-              <Tab label="Investors" value="3" />
-              <Tab label="Statistics" value="4" />
+              {contractType !== "nftClaim" && <Tab label="Investors" value="3" />}
+              {contractType !== "nftClaim" && <Tab label="Statistics" value="4" />}
               {pool.requireWhitelist &&
                 (contractType === "nftFixedSwap" || contractType === "nftAuction") && (
                   <Tab label="Whitelist" value="5" />
@@ -50,6 +52,9 @@ const RadaDetail = () => {
               {pool.requireWhitelist && contractType === "radaFixedSwap" && (
                 <Tab label="Whitelist" value="7" />
               )}
+
+              {contractType === "nftClaim" && <Tab label="Rarity Allocations" value="8" />}
+              {contractType === "nftClaim" && <Tab label="Vesting Plan" value="9" />}
             </TabList>
           </Box>
           <TabPanel value="1">
@@ -72,6 +77,12 @@ const RadaDetail = () => {
           </TabPanel>
           <TabPanel value="7">
             <RadaSetWhitelist />
+          </TabPanel>
+          <TabPanel value="8">
+            <RadaRarityAllocations />
+          </TabPanel>
+          <TabPanel value="9">
+            <RadaVestingPlan />
           </TabPanel>
         </TabContext>
       </Box>

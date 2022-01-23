@@ -185,6 +185,28 @@ const radaForm = {
       type: "date",
     },
   ],
+
+  nftClaim: [
+    {
+      name: "poolId",
+      label: "pool ID",
+      props: {
+        readOnly: true,
+      },
+    },
+    {
+      name: "tokenAddress",
+      label: "Token Address",
+    },
+    {
+      name: "tokenPrice",
+      label: "Token Price",
+    },
+    {
+      name: "tokenAllocationBusd",
+      label: "Token Allocation Busd",
+    },
+  ],
 };
 
 const radaFormAdd = {
@@ -363,6 +385,25 @@ const radaFormAdd = {
       type: "date",
     },
   ],
+
+  nftClaim: [
+    {
+      name: "poolId",
+      label: "pool ID",
+    },
+    {
+      name: "tokenAddress",
+      label: "Token Address",
+    },
+    {
+      name: "tokenPrice",
+      label: "Token Price",
+    },
+    {
+      name: "tokenAllocationBusd",
+      label: "Token Allocation Busd",
+    },
+  ],
 };
 
 const radaAppUpdateParams = {
@@ -495,6 +536,23 @@ const radaAppUpdateParams = {
     },
     {
       name: "maxBuyPerAddress",
+    },
+  ],
+
+  nftClaim: [
+    {
+      name: "poolId",
+    },
+    {
+      name: "tokenAddress",
+    },
+    {
+      name: "tokenPrice",
+      type: "ether",
+    },
+    {
+      name: "tokenAllocationBusd",
+      type: "ether",
     },
   ],
 };

@@ -22,6 +22,11 @@ const RadaOverview = () => {
       contractInstance: contractInstance,
       func: "addOrUpdatePool",
     },
+
+    {
+      contractInstance: contractInstance,
+      func: "updatePool",
+    },
     {
       contractInstance: contractInstance,
       func: "setEnd",
@@ -37,6 +42,11 @@ const RadaOverview = () => {
 
     switch (action) {
       case "addOrUpdatePool":
+        actions[action].func(...argsGenerator(contractType, formState));
+
+        break;
+
+      case "updatePool":
         actions[action].func(...argsGenerator(contractType, formState));
 
         break;
@@ -83,7 +93,13 @@ const RadaOverview = () => {
       <Stack direction="row" spacing={2} sx={{ marginTop: "1rem", justifyContent: "flex-end" }}>
         <RadaPublic />
         {!pool.isPublic && (
-          <Button variant="contained" color="success" onClick={() => handlePool("addOrUpdatePool")}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() =>
+              handlePool(contractType === "nftClaim" ? "updatePool" : "addOrUpdatePool")
+            }
+          >
             Update Pool
           </Button>
         )}

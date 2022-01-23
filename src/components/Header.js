@@ -168,6 +168,13 @@ export default function Header() {
             </ListItemIcon>
             <ListItemText primary="Whitelist" />
           </MenuLink>
+
+          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftClaim`}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="NFT Claim" />
+          </MenuLink>
         </List>
       </Drawer>
     </>

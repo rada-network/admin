@@ -16,6 +16,10 @@ const RadaAuction = (data, i = 0) => {
     whitelistIds: data.whitelistIds ?? [],
     maxBuyPerAddress: data.maxBuyPerAddress ? formatUnits(data.maxBuyPerAddress, 0) : "0",
     maxBuyPerOrder: data.maxBuyPerOrder ? formatUnits(data.maxBuyPerOrder, 0) : "0",
+
+    tokenAddress: data.tokenAddress ?? "",
+    tokenPrice: data.tokenPrice ? formatEther(data.tokenPrice) : "0",
+    tokenAllocationBusd: data.tokenAllocationBusd ? formatEther(data.tokenAllocationBusd) : "0",
   };
 };
 

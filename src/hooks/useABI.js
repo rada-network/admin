@@ -9,6 +9,7 @@ import nftAuction from "../config/abi/NFTAuction.json";
 import nftFixedSwap from "../config/abi/NFTFixedSwap.json";
 import randomizeByRarity from "../config/abi/RandomizeByRarity.json";
 import whitelist from "../config/abi/Whitelist.json";
+import nftClaim from "../config/abi/NFTClaim.json";
 
 import { Contract } from "@ethersproject/contracts";
 import { useEthers } from "@usedapp/core";
@@ -79,6 +80,12 @@ const useABI = (contractType) => {
       contractABI = new utils.Interface(whitelist);
       contractAddress = process.env.REACT_APP_POLYGON_WHITELIST_CONTRACT;
       contractName = "Whitelist";
+      break;
+
+    case "nftClaim":
+      contractABI = new utils.Interface(nftClaim);
+      contractAddress = process.env.REACT_APP_POLYGON_NTFCLAIM_CONTRACT;
+      contractName = "NFTClaim";
       break;
 
     default:
