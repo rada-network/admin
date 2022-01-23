@@ -1,5 +1,6 @@
 import { useGlobal } from "providers/Global";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import useABI from "./useABI";
 
 const useWhitelistHook = () => {
@@ -9,27 +10,25 @@ const useWhitelistHook = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      global.setLoading(true);
-      const list = await contractInstance.connect(global.account).getList();
+      try {
+        const list = await contractInstance.connect(global.account).getList();
 
-      const newWhitelistIds = await Promise.all(
-        list.map(async (item) => {
-          try {
-            const title = await contractInstance.listTitle(item);
+        const newWhitelistIds = await Promise.all(
+          list.map(async (item) => {
+            const title = await contractInstance.connect(global.account).listTitle(item);
 
             return {
               value: item,
               label: title,
             };
-          } catch (error) {
-            return null;
-          }
-        })
-      );
+          })
+        );
 
-      setWhitelistIds(newWhitelistIds);
-
-      global.setLoading(false);
+        setWhitelistIds(newWhitelistIds);
+      } catch (error) {
+        toast(error.data.message);
+        console.log("useWhitelistHook", error);
+      }
     };
     fetchData();
   }, []);
