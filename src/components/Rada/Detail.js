@@ -29,10 +29,6 @@ const RadaDetail = () => {
     return "Loading...";
   }
 
-  if (pool?.startPrice === 0) {
-    return "";
-  }
-
   return (
     pool && (
       <Box sx={{ width: "100%", typography: "body" }}>

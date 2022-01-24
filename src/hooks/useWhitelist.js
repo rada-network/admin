@@ -1,10 +1,10 @@
 import { useGlobal } from "providers/Global";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+
 import useABI from "./useABI";
 
 const useWhitelistHook = () => {
-  const { contractInstance, contractName } = useABI("whitelist");
+  const { contractInstance } = useABI("whitelist");
   const global = useGlobal();
   const [whitelistIds, setWhitelistIds] = useState([]);
 

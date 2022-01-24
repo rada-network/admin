@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { useGlobal } from "./Global";
 import { useParams } from "react-router-dom";
 import useABI from "hooks/useABI";
@@ -75,7 +75,7 @@ const ProvideRada = ({ children }) => {
 
   const contractChain = useDataCalls(calls).filter((a) => a) ?? [];
 
-  if (contractChain.length < 1) {
+  if (contractChain.length < 2) {
     return "Loading...";
   }
 
@@ -118,10 +118,8 @@ const ProvideRada = ({ children }) => {
     }
   });
 
-  global.handleType(provideValue);
-
   if (!provideValue.isAdmin) {
-    // return "Ops...You are not a admin";
+    return "Loading...";
   }
 
   console.log("ProvideRada render", provideValue, contractChain);

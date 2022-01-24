@@ -12,6 +12,9 @@ import {
   List,
   ListItemIcon,
   ListItemText,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -25,6 +28,7 @@ import { useState } from "react";
 import { useGlobal } from "providers/Global";
 import MenuLink from "./MenuLink";
 import { useLocation, matchPath } from "react-router-dom";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const drawerWidth = 240;
 
@@ -119,76 +123,78 @@ export default function Header() {
           </IconButton>
         </Toolbar>
         <Divider />
-        <List
-          sx={{
-            marginLeft: "5px",
-          }}
-        >
-          <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/poolClaim`}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Only Claim Pools" />
-          </MenuLink>
-          <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/poolRIR`}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="RIR Pools" />
-          </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/poolWhitelist`}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Whitelist Pools" />
-          </MenuLink>
-          <MenuLink
-            button
-            component={Link}
-            to={`${process.env.PUBLIC_URL}/rada/radaFixedSwap/${id}`}
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
           >
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="RADA Fixedswap" />
-          </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/radaAuction/${id}`}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="RADA Auction" />
-          </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftFixedSwap`}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="NFT Fixedswap" />
-          </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftAuction`}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="NFT Auction" />
-          </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftMan/${id}`}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="NFT Man" />
-          </MenuLink>
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftClaim/${id}`}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="NFT Claim" />
-          </MenuLink>{" "}
-          <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/whitelist`}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Whitelist" />
-          </MenuLink>
-        </List>
+            <Typography>Old</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <List
+              sx={{
+                marginLeft: "5px",
+              }}
+            >
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/poolClaim`}>
+                <ListItemText primary="Only Claim Pools" />
+              </MenuLink>
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/poolRIR`}>
+                <ListItemText primary="RIR Pools" />
+              </MenuLink>
+              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/poolWhitelist`}>
+                <ListItemText primary="Whitelist Pools" />
+              </MenuLink>
+            </List>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={true}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2a-content"
+            id="panel2a-header"
+          >
+            <Typography>New</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <List>
+              <MenuLink
+                button
+                component={Link}
+                to={`${process.env.PUBLIC_URL}/rada/radaFixedSwap/${id}`}
+              >
+                <ListItemText primary="RADA Fixedswap" />
+              </MenuLink>
+              <MenuLink
+                button
+                component={Link}
+                to={`${process.env.PUBLIC_URL}/rada/radaAuction/${id}`}
+              >
+                <ListItemText primary="RADA Auction" />
+              </MenuLink>
+              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftFixedSwap`}>
+                <ListItemText primary="NFT Fixedswap" />
+              </MenuLink>
+              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftAuction`}>
+                <ListItemText primary="NFT Auction" />
+              </MenuLink>
+              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftMan/${id}`}>
+                <ListItemText primary="NFT Man" />
+              </MenuLink>
+              <MenuLink
+                button
+                component={Link}
+                to={`${process.env.PUBLIC_URL}/rada/nftClaim/${id}`}
+              >
+                <ListItemText primary="NFT Claim" />
+              </MenuLink>{" "}
+              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/whitelist`}>
+                <ListItemText primary="Whitelist" />
+              </MenuLink>
+            </List>
+          </AccordionDetails>
+        </Accordion>
       </Drawer>
     </>
   );
