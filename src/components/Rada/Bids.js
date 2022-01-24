@@ -94,19 +94,22 @@ const RadaBids = () => {
           <GridToolbarExport />
           <Button onClick={handleOnlyWinner}>Filter Winner</Button>
         </Box>
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" color="success" onClick={handleShowWinner}>
-            Show Winner
-          </Button>
+        {contractType === "radaAuction" ||
+          (contractType === "nftAuction" && (
+            <Stack direction="row" spacing={2}>
+              <Button variant="contained" color="success" onClick={handleShowWinner}>
+                Show Winner
+              </Button>
 
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => handlePool("handleEndAuction")}
-          >
-            Set Winner
-          </Button>
-        </Stack>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => handlePool("handleEndAuction")}
+              >
+                Set Winner
+              </Button>
+            </Stack>
+          ))}
       </GridToolbarContainer>
     );
   };
