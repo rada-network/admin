@@ -10,7 +10,7 @@ const RadaAuction = (data, i = 0) => {
     startTime: data.startTime ? fromUnixTime(data.startTime) : "",
     endTime: data.endTime ? fromUnixTime(data.endTime) : "",
     startPrice: data.startPrice ? formatEther(data.startPrice) : "0",
-    isPublic: data.isPublic ?? false,
+    isPublic: data.isPublic ? data.isPublic : data.published ? data.published : false,
     ended: data.ended ?? false,
     requireWhitelist: data.requireWhitelist ?? false,
     whitelistIds: data.whitelistIds ?? [],
