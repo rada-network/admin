@@ -129,7 +129,7 @@ export default function Header() {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography>Old</Typography>
+            <Typography>Launchverse</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <List
@@ -155,7 +155,7 @@ export default function Header() {
             aria-controls="panel2a-content"
             id="panel2a-header"
           >
-            <Typography>New</Typography>
+            <Typography>NTF/Box</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <List>
