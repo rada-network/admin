@@ -26,7 +26,6 @@ const useWhitelistHook = () => {
 
         setWhitelistIds(newWhitelistIds);
       } catch (error) {
-        toast(`${contractName}: ${error.data.message}`);
         console.log("useWhitelistHook", error);
       }
     };
