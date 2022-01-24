@@ -2,7 +2,7 @@ import RadaBidModel from "model/RadaBidModel";
 import indexDbService from "./indexDbService";
 
 const createIndexDB = async () => {
-  await indexDbService.openDB("radabid", 1, {
+  await indexDbService.openDB("rada", 1, {
     async upgrade(db, oldVersion, newVersion, transaction) {
       indexDbService.createObjectStore(db, transaction, "bids", "id");
     },
@@ -19,10 +19,12 @@ const getBids = async (contractInstance, poolId, start = 0, limit = 10, total) =
     const newBids = await Promise.all(
       promises.map(async (i) => {
         const responseBid = await contractInstance.bids(poolId, i);
-        console.log("responseBid", responseBid);
+
         return RadaBidModel(responseBid, poolId, i);
       })
     );
+
+    console.log("responseBid", newBids);
 
     await indexDbService.add("bids", newBids);
 
