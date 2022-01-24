@@ -121,7 +121,7 @@ const ProvideRada = ({ children }) => {
   global.handleType(provideValue);
 
   if (!provideValue.isAdmin) {
-    return "Ops...You are not a admin";
+    // return "Ops...You are not a admin";
   }
 
   console.log("ProvideRada render", provideValue, contractChain);

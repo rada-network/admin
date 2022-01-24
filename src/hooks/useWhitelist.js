@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import useABI from "./useABI";
 
 const useWhitelistHook = () => {
-  const { contractInstance } = useABI("whitelist");
+  const { contractInstance, contractName } = useABI("whitelist");
   const global = useGlobal();
   const [whitelistIds, setWhitelistIds] = useState([]);
 
@@ -26,7 +26,7 @@ const useWhitelistHook = () => {
 
         setWhitelistIds(newWhitelistIds);
       } catch (error) {
-        toast(error.data.message);
+        toast(`${contractName}: ${error.data.message}`);
         console.log("useWhitelistHook", error);
       }
     };
