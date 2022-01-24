@@ -56,7 +56,7 @@ const RadaAdd = () => {
   const handleSave = () => {
     global.setLoading(true);
 
-    if (context.contractType === "nftClaim") {
+    if (context.contractType === "nftClaim" || context.contractType === "randomizeByRarity") {
       actions["addPool"].func(...argsGenerator(context.contractType, formState));
       handleState("addPool");
     } else {

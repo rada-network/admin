@@ -1,7 +1,7 @@
 import { format, parseISO, getUnixTime, fromUnixTime as fromUnixTimeCore } from "date-fns";
 import { formatEther as formatEtherCore } from "@ethersproject/units";
 
-const formatString = "dd-MM-yyyy HH:mm";
+const formatString = "dd-MM-yyyy HH:mm:ss";
 
 const formatDate = (date) => {
   try {
@@ -10,7 +10,7 @@ const formatDate = (date) => {
       dt = parseISO(date);
     }
 
-    return `${format(dt, formatString)} GTM`;
+    return `${format(dt, formatString)}`;
   } catch (error) {
     return "Invalid format";
   }

@@ -2,15 +2,16 @@ import Table from "components/Table";
 
 import { Button, Stack } from "@mui/material";
 import { Box } from "@mui/system";
-import { GridToolbarContainer } from "@mui/x-data-grid";
+import { GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useActions, useActionState } from "hooks/useActions";
 
 import UploadCSV from "components/UploadCSV";
 import { useGlobal } from "providers/Global";
 
 import { useRada } from "providers/Rada";
+import { parseEther, formatEther } from "@ethersproject/units";
 
 const RadaRarityAllocations = () => {
   const auth = useGlobal();
@@ -25,15 +26,36 @@ const RadaRarityAllocations = () => {
     },
   ]);
 
-  const [, success, handleState] = useActionState(actions);
+  const [, , handleState] = useActionState(actions);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      auth.setLoading(true);
+
+      try {
+        const rarities = await contractInstance.getRarities(pool.poolId);
+
+        const newWL = rarities[0]?.map((row, i) => ({
+          rarityId: row,
+          rarityAllocationsBusd: formatEther(rarities[1][i]),
+        }));
+
+        setData(newWL);
+      } catch (error) {}
+
+      auth.setLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   const handleUpdate = () => {
     auth.setLoading(true);
 
     const rarityIds = date.map((row) => row.rarityId);
-    const rarityAllocationsBusd = date.map((row) => row.rarityAllocationsBusd);
+    const rarityAllocationsBusd = date.map((row) => parseEther(row.rarityAllocationsBusd));
 
-    actions["updateRarityAllocations"].func(pool.poolId, rarityAllocationsBusd, rarityIds);
+    actions["updateRarityAllocations"].func(pool.poolId, rarityIds, rarityAllocationsBusd);
     handleState("updateRarityAllocations");
   };
 
@@ -54,6 +76,7 @@ const RadaRarityAllocations = () => {
     return (
       <GridToolbarContainer>
         <Box sx={{ display: "flex", flexGrow: 1 }}>
+          <GridToolbarExport />
           <UploadCSV onUploadFile={handleOnFileLoad} />
         </Box>
         <Stack direction="row" spacing={2}>
@@ -75,7 +98,7 @@ const RadaRarityAllocations = () => {
     { field: "rarityAllocationsBusd", headerName: "rarityAllocationsBusd", width: 200 },
   ];
 
-  console.log("RadaRarityAllocations render", columns, success);
+  console.log("RadaRarityAllocations render");
 
   return (
     <Table

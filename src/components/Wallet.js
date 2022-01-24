@@ -59,9 +59,9 @@ export default function Wallet() {
         {isPolygon(chainId) ? "Polygon" : "BSC"}: {shortenAddress(global.account)}
       </Typography>
 
-      <Button variant="contained" color="success" onClick={() => handleChange()}>
+      {/* <Button variant="contained" color="success" onClick={() => handleChange()}>
         Change to {isPolygon(chainId) ? "BSC" : "Polygon"}
-      </Button>
+      </Button> */}
     </Stack>
   );
 }

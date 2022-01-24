@@ -1,15 +1,15 @@
 import Table from "components/Table";
-import { parseJSON } from "date-fns";
+
 import { Button, Stack } from "@mui/material";
 import { Box } from "@mui/system";
-import { GridToolbarContainer } from "@mui/x-data-grid";
+import { GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useActions, useActionState } from "hooks/useActions";
-import { parseEther, parseUnits } from "@ethersproject/units";
+import { parseUnits, formatUnits } from "@ethersproject/units";
 import UploadCSV from "components/UploadCSV";
 import { useGlobal } from "providers/Global";
-import { convertUnix } from "utils/format";
+import { convertUnix, fromUnixTime, formatDate } from "utils/format";
 import { useRada } from "providers/Rada";
 
 const RadaVestingPlan = () => {
@@ -26,6 +26,27 @@ const RadaVestingPlan = () => {
   ]);
 
   const [, success, handleState] = useActionState(actions);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      auth.setLoading(true);
+
+      try {
+        const vestingPlans = await contractInstance.getVestingPlans(pool.poolId);
+
+        const newWL = vestingPlans[0]?.map((row, i) => ({
+          date: formatDate(fromUnixTime(formatUnits(row, 0))),
+          volume: formatUnits(vestingPlans[1][i], 3),
+        }));
+
+        setData(newWL);
+        console.log("getVestingPlans", newWL);
+      } catch (error) {}
+
+      auth.setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   const handleUpdate = () => {
     auth.setLoading(true);
@@ -63,6 +84,7 @@ const RadaVestingPlan = () => {
     return (
       <GridToolbarContainer>
         <Box sx={{ display: "flex", flexGrow: 1 }}>
+          <GridToolbarExport />
           <UploadCSV onUploadFile={handleOnFileLoad} />
         </Box>
         <Stack direction="row" spacing={2}>

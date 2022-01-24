@@ -236,6 +236,28 @@ const radaForm = {
       label: "endId",
     },
   ],
+
+  randomizeByRarity: [
+    {
+      name: "poolId",
+      label: "pool ID",
+      props: {
+        readOnly: true,
+      },
+    },
+    {
+      name: "title",
+      label: "Title",
+    },
+    {
+      name: "rarity",
+      label: "rarity",
+    },
+    {
+      name: "rarityIds",
+      label: "rarityIds",
+    },
+  ],
 };
 
 const radaFormAdd = {
@@ -463,6 +485,25 @@ const radaFormAdd = {
       label: "endId",
     },
   ],
+
+  randomizeByRarity: [
+    {
+      name: "poolId",
+      label: "pool ID",
+    },
+    {
+      name: "title",
+      label: "Title",
+    },
+    {
+      name: "rarity",
+      label: "rarity",
+    },
+    {
+      name: "rarityIds",
+      label: "rarityIds",
+    },
+  ],
 };
 
 const radaAppUpdateParams = {
@@ -634,6 +675,23 @@ const radaAppUpdateParams = {
     {
       name: "startTime",
       type: "date",
+    },
+  ],
+
+  randomizeByRarity: [
+    {
+      name: "poolId",
+    },
+    {
+      name: "title",
+    },
+    {
+      name: "rarity",
+      type: "array",
+    },
+    {
+      name: "rarityIds",
+      type: "array",
     },
   ],
 };

@@ -66,23 +66,6 @@
   {
     "inputs": [
       { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
-      { "internalType": "uint256[]", "name": "_nftIds", "type": "uint256[]" }
-    ],
-    "name": "getClaimable",
-    "outputs": [{ "internalType": "uint256[]", "name": "claimables", "type": "uint256[]" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint16", "name": "_poolId", "type": "uint16" }],
-    "name": "getDepositedTokens",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
       { "internalType": "uint256", "name": "_nftId", "type": "uint256" }
     ],
     "name": "getNftAllocation",
@@ -123,6 +106,47 @@
     "inputs": [],
     "name": "getPoolIds",
     "outputs": [{ "internalType": "uint16[]", "name": "", "type": "uint16[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint16", "name": "_poolId", "type": "uint16" }],
+    "name": "getRarities",
+    "outputs": [
+      { "internalType": "uint16[]", "name": "_rarityIds", "type": "uint16[]" },
+      { "internalType": "uint256[]", "name": "_rarityAllocationsBusd", "type": "uint256[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
+      { "internalType": "uint256", "name": "_nftId", "type": "uint256" }
+    ],
+    "name": "getTokenInfo",
+    "outputs": [
+      { "internalType": "uint256", "name": "_allocation", "type": "uint256" },
+      { "internalType": "uint256", "name": "_claimed", "type": "uint256" },
+      { "internalType": "uint256", "name": "_claimable", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint16", "name": "_poolId", "type": "uint16" }],
+    "name": "getVestingPlans",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256[]", "name": "times", "type": "uint256[]" },
+          { "internalType": "uint256[]", "name": "volumes", "type": "uint256[]" }
+        ],
+        "internalType": "struct NFTClaimContract.POOL_VESTING",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },

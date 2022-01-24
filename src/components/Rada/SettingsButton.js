@@ -17,7 +17,8 @@ const RadaSettingsButton = (props) => {
 
   return (
     contractType !== "nftClaim" &&
-    contractType !== "nftMan" && (
+    contractType !== "nftMan" &&
+    contractType !== "randomizeByRarity" && (
       <Button variant="contained" onClick={onSettings}>
         Settings
       </Button>

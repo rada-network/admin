@@ -1,7 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select, Stack } from "@mui/material";
 import { useRada } from "providers/Rada";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { formatUnits } from "@ethersproject/units";
 const PoolIds = () => {
   const { type, id } = useParams();
   const { poolIds } = useRada();
@@ -22,7 +22,7 @@ const PoolIds = () => {
         <InputLabel id="poolIds-label">PoolId</InputLabel>
         <Select labelId="poolIds-label" label="PoolId" value={id} onChange={handleChange}>
           {poolIds.map((item) => (
-            <MenuItem value={item}>{item}</MenuItem>
+            <MenuItem value={item}>{formatUnits(item, 0)}</MenuItem>
           ))}
         </Select>
       </FormControl>

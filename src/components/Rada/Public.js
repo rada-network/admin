@@ -41,6 +41,10 @@ export default function RadaPublic() {
     }
   };
 
+  if (contractType === "randomizeByRarity") {
+    return "";
+  }
+
   return pool.isPublic ? (
     <Button variant="contained" color="info" onClick={() => handlePublicPool(false)}>
       Unpublic

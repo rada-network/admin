@@ -11,6 +11,11 @@ const argsGenerator = (contractType, formState) => {
       case "ether":
         return parseEther(formState[field.name]);
 
+      case "array":
+        return Array.isArray(formState[field.name])
+          ? formState[field.name]
+          : formState[field.name].split(",");
+
       default:
         return formState[field.name];
     }

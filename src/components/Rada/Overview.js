@@ -97,7 +97,11 @@ const RadaOverview = () => {
             variant="contained"
             color="success"
             onClick={() =>
-              handlePool(contractType === "nftClaim" ? "updatePool" : "addOrUpdatePool")
+              handlePool(
+                contractType === "nftClaim" || contractType === "randomizeByRarity"
+                  ? "updatePool"
+                  : "addOrUpdatePool"
+              )
             }
           >
             Update Pool

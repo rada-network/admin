@@ -180,6 +180,13 @@ export default function Header() {
               <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/whitelist`}>
                 <ListItemText primary="Whitelist" />
               </MenuLink>
+              <MenuLink
+                button
+                component={Link}
+                to={`${process.env.PUBLIC_URL}/rada/randomizeByRarity`}
+              >
+                <ListItemText primary="RandomizeByRarity" />
+              </MenuLink>
             </List>
           </AccordionDetails>
         </Accordion>

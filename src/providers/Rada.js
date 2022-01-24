@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import { useGlobal } from "./Global";
 import { useParams } from "react-router-dom";
 import useABI from "hooks/useABI";
@@ -22,6 +22,7 @@ const ProvideRada = ({ children }) => {
     contractName: contractName,
     contractType: contractType,
     contractInstance: contractInstance,
+    contractABI: contractABI,
     pool: null,
     poolStat: null,
     poolIds: [],
@@ -50,7 +51,7 @@ const ProvideRada = ({ children }) => {
   ];
 
   if (id) {
-    if (contractType === "nftClaim") {
+    if (contractType === "nftClaim" || contractType === "randomizeByRarity") {
       calls.push({
         ...callData,
         ...{ method: "getPool", args: [id] },
@@ -119,7 +120,7 @@ const ProvideRada = ({ children }) => {
   });
 
   if (!provideValue.isAdmin) {
-    return "Loading...";
+    return "Ops...You are not a admin";
   }
 
   console.log("ProvideRada render", provideValue, contractChain);

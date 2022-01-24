@@ -23,6 +23,10 @@ const RadaAuction = (data, i = 0) => {
     startId: data.startId ?? "0",
     endId: data.endId ?? "0",
     nftAddress: data.nftAddress ?? "",
+
+    title: data.title ?? "",
+    rarity: data.rarity ? data.rarity.map((el) => formatUnits(el, 0)) : "",
+    rarityIds: data.rarityIds ? data.rarityIds.map((el) => formatUnits(el, 0)) : "",
   };
 };
 
