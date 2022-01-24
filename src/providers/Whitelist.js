@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext } from "react";
 
 import { useGlobal } from "./Global";
 import useABI from "hooks/useABI";
-import { useContractCalls, addressEqual } from "@usedapp/core";
+import { addressEqual } from "@usedapp/core";
 import { useParams } from "react-router-dom";
+import useDataCalls from "hooks/useDataCalls";
 
 const whiteListContext = createContext();
 
@@ -28,6 +29,7 @@ const ProvideWhitelist = ({ children }) => {
   const callData = {
     address: contractAddress,
     abi: contractABI,
+    sender: global.account,
   };
 
   let calls = [
@@ -50,14 +52,13 @@ const ProvideWhitelist = ({ children }) => {
       ...callData,
       ...{ method: "listTitle", args: [id] },
     });
-
     calls.push({
       ...callData,
       ...{ method: "whitelistAddresses", args: [id] },
     });
   }
 
-  const contractChain = useContractCalls(calls).filter((a) => a) ?? [];
+  const contractChain = useDataCalls(calls).filter((a) => a) ?? [];
 
   if (contractChain.length < 1) {
     return "Loading....";
