@@ -6,6 +6,7 @@ import useABI from "hooks/useABI";
 import RadaAuction from "model/RadaAuction";
 import RadaAuctionStats from "model/RadaAuctionStats";
 import useDataCalls from "hooks/useDataCalls";
+import { addressEqual } from "@usedapp/core";
 
 const radaContext = createContext();
 
@@ -89,7 +90,7 @@ const ProvideRada = ({ children }) => {
           break;
 
         case 1:
-          if (chain[0] === global.account) {
+          if (addressEqual(chain[0], global.account)) {
             provideValue.isOwner = true;
           }
 
@@ -119,11 +120,11 @@ const ProvideRada = ({ children }) => {
     }
   });
 
-  if (!provideValue.isAdmin) {
-    return "Ops...You are not a admin";
-  }
-
   console.log("ProvideRada render", provideValue, contractChain);
+
+  if (!provideValue.isAdmin && !provideValue.isOwner) {
+    return "Ops...You are not an admin or owner";
+  }
 
   return <radaContext.Provider value={provideValue}>{children}</radaContext.Provider>;
 };

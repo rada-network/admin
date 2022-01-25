@@ -79,7 +79,7 @@ const ProvidePools = ({ children }) => {
   console.log("ProvidePools render", provideValue, contractChain);
 
   if (!provideValue.isAdmin && !provideValue.isApprovers) {
-    return "Ops...You are not a admin or approver";
+    return "Ops...You are not an admin or approver";
   }
 
   return <poolsContext.Provider value={provideValue}>{children}</poolsContext.Provider>;

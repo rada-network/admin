@@ -98,10 +98,10 @@ const ProvideWhitelist = ({ children }) => {
     }
   });
 
-  console.log("ProvideWhitelist render", provideValue);
+  console.log("ProvideWhitelist render", provideValue, contractChain);
 
-  if (!provideValue.isAdmin) {
-    return "Ops...You are not a admin";
+  if (!provideValue.isAdmin && !provideValue.isOwner) {
+    return "Ops...You are not an admin or owner";
   }
 
   return <whiteListContext.Provider value={provideValue}>{children}</whiteListContext.Provider>;
