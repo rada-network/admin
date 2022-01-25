@@ -35,7 +35,7 @@ const RadaSetWhitelist = () => {
       global.setLoading(false);
     };
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const actions = useActions([
     {

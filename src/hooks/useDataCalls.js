@@ -32,7 +32,7 @@ const useDataCalls = (calls) => {
       }
     };
     fetchData();
-  }, [JSON.stringify(calls)]);
+  }, [JSON.stringify(calls)]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return result;
 };

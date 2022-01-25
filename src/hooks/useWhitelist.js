@@ -30,7 +30,7 @@ const useWhitelistHook = () => {
       }
     };
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return whitelistIds;
 };

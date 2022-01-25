@@ -58,7 +58,7 @@ const useDecimals = (poolId) => {
     if (poolId > 0) {
       fetchData();
     }
-  }, [poolId]);
+  }, [poolId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return loading;
 };

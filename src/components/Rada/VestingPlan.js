@@ -46,7 +46,7 @@ const RadaVestingPlan = () => {
       auth.setLoading(false);
     };
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleUpdate = () => {
     auth.setLoading(true);

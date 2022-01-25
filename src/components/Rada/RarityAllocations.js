@@ -50,7 +50,7 @@ const RadaRarityAllocations = () => {
     };
 
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleUpdate = async () => {
     auth.setLoading(true);

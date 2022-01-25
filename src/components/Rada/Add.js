@@ -37,7 +37,7 @@ const RadaAdd = () => {
       setOpen(false);
       navigate(`${process.env.PUBLIC_URL}/rada/${context.contractType}/${formState.poolId}`);
     }
-  }, [success]);
+  }, [success]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [formState, setFormState] = useState(RadaAuctionModel({}));
 

@@ -67,7 +67,7 @@ const RadaBids = () => {
       global.setLoading(false);
     };
     fetchData();
-  }, [success]);
+  }, [success]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const columns = bidsTableColumn[contractType];
 

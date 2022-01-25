@@ -75,7 +75,7 @@ const RadaOpenbox = () => {
       auth.setLoading(false);
     };
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const radaForm = [
     {

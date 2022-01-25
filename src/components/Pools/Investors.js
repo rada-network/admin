@@ -89,7 +89,7 @@ const PoolInvestors = () => {
       auth.setLoading(false);
     };
     fetchData();
-  }, [success]);
+  }, [success]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSelectionModelChange = (selectedIDs) => {
     console.log("handleSelectionModelChange", selectedIDs);

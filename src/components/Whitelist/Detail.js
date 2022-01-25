@@ -56,7 +56,7 @@ const WhitelistDetail = () => {
     if (id === "add") {
       navigate(-1);
     }
-  }, [success]);
+  }, [success]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!id) {
     return "";

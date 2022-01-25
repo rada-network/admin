@@ -84,7 +84,7 @@ const PoolSettings = () => {
       }));
     };
     fetchData();
-  }, [success]);
+  }, [success]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClaimChange = (event) => {
     setClaimable(event.target.value);

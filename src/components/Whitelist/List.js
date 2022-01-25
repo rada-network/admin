@@ -30,7 +30,7 @@ const WhitelistList = () => {
       setTitles(titles);
     };
     fetchData();
-  }, [JSON.stringify(listId)]);
+  }, [JSON.stringify(listId)]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (listId.length === 0 || id === "add") {
     return "";

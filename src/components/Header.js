@@ -23,7 +23,7 @@ import Wallet from "./Wallet";
 import { useState } from "react";
 import { useGlobal } from "providers/Global";
 import MenuLink from "./MenuLink";
-import { useLocation } from "react-router-dom";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const drawerWidth = 240;
@@ -75,9 +75,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
 export default function Header() {
   const [open, setOpen] = useState(true);
   const { typeUser } = useGlobal();
-  const { pathname } = useLocation();
-  const last = pathname.split("/").at(-1);
-  const id = isNaN(last) ? "" : last;
 
   const toggleDrawer = () => {
     setOpen(!open);
