@@ -5,7 +5,7 @@ import { useGlobal } from "providers/Global";
 import { useRada } from "providers/Rada";
 import { useCallback, useEffect, useState } from "react";
 import modalStyle from "style/modal";
-import RadaAuction from "model/RadaAuction";
+import RadaAuctionModel from "model/RadaAuction";
 import formGenerator from "utils/form";
 import { useNavigate } from "react-router-dom";
 
@@ -39,7 +39,7 @@ const RadaAdd = () => {
     }
   }, [success]);
 
-  const [formState, setFormState] = useState(RadaAuction({}));
+  const [formState, setFormState] = useState(RadaAuctionModel({}));
 
   const handleOpen = () => {
     setOpen(true);
@@ -53,18 +53,21 @@ const RadaAdd = () => {
     setFormState((state) => ({ ...state, ...{ [target.name]: target.value } }));
   }, []);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     global.setLoading(true);
 
-    if (context.contractType === "nftClaim" || context.contractType === "randomizeByRarity") {
-      actions["addPool"].func(...argsGenerator(context.contractType, formState));
-      handleState("addPool");
-    } else {
-      actions["addOrUpdatePool"].func(...argsGenerator(context.contractType, formState));
-      handleState("addOrUpdatePool");
-    }
+    try {
+      const args = await argsGenerator(context.contractType, formState);
+      if (context.contractType === "nftClaim" || context.contractType === "randomizeByRarity") {
+        actions["addPool"].func(...args);
+        handleState("addPool");
+      } else {
+        actions["addOrUpdatePool"].func(...args);
+        handleState("addOrUpdatePool");
+      }
 
-    console.log("handleSave", argsGenerator(context.contractType, formState));
+      console.log("handleSave", args);
+    } catch (error) {}
   };
 
   const form = radaFormAdd[context.contractType].map((item) => {

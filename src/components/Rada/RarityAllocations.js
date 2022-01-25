@@ -11,7 +11,8 @@ import UploadCSV from "components/UploadCSV";
 import { useGlobal } from "providers/Global";
 
 import { useRada } from "providers/Rada";
-import { parseEther, formatEther } from "@ethersproject/units";
+import { parseUnits, formatUnits } from "@ethersproject/units";
+import { getDecimals } from "hooks/useDecimals";
 
 const RadaRarityAllocations = () => {
   const auth = useGlobal();
@@ -33,11 +34,13 @@ const RadaRarityAllocations = () => {
       auth.setLoading(true);
 
       try {
+        const { addressPayableDecimals } = await getDecimals();
+
         const rarities = await contractInstance.getRarities(pool.poolId);
 
         const newWL = rarities[0]?.map((row, i) => ({
           rarityId: row,
-          rarityAllocationsBusd: formatEther(rarities[1][i]),
+          rarityAllocationsBusd: formatUnits(rarities[1][i], addressPayableDecimals),
         }));
 
         setData(newWL);
@@ -49,11 +52,15 @@ const RadaRarityAllocations = () => {
     fetchData();
   }, []);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     auth.setLoading(true);
 
+    const { addressPayableDecimals } = await getDecimals();
+
     const rarityIds = date.map((row) => row.rarityId);
-    const rarityAllocationsBusd = date.map((row) => parseEther(row.rarityAllocationsBusd));
+    const rarityAllocationsBusd = date.map((row) =>
+      parseUnits(row.rarityAllocationsBusd, addressPayableDecimals)
+    );
 
     actions["updateRarityAllocations"].func(pool.poolId, rarityIds, rarityAllocationsBusd);
     handleState("updateRarityAllocations");

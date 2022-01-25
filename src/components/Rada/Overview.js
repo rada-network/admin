@@ -1,7 +1,7 @@
 import { useActions, useActionState } from "hooks/useActions";
 
 import { Grid, Stack, Button } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useGlobal } from "providers/Global";
 import { useRada } from "providers/Rada";
 import { radaForm } from "config/RadaForm";
@@ -12,7 +12,7 @@ import argsGenerator from "utils/pool";
 import useWhitelistHook from "hooks/useWhitelist";
 
 const RadaOverview = () => {
-  const auth = useGlobal();
+  const global = useGlobal();
   const { contractInstance, contractType, pool, isOwner } = useRada();
   const allWhitelistIds = useWhitelistHook();
   const [formState, setFormState] = useState(pool);
@@ -35,19 +35,17 @@ const RadaOverview = () => {
 
   const [, , handleState] = useActionState(actions);
 
-  const handlePool = (action) => {
+  const handlePool = async (action) => {
     console.log("handlePool", formState);
 
-    auth.setLoading(true);
+    global.setLoading(true);
 
     switch (action) {
       case "addOrUpdatePool":
-        actions[action].func(...argsGenerator(contractType, formState));
-
-        break;
-
       case "updatePool":
-        actions[action].func(...argsGenerator(contractType, formState));
+        console.log("updatePool", await argsGenerator(contractType, formState));
+
+        actions[action].func(...(await argsGenerator(contractType, formState)));
 
         break;
 

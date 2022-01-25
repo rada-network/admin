@@ -23,8 +23,6 @@ const RadaDetail = () => {
     setTab(newValue);
   };
 
-  console.log("RadaDetail", pool);
-
   if (id && !pool) {
     return "Loading...";
   }

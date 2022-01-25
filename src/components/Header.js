@@ -10,7 +10,6 @@ import {
   Typography,
   Divider,
   List,
-  ListItemIcon,
   ListItemText,
   Accordion,
   AccordionSummary,
@@ -19,15 +18,12 @@ import {
 
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Wallet from "./Wallet";
 import { useState } from "react";
 import { useGlobal } from "providers/Global";
 import MenuLink from "./MenuLink";
-import { useLocation, matchPath } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const drawerWidth = 240;

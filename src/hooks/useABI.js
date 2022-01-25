@@ -1,5 +1,5 @@
 import { utils } from "ethers";
-import BEP20 from "../config/abi/BEP20.json";
+import erc20 from "../config/abi/erc20.json";
 import poolClaim from "../config/abi/PoolClaim.json";
 import poolRIR from "../config/abi/PoolRIR.json";
 import poolWhitelist from "../config/abi/PoolWhitelist.json";
@@ -18,9 +18,14 @@ import { isPolygon } from "config/Chain";
 
 const useABI = (contractType) => {
   const { library, chainId } = useEthers();
-  let contractABI = new utils.Interface(BEP20);
+
+  return getABI(contractType, library, chainId);
+};
+
+const getABI = (contractType, library, chainId) => {
+  let contractABI = new utils.Interface(erc20);
   let contractAddress = "";
-  let contractName = "BEP20";
+  let contractName = "erc20";
   let contractInstance = null;
 
   switch (contractType) {
@@ -118,4 +123,4 @@ const useABI = (contractType) => {
   return { contractABI, contractAddress, contractType, contractName, contractInstance };
 };
 
-export default useABI;
+export { useABI as default, getABI };

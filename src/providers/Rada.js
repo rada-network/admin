@@ -3,10 +3,11 @@ import { useGlobal } from "./Global";
 import { useParams } from "react-router-dom";
 import useABI from "hooks/useABI";
 
-import RadaAuction from "model/RadaAuction";
+import RadaAuctionModel from "model/RadaAuction";
 import RadaAuctionStats from "model/RadaAuctionStats";
 import useDataCalls from "hooks/useDataCalls";
 import { addressEqual } from "@usedapp/core";
+import useDecimals from "hooks/useDecimals";
 
 const radaContext = createContext();
 
@@ -16,6 +17,8 @@ const ProvideRada = ({ children }) => {
 
   const { contractABI, contractAddress, contractName, contractType, contractInstance } =
     useABI(type);
+
+  const getDecimals = useDecimals(id);
 
   const provideValue = {
     isAdmin: false,
@@ -77,11 +80,11 @@ const ProvideRada = ({ children }) => {
 
   const contractChain = useDataCalls(calls).filter((a) => a) ?? [];
 
-  if (contractChain.length < 2) {
+  if (contractChain.length < 2 || (id && getDecimals)) {
     return "Loading...";
   }
 
-  contractChain.forEach((chain, i) => {
+  contractChain.forEach(async (chain, i) => {
     if (chain[0]) {
       switch (i) {
         case 0:
@@ -101,7 +104,7 @@ const ProvideRada = ({ children }) => {
 
           break;
         case 3:
-          provideValue.pool = RadaAuction(chain[0], id);
+          provideValue.pool = RadaAuctionModel(chain[0], id);
 
           break;
 

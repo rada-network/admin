@@ -204,7 +204,7 @@ const radaForm = {
     },
     {
       name: "tokenAllocationBusd",
-      label: "Token Allocation Busd",
+      label: "Token Allocation BUSD / USDT",
     },
   ],
   nftMan: [
@@ -452,7 +452,7 @@ const radaFormAdd = {
     },
     {
       name: "tokenAllocationBusd",
-      label: "Token Allocation Busd",
+      label: "Token Allocation BUSD / USDT",
     },
   ],
 
