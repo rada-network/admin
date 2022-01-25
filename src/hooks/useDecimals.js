@@ -18,37 +18,39 @@ const useDecimals = (poolId) => {
     async function fetchData() {
       await Promise.all(
         contracts.map(async (contractType) => {
-          const { contractInstance } = getABI(contractType, library, chainId);
-          const pool = RadaAuctionModel(
-            contractType === "nftClaim"
-              ? await contractInstance.connect(auth.account).getPool(poolId)
-              : await contractInstance.connect(auth.account).pools(poolId),
-            poolId
-          );
-
-          if (pool.startPrice > 0) {
-            const erc20Instance = new Contract(
-              pool.addressPayable,
-              new utils.Interface(erc20),
-              library
+          try {
+            const { contractInstance } = getABI(contractType, library, chainId);
+            const pool = RadaAuctionModel(
+              contractType === "nftClaim"
+                ? await contractInstance.connect(auth.account).getPool(poolId)
+                : await contractInstance.connect(auth.account).pools(poolId),
+              poolId
             );
 
-            const decimals = await erc20Instance.decimals();
+            if (pool.startPrice > 0) {
+              const erc20Instance = new Contract(
+                pool.addressPayable,
+                new utils.Interface(erc20),
+                library
+              );
 
-            localStorage.setItem("addressPayableDecimals", decimals);
-          }
+              const decimals = await erc20Instance.decimals();
 
-          if (pool.tokenPrice > 0) {
-            const erc20Instance = new Contract(
-              pool.tokenAddress,
-              new utils.Interface(erc20),
-              library
-            );
+              localStorage.setItem("addressPayableDecimals", decimals);
+            }
 
-            const decimals = await erc20Instance.decimals();
+            if (pool.tokenPrice > 0) {
+              const erc20Instance = new Contract(
+                pool.tokenAddress,
+                new utils.Interface(erc20),
+                library
+              );
 
-            localStorage.setItem("tokenPriceDecimals", decimals);
-          }
+              const decimals = await erc20Instance.decimals();
+
+              localStorage.setItem("tokenPriceDecimals", decimals);
+            }
+          } catch (error) {}
         })
       );
 
