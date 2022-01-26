@@ -23,7 +23,7 @@ const ProvideWhitelist = ({ children }) => {
     contractInstance: contractInstance,
     listId: [],
     listTitle: [],
-    whitelistAddresses: [],
+    listAddress: [],
   };
 
   const callData = {
@@ -54,7 +54,7 @@ const ProvideWhitelist = ({ children }) => {
     });
     calls.push({
       ...callData,
-      ...{ method: "whitelistAddresses", args: [id] },
+      ...{ method: "getListAddress", args: [id] },
     });
   }
 
@@ -88,7 +88,7 @@ const ProvideWhitelist = ({ children }) => {
           break;
 
         case 4:
-          provideValue.whitelistAddresses = chain[0];
+          provideValue.listAddress = chain[0];
 
           break;
 

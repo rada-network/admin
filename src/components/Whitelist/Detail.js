@@ -36,8 +36,12 @@ const WhitelistDetail = () => {
   }, [context.listTitle]);
 
   useEffect(() => {
-    setWhitelist(context.whitelistAddresses);
-  }, [context.whitelistAddresses]);
+    setWhitelist(
+      context?.listAddress.map((el) => ({
+        address: el,
+      }))
+    );
+  }, [context.listAddress]);
 
   const actions = useActions([
     {
