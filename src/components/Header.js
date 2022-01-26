@@ -158,20 +158,12 @@ export default function Header() {
               <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/radaAuction`}>
                 <ListItemText primary="RADA Auction" />
               </MenuLink>
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftFixedSwap`}>
-                <ListItemText primary="NFT Fixedswap" />
-              </MenuLink>
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftAuction`}>
-                <ListItemText primary="NFT Auction" />
-              </MenuLink>
+
               <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftMan`}>
                 <ListItemText primary="NFT Man" />
               </MenuLink>
               <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftClaim`}>
                 <ListItemText primary="NFT Claim" />
-              </MenuLink>
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/whitelist`}>
-                <ListItemText primary="Whitelist" />
               </MenuLink>
               <MenuLink
                 button
@@ -179,6 +171,15 @@ export default function Header() {
                 to={`${process.env.PUBLIC_URL}/rada/randomizeByRarity`}
               >
                 <ListItemText primary="RandomizeByRarity" />
+              </MenuLink>
+              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftFixedSwap`}>
+                <ListItemText primary="NFT Fixedswap" />
+              </MenuLink>
+              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftAuction`}>
+                <ListItemText primary="NFT Auction" />
+              </MenuLink>
+              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/whitelist`}>
+                <ListItemText primary="Whitelist" />
               </MenuLink>
             </List>
           </AccordionDetails>

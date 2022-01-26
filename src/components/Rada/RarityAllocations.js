@@ -102,7 +102,7 @@ const RadaRarityAllocations = () => {
 
   const columns = [
     { field: "rarityId", headerName: "rarityId", width: 200 },
-    { field: "rarityAllocationsBusd", headerName: "rarityAllocationsBusd", width: 200 },
+    { field: "rarityAllocationsBusd", headerName: "rarityAllocations (BUSD/USDT)", width: 300 },
   ];
 
   console.log("RadaRarityAllocations render");
