@@ -31,7 +31,9 @@ const getABI = (contractType, library, chainId) => {
   switch (contractType) {
     case "poolClaim":
       contractABI = new utils.Interface(poolClaim);
-      contractAddress = process.env.REACT_APP_POOLCLAIM_CONTRACT;
+      contractAddress = isPolygon(chainId)
+        ? process.env.REACT_APP_POLYGON_POOLCLAIM_CONTRACT
+        : process.env.REACT_APP_POOLCLAIM_CONTRACT;
       contractName = "Only Claim Pools";
 
       break;

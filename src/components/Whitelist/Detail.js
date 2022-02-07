@@ -69,7 +69,7 @@ const WhitelistDetail = () => {
   const handleSave = () => {
     global.setLoading(true);
 
-    const addresses = whitelist.map((row) => row.address);
+    const addresses = whitelist.map((row) => row.address.replace(/\s/g, ""));
 
     if (id === "add") {
       actions["addList"].func(title, addresses);
