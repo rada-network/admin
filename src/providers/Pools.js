@@ -65,7 +65,9 @@ const ProvidePools = ({ children }) => {
 
         case 2:
           provideValue.pools = chain[0]?.map((pool, i) => PoolModel(pool, i));
-
+          provideValue.pools = provideValue.pools.filter( function(pool) {
+            return parseInt(pool.allocationBusd) > 1
+          })
           break;
 
         default:
