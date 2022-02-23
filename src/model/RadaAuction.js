@@ -5,6 +5,8 @@ const RadaAuctionModel = (data, i = 0) => {
   const addressPayableDecimals = localStorage.getItem("addressPayableDecimals");
   const tokenPriceDecimals = localStorage.getItem("tokenPriceDecimals");
 
+  console.log("RadaAuctionModel", data);
+
   return {
     poolId: i,
     addressItem: data.addressItem ?? "",
@@ -19,7 +21,6 @@ const RadaAuctionModel = (data, i = 0) => {
     whitelistIds: data.whitelistIds ?? [],
     maxBuyPerAddress: data.maxBuyPerAddress ? formatUnits(data.maxBuyPerAddress, 0) : "0",
     maxBuyPerOrder: data.maxBuyPerOrder ? formatUnits(data.maxBuyPerOrder, 0) : "0",
-
     tokenAddress: data.tokenAddress ?? "",
     tokenPrice: data.tokenPrice ? formatUnits(data.tokenPrice, tokenPriceDecimals) : "0",
     tokenAllocationBusd: data.tokenAllocationBusd
@@ -28,10 +29,10 @@ const RadaAuctionModel = (data, i = 0) => {
     startId: data.startId ?? "0",
     endId: data.endId ?? "0",
     nftAddress: data.nftAddress ?? "",
-
     title: data.title ?? "",
     rarity: data.rarity ? data.rarity.map((el) => formatUnits(el, 0)) : "",
     rarityIds: data.rarityIds ? data.rarityIds.map((el) => formatUnits(el, 0)) : "",
+    timeForWhitelist: data.timeForWhitelist ? data.timeForWhitelist / 60 : "0",
   };
 };
 

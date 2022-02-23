@@ -1,7 +1,7 @@
 import { useActions, useActionState } from "hooks/useActions";
 
 import { Grid, Stack, Button } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useGlobal } from "providers/Global";
 import { useRada } from "providers/Rada";
 import { radaForm } from "config/RadaForm";
@@ -13,7 +13,7 @@ import useWhitelistHook from "hooks/useWhitelist";
 
 const RadaOverview = () => {
   const global = useGlobal();
-  const { contractInstance, contractType, pool, isOwner } = useRada();
+  const { contractInstance, contractType, pool, isOwner, whitelistIds } = useRada();
   const allWhitelistIds = useWhitelistHook();
   const [formState, setFormState] = useState(pool);
 
@@ -34,6 +34,10 @@ const RadaOverview = () => {
   ]);
 
   const [, , handleState] = useActionState(actions);
+
+  useEffect(() => {
+    formState.whitelistIds = whitelistIds;
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handlePool = async (action) => {
     console.log("handlePool", formState);
@@ -80,7 +84,11 @@ const RadaOverview = () => {
     return item;
   });
 
-  console.log("RadaOverview", formState);
+  if (!allWhitelistIds) {
+    return "...";
+  }
+
+  console.log("RadaOverview", form, formState);
 
   return (
     <>

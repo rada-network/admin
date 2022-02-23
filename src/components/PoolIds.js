@@ -21,8 +21,10 @@ const PoolIds = () => {
       <FormControl sx={{ m: 1, minWidth: 120 }}>
         <InputLabel id="poolIds-label">PoolId</InputLabel>
         <Select labelId="poolIds-label" label="PoolId" value={id} onChange={handleChange}>
-          {poolIds.map((item) => (
-            <MenuItem value={item}>{formatUnits(item, 0)}</MenuItem>
+          {poolIds.map((item, i) => (
+            <MenuItem key={i} value={item}>
+              {formatUnits(item, 0)}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

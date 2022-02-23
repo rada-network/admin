@@ -40,12 +40,11 @@ const RadaDetail = () => {
               {contractType !== "nftClaim" &&
                 contractType !== "nftMan" &&
                 contractType !== "randomizeByRarity" && <Tab label="Statistics" value="4" />}
-              {pool.requireWhitelist &&
-                (contractType === "nftFixedSwap" || contractType === "nftAuction") && (
-                  <Tab label="Whitelist" value="5" />
-                )}
+              {/* {pool.requireWhitelist && contractType === "nftAuction" && (
+                <Tab label="Whitelist" value="5" />
+              )} */}
               {(contractType === "nftFixedSwap" || contractType === "nftAuction") && (
-                <Tab label="Sale Token" value="6" />
+                <Tab label="Sale Tokens" value="6" />
               )}
               {pool.requireWhitelist && contractType === "radaFixedSwap" && (
                 <Tab label="Whitelist" value="7" />

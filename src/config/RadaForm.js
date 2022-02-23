@@ -119,12 +119,24 @@ const radaForm = {
     {
       name: "addressItem",
       label: "Token Address",
+      size: 12,
+    },
+    {
+      name: "addressPayable",
+      label: "addressPayable (BUSD/USDT)",
+      size: 12,
     },
 
     {
       name: "requireWhitelist",
       label: "requireWhitelist",
       type: "bool",
+    },
+    {
+      name: "whitelistIds",
+      label: "whitelistIds",
+      type: "bool",
+      multiple: true,
     },
     {
       name: "maxBuyPerAddress",
@@ -143,6 +155,11 @@ const radaForm = {
       name: "endTime",
       label: "endTime",
       type: "date",
+    },
+    {
+      name: "timeForWhitelist",
+      label: "timeForWhitelist (minutes)",
+      type: "minutes",
     },
   ],
 
@@ -163,6 +180,11 @@ const radaForm = {
       label: "Token Address",
       size: 12,
     },
+    {
+      name: "addressPayable",
+      label: "addressPayable (BUSD/USDT)",
+      size: 12,
+    },
 
     {
       name: "requireWhitelist",
@@ -170,10 +192,20 @@ const radaForm = {
       type: "bool",
     },
     {
+      name: "whitelistIds",
+      label: "whitelistIds",
+      type: "bool",
+      multiple: true,
+    },
+    {
       name: "maxBuyPerAddress",
       label: "Max Buy Per Address",
     },
-
+    {
+      name: "timeForWhitelist",
+      label: "timeForWhitelist (minutes)",
+      type: "minutes",
+    },
     {
       name: "startTime",
       label: "startTime",
@@ -373,12 +405,24 @@ const radaFormAdd = {
     {
       name: "addressItem",
       label: "Token Address",
+      size: 12,
+    },
+    {
+      name: "addressPayable",
+      label: "addressPayable (BUSD/USDT)",
+      size: 12,
     },
 
     {
       name: "requireWhitelist",
       label: "requireWhitelist",
       type: "bool",
+    },
+    {
+      name: "whitelistIds",
+      label: "whitelistIds",
+      type: "bool",
+      multiple: true,
     },
     {
       name: "maxBuyPerAddress",
@@ -398,6 +442,10 @@ const radaFormAdd = {
       label: "endTime",
       type: "date",
     },
+    {
+      name: "timeForWhitelist",
+      label: "timeForWhitelist (minutes)",
+    },
   ],
 
   nftAuction: [
@@ -414,6 +462,11 @@ const radaFormAdd = {
       label: "Token Address",
       size: 12,
     },
+    {
+      name: "addressPayable",
+      label: "addressPayable (BUSD/USDT)",
+      size: 12,
+    },
 
     {
       name: "requireWhitelist",
@@ -421,10 +474,20 @@ const radaFormAdd = {
       type: "bool",
     },
     {
+      name: "whitelistIds",
+      label: "whitelistIds",
+      type: "bool",
+      multiple: true,
+    },
+    {
       name: "maxBuyPerAddress",
       label: "Max Buy Per Address",
     },
 
+    {
+      name: "timeForWhitelist",
+      label: "timeForWhitelist (minutes)",
+    },
     {
       name: "startTime",
       label: "startTime",
@@ -587,7 +650,9 @@ const radaAppUpdateParams = {
     {
       name: "addressItem",
     },
-
+    {
+      name: "addressPayable",
+    },
     {
       name: "startTime",
       type: "date",
@@ -604,10 +669,17 @@ const radaAppUpdateParams = {
       name: "requireWhitelist",
     },
     {
+      name: "whitelistIds",
+    },
+    {
       name: "maxBuyPerAddress",
     },
     {
       name: "maxBuyPerOrder",
+    },
+    {
+      name: "timeForWhitelist",
+      type: "minutes",
     },
   ],
 
@@ -618,7 +690,9 @@ const radaAppUpdateParams = {
     {
       name: "addressItem",
     },
-
+    {
+      name: "addressPayable",
+    },
     {
       name: "startTime",
       type: "date",
@@ -635,7 +709,14 @@ const radaAppUpdateParams = {
       name: "requireWhitelist",
     },
     {
+      name: "whitelistIds",
+    },
+    {
       name: "maxBuyPerAddress",
+    },
+    {
+      name: "timeForWhitelist",
+      type: "minutes",
     },
   ],
 

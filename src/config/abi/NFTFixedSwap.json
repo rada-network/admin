@@ -61,6 +61,13 @@
   },
   {
     "inputs": [],
+    "name": "WHITELIST_ADDRESS",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "WITHDRAW_ADDRESS",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
@@ -70,12 +77,15 @@
     "inputs": [
       { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
       { "internalType": "address", "name": "_addressItem", "type": "address" },
+      { "internalType": "address", "name": "_addressPayable", "type": "address" },
       { "internalType": "uint256", "name": "_startTime", "type": "uint256" },
       { "internalType": "uint256", "name": "_endTime", "type": "uint256" },
       { "internalType": "uint256", "name": "_startPrice", "type": "uint256" },
       { "internalType": "bool", "name": "_requireWhitelist", "type": "bool" },
+      { "internalType": "uint16[]", "name": "_whitelistIds", "type": "uint16[]" },
       { "internalType": "uint256", "name": "_maxBuyPerAddress", "type": "uint256" },
-      { "internalType": "uint256", "name": "_maxBuyPerOrder", "type": "uint256" }
+      { "internalType": "uint256", "name": "_maxBuyPerOrder", "type": "uint256" },
+      { "internalType": "uint256", "name": "_timeForWhitelist", "type": "uint256" }
     ],
     "name": "addOrUpdatePool",
     "outputs": [],
@@ -153,6 +163,13 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint16", "name": "_poolId", "type": "uint16" }],
+    "name": "getWhitelistIds",
+    "outputs": [{ "internalType": "uint16[]", "name": "", "type": "uint16[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
       { "internalType": "bool", "name": "_isPublic", "type": "bool" }
@@ -163,7 +180,7 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "_busdAddress", "type": "address" }],
+    "inputs": [],
     "name": "initialize",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -172,6 +189,13 @@
   {
     "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }],
     "name": "isAdmin",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint16", "name": "_poolId", "type": "uint16" }],
+    "name": "isPurchasable",
     "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
     "type": "function"
@@ -213,13 +237,6 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "poolIds",
-    "outputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       { "internalType": "uint16", "name": "", "type": "uint16" },
       { "internalType": "uint256", "name": "", "type": "uint256" }
@@ -245,6 +262,7 @@
     "name": "pools",
     "outputs": [
       { "internalType": "address", "name": "addressItem", "type": "address" },
+      { "internalType": "address", "name": "addressPayable", "type": "address" },
       { "internalType": "uint256", "name": "startTime", "type": "uint256" },
       { "internalType": "uint256", "name": "endTime", "type": "uint256" },
       { "internalType": "uint256", "name": "startPrice", "type": "uint256" },
@@ -252,7 +270,8 @@
       { "internalType": "bool", "name": "ended", "type": "bool" },
       { "internalType": "bool", "name": "requireWhitelist", "type": "bool" },
       { "internalType": "uint256", "name": "maxBuyPerAddress", "type": "uint256" },
-      { "internalType": "uint256", "name": "maxBuyPerOrder", "type": "uint256" }
+      { "internalType": "uint256", "name": "maxBuyPerOrder", "type": "uint256" },
+      { "internalType": "uint256", "name": "timeForWhitelist", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -282,12 +301,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint16", "name": "_poolId", "type": "uint16" },
-      { "internalType": "address[]", "name": "_addresses", "type": "address[]" },
-      { "internalType": "bool", "name": "_allow", "type": "bool" }
-    ],
-    "name": "setWhitelist",
+    "inputs": [{ "internalType": "address", "name": "_addr", "type": "address" }],
+    "name": "setWhitelistAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -335,18 +350,9 @@
   },
   {
     "inputs": [
-      { "internalType": "uint16", "name": "", "type": "uint16" },
-      { "internalType": "address", "name": "", "type": "address" }
-    ],
-    "name": "whitelistAddresses",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_tokenAddress", "type": "address" },
-      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+      { "internalType": "address", "name": "_address", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
+      { "internalType": "uint256[]", "name": "_tokenIds", "type": "uint256[]" }
     ],
     "name": "withdrawFund",
     "outputs": [],

@@ -14,7 +14,7 @@ const formGenerator = (formFields, formState, handleOnchange, addView = false) =
       addView && !field.addView ? (
         ""
       ) : (
-        <Grid item xs={field.size ? field.size : "6"} key={i}>
+        <Grid item xs={field.size ? field.size : 6} key={i}>
           {renderField(field, formState, handleOnchange)}
         </Grid>
       )
@@ -48,8 +48,16 @@ const renderField = (field, formState, handleOnchange) => {
             multiple={field.multiple}
           >
             {field.options
-              ? field.options.map((item) => <MenuItem value={item.value}>{item.label}</MenuItem>)
-              : boolOptions.map((item) => <MenuItem value={item.value}>{item.label}</MenuItem>)}
+              ? field.options.map((item, i) => (
+                  <MenuItem key={i} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                ))
+              : boolOptions.map((item, i) => (
+                  <MenuItem key={i} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                ))}
           </Select>
         </FormControl>
       );

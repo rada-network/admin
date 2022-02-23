@@ -87,6 +87,8 @@ const PoolToken = () => {
 
       const response = await contractInstance.getDepositAmountToken(pool.id, `${value}`);
 
+      console.log("handlePercentage", response);
+
       setFormState((state) => ({ ...state, ...{ depositAmountonChain: formatEther(response) } }));
     }
   };

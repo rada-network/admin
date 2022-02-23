@@ -14,6 +14,9 @@ const argsGenerator = async (contractType, formState) => {
       case "date":
         return convertUnix(formState[field.name]);
 
+      case "minutes":
+        return formState[field.name] * 60;
+
       case "ether":
         if (field.name === "startPrice" || field.name === "tokenAllocationBusd") {
           return parseUnits(formState[field.name], addressPayableDecimals);

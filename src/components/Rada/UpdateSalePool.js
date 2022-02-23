@@ -4,7 +4,7 @@ import { Button, Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { GridToolbarContainer } from "@mui/x-data-grid";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useActions, useActionState } from "hooks/useActions";
 
 import UploadCSV from "components/UploadCSV";
@@ -26,6 +26,21 @@ const UpdateSalePool = () => {
   ]);
 
   const [, success, handleState] = useActionState(actions);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      auth.setLoading(true);
+      const data = await contractInstance.getSaleTokenIds(pool.poolId);
+
+      const ids = data.map((row) => ({
+        id: row,
+      }));
+
+      setTokenIds(ids);
+      auth.setLoading(false);
+    };
+    fetchData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleUpdate = () => {
     auth.setLoading(true);
@@ -68,7 +83,7 @@ const UpdateSalePool = () => {
     );
   };
 
-  const columns = [{ field: "id", headerName: "Token Id" }];
+  const columns = [{ field: "id", headerName: "Token Id", width: 500 }];
 
   console.log("UpdateSalePool render", columns, success);
 

@@ -136,7 +136,7 @@ export default function Header() {
               <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/poolRIR`}>
                 <ListItemText primary="RIR Pools" />
               </MenuLink>
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/poolWhitelist`}>
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/poolWhitelist`}>
                 <ListItemText primary="Whitelist Pools" />
               </MenuLink>
             </List>
@@ -152,33 +152,29 @@ export default function Header() {
           </AccordionSummary>
           <AccordionDetails>
             <List>
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/radaFixedSwap`}>
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/rada/radaFixedSwap`}>
                 <ListItemText primary="RADA Fixedswap" />
               </MenuLink>
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/radaAuction`}>
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/rada/radaAuction`}>
                 <ListItemText primary="RADA Auction" />
               </MenuLink>
 
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftMan`}>
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/rada/nftMan`}>
                 <ListItemText primary="NFT Man" />
               </MenuLink>
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftClaim`}>
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/rada/nftClaim`}>
                 <ListItemText primary="NFT Claim" />
               </MenuLink>
-              <MenuLink
-                button
-                component={Link}
-                to={`${process.env.PUBLIC_URL}/rada/randomizeByRarity`}
-              >
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/rada/randomizeByRarity`}>
                 <ListItemText primary="RandomizeByRarity" />
               </MenuLink>
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftFixedSwap`}>
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/rada/nftFixedSwap`}>
                 <ListItemText primary="NFT Fixedswap" />
               </MenuLink>
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/rada/nftAuction`}>
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/rada/nftAuction`}>
                 <ListItemText primary="NFT Auction" />
               </MenuLink>
-              <MenuLink button component={Link} to={`${process.env.PUBLIC_URL}/whitelist`}>
+              <MenuLink component={Link} to={`${process.env.PUBLIC_URL}/whitelist`}>
                 <ListItemText primary="Whitelist" />
               </MenuLink>
             </List>
