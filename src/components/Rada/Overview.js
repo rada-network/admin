@@ -39,6 +39,10 @@ const RadaOverview = () => {
     formState.whitelistIds = whitelistIds;
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    setFormState(pool);
+  }, [pool]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handlePool = async (action) => {
     console.log("handlePool", formState);
 
@@ -88,7 +92,7 @@ const RadaOverview = () => {
     return "...";
   }
 
-  console.log("RadaOverview", form, formState);
+  console.log("RadaOverview", pool, formState);
 
   return (
     <>

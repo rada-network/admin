@@ -2,7 +2,7 @@ import RadaBidModel from "model/RadaBidModel";
 import indexDbService from "./indexDbService";
 
 const createIndexDB = async () => {
-  await indexDbService.openDB("rada", 1, {
+  await indexDbService.openDB("radabids", 1, {
     async upgrade(db, oldVersion, newVersion, transaction) {
       indexDbService.createObjectStore(db, transaction, "bids", "id");
     },

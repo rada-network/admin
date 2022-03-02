@@ -123,7 +123,7 @@ const ProvideRada = ({ children }) => {
     }
   });
 
-  console.log("ProvideRada render", provideValue, contractChain);
+  console.log("ProvideRada render", provideValue, id);
 
   if (!provideValue.isAdmin && !provideValue.isOwner) {
     return "Ops...You are not an admin or owner";

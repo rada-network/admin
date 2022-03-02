@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import { Contract } from "@ethersproject/contracts";
 import { useEthers } from "@usedapp/core";
+import { useGlobal } from "providers/Global";
+import { useParams } from "react-router-dom";
 
 const useDataCalls = (calls) => {
   const { library } = useEthers();
+  const global = useGlobal();
+  const { type, id } = useParams();
 
   const [result, setResult] = useState([]);
 
@@ -32,7 +36,7 @@ const useDataCalls = (calls) => {
       }
     };
     fetchData();
-  }, [JSON.stringify(calls)]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(calls), global, type, id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return result;
 };

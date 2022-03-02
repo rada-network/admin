@@ -118,7 +118,7 @@ const radaForm = {
     },
     {
       name: "addressItem",
-      label: "Token Address",
+      label: "NTF Contract Address",
       size: 12,
     },
     {
@@ -177,7 +177,7 @@ const radaForm = {
     },
     {
       name: "addressItem",
-      label: "Token Address",
+      label: "NTF Contract Address",
       size: 12,
     },
     {
@@ -239,6 +239,7 @@ const radaForm = {
       label: "Token Allocation (BUSD/USDT)",
     },
   ],
+
   nftMan: [
     {
       name: "poolId",
@@ -304,7 +305,7 @@ const radaFormAdd = {
     },
     {
       name: "addressItem",
-      label: "Token Address",
+      label: "Box Contract Address",
       size: 12,
     },
     {
@@ -353,7 +354,7 @@ const radaFormAdd = {
     },
     {
       name: "addressItem",
-      label: "Token Address",
+      label: "Box Contract Address",
       size: 12,
     },
     {
@@ -404,7 +405,7 @@ const radaFormAdd = {
     },
     {
       name: "addressItem",
-      label: "Token Address",
+      label: "NTF Contract Address",
       size: 12,
     },
     {
@@ -459,7 +460,7 @@ const radaFormAdd = {
     },
     {
       name: "addressItem",
-      label: "Token Address",
+      label: "NTF Contract Address",
       size: 12,
     },
     {
@@ -536,7 +537,7 @@ const radaFormAdd = {
     },
     {
       name: "tokenAddress",
-      label: "Address contract Token",
+      label: "Token Contract Address",
       size: 12,
     },
     {
